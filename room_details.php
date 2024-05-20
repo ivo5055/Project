@@ -27,12 +27,13 @@
             $room = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($room) {
+                $averageRating = $room['number_of_reviews'] > 0 ? round($room['total_rating'] / $room['number_of_reviews'], 1) : 0;
                 echo '<div class="room-detail">';
                 echo '<img src="img/' . $room['image_url'] . '">';
                 echo '<p>Room number: ' . $room['room_number'] . '</p>';
                 echo '<p>Room capacity: ' . $room['room_capacity'] . '</p>';
                 echo '<p>' . $room['description'] . '</p>';
-                echo '<p>Rating: ' . $room['rating'] . '/5 (' . $room['rating'] . ' reviews)</p>';
+                echo '<p>Rating: ' . $averageRating . '/5 (' . $room['number_of_reviews'] . ' reviews)</p>';
                 echo '<p>Price: $' . $room['price'] . ' per month</p>';
                 
                 // Check if user is logged in
