@@ -6,11 +6,13 @@
     <title>Offers</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
+    
 </head>
 <body>
     
 <?php include "elements/header.php";
-include "includes/dbh.inc.php"; ?>
+include "includes/dbh.inc.php"; 
+?>
 
 <div class="">
     <?php include "includes/show_booked.php"; ?>
@@ -19,6 +21,7 @@ include "includes/dbh.inc.php"; ?>
     <div class="room-offers">
 
     <?php include "includes/filter.php";?>
+    
     <?php
             // Delete button
             include "includes/deleteOffer.php";

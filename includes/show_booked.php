@@ -1,4 +1,5 @@
 <?php
+
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
@@ -7,7 +8,13 @@ if (isset($_SESSION['username'])) {
         $cancelBookingStmt = $pdo->prepare($cancelBookingQuery);
         $cancelBookingStmt->execute(['username' => $username]);
 
-        echo '<p>Your booking has been canceled.</p>';
+        // Clear rating session variables
+        unset($_SESSION['rated']);
+        unset($_SESSION['user_rating']);
+
+        // Redirect to the same page to avoid form resubmission
+        header('Location: ' . $_SERVER['PHP_SELF']);
+        exit;
     }
 
     // Fetch the currently booked room for the logged-in user
@@ -25,7 +32,7 @@ if (isset($_SESSION['username'])) {
         //echo '<img src="img/' . $bookedRoom['image_url'] . '">';
         echo '<p>Room number: ' . $bookedRoom['room_number'] . '</p>';
         echo '<p>Room capacity: ' . $bookedRoom['room_capacity'] . '</p>';
-        
+
         // Rating system
         if (isset($_POST['rate_room'])) {
             $rating = $_POST['rating'];
@@ -38,6 +45,14 @@ if (isset($_SESSION['username'])) {
                                 WHERE room_number = :room_number";
             $updateRoomStmt = $pdo->prepare($updateRoomQuery);
             $updateRoomStmt->execute(['rating' => $rating, 'room_number' => $room_number]);
+
+            // Set session variable to indicate rating is done
+            $_SESSION['rated'] = $room_number;
+            $_SESSION['user_rating'] = $rating;
+
+            // Redirect to the same page to avoid form resubmission
+            header('Location: ' . $_SERVER['PHP_SELF']);
+            exit;
         }
 
         // Fetch the updated rating
@@ -50,20 +65,35 @@ if (isset($_SESSION['username'])) {
 
         echo '<p>Rating: ' . $averageRating . '/5 (' . $ratingData['number_of_reviews'] . ' reviews)</p>';
 
-        // Star rating form
-        echo '<form method="post" action="">';
-        echo '<label for="rating">Rate this room:</label>';
-        echo '<div class="rating">';
-        for ($i = 1; $i <= 5; $i++) {
-            echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
-            echo '<label for="star' . $i . '">☆</label>';
+        // Show star rating form if the user has not rated the room
+        if (!isset($_SESSION['rated']) || $_SESSION['rated'] != $bookedRoom['room_number']) {
+            echo '<form method="post" action="">';
+            echo '<label for="rating">Rate this room:</label>';
+            echo '<div class="rating">';
+            for ($i = 5; $i >= 1; $i--) {
+                echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
+                echo '<label for="star' . $i . '">☆</label>';
+            }
+            echo '</div>';
+            echo '<button type="submit" name="rate_room" class="button">Submit Rating</button>';
+            echo '</form>';
+        } else {
+            // Display the user's rating
+            $userRating = $_SESSION['user_rating'];
+            echo '<div class="rating">';
+            for ($i = 5; $i >= 1; $i--) {
+                if ($i == $userRating) {
+                    echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '" checked disabled>';
+                } else {
+                    echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '" disabled>';
+                }
+                echo '<label for="star' . $i . '">☆</label>';
+            }
+            echo '</div>';
         }
-        echo '</div>';
-        echo '<button type="submit" name="rate_room" class="button">Submit Rating</button><br></br>';
-        echo '</form>';
 
         echo '<form method="post" action="">';
-        echo '<button type="submit" name="cancel_booking" class="button">Cancel Booking</button>';
+        echo '<p></p><button type="submit" name="cancel_booking" class="button">Cancel Booking</button>';
         echo '</form>';
         echo '</div>';
         echo '</div>';

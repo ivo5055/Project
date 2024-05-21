@@ -92,9 +92,9 @@ if (isset($_POST['disapprove_user'])) {
     $stmt->execute([$user_id]);
 
     if ($stmt->rowCount() > 0) {
-        echo "<p>User status set to unapproved successfully.</p>";
+        echo "<p>User status set to U.</p>";
     } else {
-        echo "<p>Failed to set user status to unapproved.</p>";
+        echo "<p>Failed to set user status to U.</p>";
     }
 }
 ?>
