@@ -1,6 +1,10 @@
 <!-- Filter Form -->
 <form method="GET" action="">
     <div>
+        <label for="room_number">Room Number:</label>
+        <input type="text" name="room_number" id="room_number" value="<?php echo isset($_GET['room_number']) ? $_GET['room_number'] : ''; ?>">
+    </div>
+    <div>
         <label for="min_capacity">Min Room Capacity:</label>
         <input type="text" name="min_capacity" id="min_capacity" value="<?php echo isset($_GET['min_capacity']) ? $_GET['min_capacity'] : ''; ?>">
     </div>
@@ -40,6 +44,10 @@ $query = "SELECT * FROM room WHERE 1=1";
 
 // Filter prototype
 $params = [];
+if (!empty($_GET['room_number'])) {
+    $query .= " AND room_number = :room_number";
+    $params['room_number'] = $_GET['room_number'];
+}
 if (!empty($_GET['min_capacity'])) {
     $query .= " AND room_capacity >= :min_capacity";
     $params['min_capacity'] = $_GET['min_capacity'];

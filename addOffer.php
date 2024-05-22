@@ -24,13 +24,24 @@
                 <input type="text" id="room_number" name="room_number" required><br><br>
 
                 <label for="room_capacity">Room Capacity:</label>
-                <input type="text" id="room_capacity" name="room_capacity" required><br><br>
+                <select id="room_capacity" name="room_capacity" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                </select><br><br>
 
                 <label for="description">Description:</label>
                 <input type="text" id="description" name="description" required><br><br>
 
                 <label for="price">Price:</label>
                 <input type="text" id="price" name="price" required><br><br>
+
+                <label for="gender_R">For:</label><br>
+                <input type="radio" id="male" name="gender_R" value="male" checked>
+                <label for="male">Male</label>
+                <input type="radio" id="female" name="gender_R" value="female">
+                <label for="female">Female</label><br><br>
 
                 <button type="submit">Post</button>
             </form>

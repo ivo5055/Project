@@ -1,4 +1,6 @@
-<?php session_start();
+<?php 
+
+if(!isset($_SESSION['Id']))session_start();
 
 ?>
 
@@ -32,6 +34,7 @@
             echo '<button class="dropbtn" onclick="toggleDropdown()">' . $_SESSION['username'] . '</button>';
             echo '<div class="dropdown-content" id="myDropdown">';
             echo '<a href="profile.php">Profile</a>';
+            echo '<a href="profile.php">Bookmark</a>';
             echo '<a href="includes/logout.php">Logout</a>';
             echo '</div>';
             echo '</div>';

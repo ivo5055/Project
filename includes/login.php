@@ -20,6 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION["username"] = $user["user"];
             $_SESSION["gender"] = $user["gender"]; 
             $_SESSION["account"] = $user["account"]; 
+            $_SESSION["Id"] = $user["Id"];
 
             header("Location: ../MainPage.php");
             die();
