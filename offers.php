@@ -24,7 +24,7 @@ include "includes/dbh.inc.php";
     <?php include "includes/filter.php";?>
     
     <?php
-            // Delete button
+            // Delete
             include "includes/deleteOffer.php";
 
             // Loop through fetched room offers and generate HTML dynamically

@@ -17,10 +17,15 @@ echo '<p>Price: $' . htmlspecialchars($row['price']) . ' per month</p>';
 // Link to room details
 echo '<p><a href="room_details.php?room_number=' . htmlspecialchars($row['room_number']) . '" class="button">Book Now</a></p>';
 
-// Admin delete button
+// Admin options
 if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
     echo '<form method="post" action="">';
     echo '<input type="hidden" name="Id" value="' . htmlspecialchars($row['Id']) . '">'; // Hidden input to send room ID
+    
+    // Edit button
+    echo '<a href="editOffer.php?room_number=' . htmlspecialchars($row['room_number']) . ' " class="button">Edit</a> <a> </a>'; 
+     
+    // Delete button
     echo '<button type="submit" name="delete_room" class="button">Delete</button>'; // Delete button
     echo '</form>';
 }

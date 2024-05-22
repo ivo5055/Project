@@ -114,18 +114,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <script>
     document.getElementById('editProfileButton').addEventListener('click', function() {
         var profileForm = document.getElementById('profileForm');
+        var editButton = document.getElementById('editProfileButton');
         
         // Check if the 'profileForm' element has the class 'hidden'
         if (profileForm.classList.contains('hidden')) {
             // If 'profileForm' is hidden, remove the 'hidden' class to show it
             profileForm.classList.remove('hidden');
+            // Hide the edit button
+            editButton.style.display = 'none';
         } else {
             // If 'profileForm' is visible, add the 'hidden' class to hide it
             profileForm.classList.add('hidden');
+            // Show the edit button
+            editButton.style.display = 'block';
         }
     });
 </script>
 
-    
-</body>
-</html>
+<script>
+    document.getElementById('profileForm').addEventListener('submit', function(event) {
+        var profileForm = document.getElementById('profileForm');
+        var editButton = document.getElementById('editProfileButton');
+        var emailError = "<?php echo $emailError; ?>";
+        var usernameError = "<?php echo $usernameError; ?>";
+        var passwordError = "<?php echo $passwordError; ?>";
+        
+        // Check if there
+        if (!emailError && !usernameError && !passwordError) {
+            // If there are no errors, hide the edit elements
+            profileForm.classList.add('hidden');
+            // Show the edit button
+            editButton.style.display = 'block';
+        } else {
+            // If there are errors, prevent the form from submitting
+            event.preventDefault();
+        }
+    });
+</script>
