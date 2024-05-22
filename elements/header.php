@@ -17,6 +17,11 @@ if(!isset($_SESSION['Id']))session_start();
         <a href="approve.php">Approve Admins</a>
         <?php endif; ?>
 
+        <?php 
+        if (isset($_SESSION['account']) && $_SESSION['account'] == 'U'): ?>
+        <a href="public_chat.php">Public Chat</a>
+        <?php endif; ?>
+
     </nav>
     <div class="search-box">
         <input type="text" placeholder="Search...">
