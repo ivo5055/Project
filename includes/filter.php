@@ -1,5 +1,7 @@
 <!-- Filter Form -->
-<form method="GET" action="">
+<button id="filterButton">Filter</button>
+
+<form id="filterForm" method="GET" action="">
     <div>
         <label for="room_number">Room Number:</label>
         <input type="text" name="room_number" id="room_number" value="<?php echo isset($_GET['room_number']) ? $_GET['room_number'] : ''; ?>">
@@ -36,6 +38,7 @@
         </select>
     </div>
     <button type="submit">Filter</button>
+    <button type="button" id="clearFilter">Clear Filter</button>
 </form>
 
 <?php
@@ -81,3 +84,5 @@ $query .= " ORDER BY price " . ($sortOrder === 'desc' ? 'DESC' : 'ASC');
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 ?>
+
+

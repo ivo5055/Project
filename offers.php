@@ -19,10 +19,10 @@ include "includes/dbh.inc.php";
     <?php include "includes/show_booked.php"; ?>
 
     <h1>Room Offers</h1>
-    <div class="room-offers">
+    
 
     <?php include "includes/filter.php";?>
-    
+    <div class="room-offers">
     <?php
             // Delete
             include "includes/deleteOffer.php";
@@ -38,15 +38,45 @@ include "includes/dbh.inc.php";
 
                 //shows rooms that have space for guests and users
                 //for admin it shows every room
-                if ($currentBookings < $row['room_capacity'] || isset($_SESSION['account']) == "A") { 
-                    if(isset($_SESSION['gender'])){
-                        if($row['gender_R'] == $_SESSION['gender'] || $_SESSION['account'] == "A") include "includes/offersDisplay.php" ;
+                if ($currentBookings < $row['room_capacity'] || (isset($_SESSION['account']) && $_SESSION['account'] == "A")) { 
+                    if(isset($_SESSION['gender']) && $_SESSION['account'] == "U"){
+                        if($row['gender_R'] == $_SESSION['gender'] ) include "includes/offersDisplay.php" ;
                     }
-                    else if (!isset($_SESSION['gender'])|| $_SESSION['account'] == "U"){
+                    else if (!isset($_SESSION['gender']) || $_SESSION['account'] == "A"){
                     include "includes/offersDisplay.php";
                 }
             }}
             ?>
+
+
+            <script>
+                // Get references to filter button and form
+                const filterButton = document.getElementById('filterButton');
+                const filterForm = document.getElementById('filterForm');
+
+                // Add event listener to filter button
+                filterButton.addEventListener('click', function() {
+                    // Toggle visibility of filter form
+                    filterForm.classList.toggle('show');
+                });
+
+                // Add event listener to clear button
+                const clearFilterButton = document.getElementById('clearFilter');
+                clearFilterButton.addEventListener('click', function() {
+                    // Reset filter form
+                    filterForm.reset();
+                    // Clear input values manually
+                    const inputs = filterForm.getElementsByTagName('input');
+                    for (let i = 0; i < inputs.length; i++) {
+                        inputs[i].value = '';
+                    }
+                    // Clear select value manually
+                    const select = filterForm.getElementsByTagName('select')[0];
+                    select.selectedIndex = 0;
+                });
+            </script>
+
+
     </div>
 </div>
 </body>

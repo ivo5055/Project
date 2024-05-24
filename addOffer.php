@@ -17,8 +17,17 @@
             <form action="includes/addOfferI.php" method="post" enctype="multipart/form-data">
 
                 
-                <input type="file" name="my_image" required>
-                <br></br>
+                <input type="file" name="my_image" required><br></br>
+
+                <label for="building">Building Number:</label>
+                <select id="building" name="building" required>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                </select><br><br>
 
                 <label for="room_number">Room Number:</label>
                 <input type="text" id="room_number" name="room_number" required><br><br>

@@ -10,6 +10,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }*/
 
     // Retrieve offer data from POST
+    
+    $building = $_POST["building"];
     $description = $_POST["description"];
     $price = $_POST["price"];
     $room_number = $_POST["room_number"];
@@ -55,18 +57,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        // Check if email already exists
-        $queryRoom = "SELECT * FROM room WHERE room_number = ?";
+        // Check if room_num already exists for the building
+        $queryRoom = "SELECT * FROM room WHERE room_number = ? AND building = ?";
         $stmtRoom = $pdo->prepare($queryRoom);
-        $stmtRoom->execute([$room_number]);
+        $stmtRoom->execute([$room_number, $building]);
         if ($stmtRoom->rowCount() > 0) {
-            die("Room already registered. Please choose a different room number.");
+            die("Room already registered for this building. Please choose a different room number.");
         }
 
+
         // Insert offer data into database
-        $queryInsert = "INSERT INTO room (description, price,image_url, room_number, room_capacity, gender_R) VALUES (?, ?, ?, ?, ?, ?)";
+        $queryInsert = "INSERT INTO room (building, description, price,image_url, room_number, room_capacity, gender_R) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmtInsert = $pdo->prepare($queryInsert);
-        $stmtInsert->execute([$description, $price,$new_img_name, $room_number, $room_capacity, $gender_R]);
+        $stmtInsert->execute([$building, $description, $price,$new_img_name, $room_number, $room_capacity, $gender_R]);
 
         // Redirect to offers page after adding offer
         header("Location: ../offers.php");

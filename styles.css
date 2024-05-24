@@ -56,21 +56,32 @@ header a:hover {
     margin: left 20px;;
 }
 
+
+
+/* All the offers */
 .image-container {
     margin-left: auto; /* Move elements to the right */
 }
 
+
+
+/* start*/
 .room-offer {
     display: inline-block;
     width: 30%; /* Adjust the width as needed */
     margin: 10px;
     border: 1px solid #ccc;
     padding: 10px;
+    
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .room-offer img {
     width: 100%;
-    height: 100%;
+    height: 300px; /* Adjust the height as needed */
+    object-fit: cover; /* Ensure the image covers the entire container */
 }
 
 .container {
@@ -84,16 +95,82 @@ header a:hover {
     max-width: 50%; /* Limit content width to half the page */
 }
 
-.image-container img {
-    max-width: 100%;
+
+
+
+
+#filterForm {
+    margin-left: auto; 
+    display: none;
+}
+
+/* Show filter form when it has class 'show' */
+#filterForm.show {
+    margin-left: auto; 
+    display: block;
+}
+/* Hide filter dropdown by default */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Show filter dropdown when it has class 'show' */
+.dropdown-content.show {
+    display: block;
+}
+/* Initially hide filter dropdown */
+#filterDropdown {
+    display: none;
 }
 
 
+
+
+
+
+
+
+
+/* General Styles */
+body {
+    justify-content: left;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f8f8f8;
+}
+
+.booked-room {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.room-detail h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.room-detail p {
+    font-size: 18px;
+    margin: 10px 0;
+    color: #555;
+}
 
 .rating {
     display: flex;
     flex-direction: row-reverse;
     justify-content: left;
+    margin: 20px 0;
 }
 
 .rating input {
@@ -103,7 +180,7 @@ header a:hover {
 .rating label {
     position: relative;
     width: 1em;
-    font-size: 1.5vw;
+    font-size: 2em;
     color: #FFD700;
     cursor: pointer;
 }
@@ -118,4 +195,21 @@ header a:hover {
 .rating label:hover ~ label::before,
 .rating input:checked ~ label::before {
     opacity: 1;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+}
+
+.button:hover {
+    background-color: #0056b3;
 }
