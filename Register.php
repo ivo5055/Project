@@ -11,7 +11,7 @@
     
 <?php include 'elements/header.php'; ?>
 
-<div class="">
+<div class="register-container">
     <h1>Register</h1>
     <div class="register-form">
         <form id="register-form" action="includes/register.php" method="post" onsubmit="return validateForm()">

@@ -1,7 +1,7 @@
 <!-- Filter Form -->
-<button id="filterButton">Filter</button>
 
-<form id="filterForm" method="GET" action="">
+
+<form id="filterForm" class="filter-form-container" method="GET" action="">
     <div>
         <label for="room_number">Room Number:</label>
         <input type="text" name="room_number" id="room_number" value="<?php echo isset($_GET['room_number']) ? $_GET['room_number'] : ''; ?>">
@@ -40,7 +40,6 @@
     <button type="submit">Filter</button>
     <button type="button" id="clearFilter">Clear Filter</button>
 </form>
-
 <?php
 // Prepare the base query
 $query = "SELECT * FROM room WHERE 1=1";

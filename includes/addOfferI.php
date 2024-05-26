@@ -67,9 +67,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
         // Insert offer data into database
-        $queryInsert = "INSERT INTO room (building, description, price,image_url, room_number, room_capacity, gender_R) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $queryInsert = "INSERT INTO room (building, room_number, description, price,image_url,  room_capacity, gender_R) VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmtInsert = $pdo->prepare($queryInsert);
-        $stmtInsert->execute([$building, $description, $price,$new_img_name, $room_number, $room_capacity, $gender_R]);
+        $stmtInsert->execute([$building, $room_number, $description, $price,$new_img_name,  $room_capacity, $gender_R]);
 
         // Redirect to offers page after adding offer
         header("Location: ../offers.php");
