@@ -21,7 +21,7 @@ include "includes/dbh.inc.php";
     
         <!-- Building Filter -->
         <div id="buildingFilterForm" class="radio-button-form">
-            <button class="building-button" data-building="1">Building 1</button>
+            <button class="building-button active" data-building="1">Building 1</button>
             <button class="building-button" data-building="2">Building 2</button>
             <button class="building-button" data-building="3">Building 3</button>
             <button class="building-button" data-building="4">Building 4</button>
@@ -82,19 +82,9 @@ include "includes/dbh.inc.php";
     </div>
 </div>
 
-<script>
-    const buildingButtons = document.querySelectorAll('.building-button');
+<script src="js/building_filter.js"></script>
 
-    // Add event listener to building buttons
-    buildingButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Get the value of the building from the data attribute
-            const building = button.getAttribute('data-building');
-            // Redirect to the page with the selected building as a parameter
-            window.location.href = `offers.php?building=${building}`;
-        });
-    });
-</script>
+
 
 <script>
     // Get references to filter button and form

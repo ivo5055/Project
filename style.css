@@ -86,31 +86,31 @@ header a:hover {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-  }
-  
-  /* Hide the actual radio buttons */
-  #buildingFilterForm input[type="radio"] {
+}
+
+/* Hide the actual radio buttons */
+#buildingFilterForm input[type="radio"] {
     display: none;
-  }
-  
-  /* Styles for the labels (pseudo buttons) */
-  #buildingFilterForm label {
+}
+
+/* Styles for the labels (pseudo buttons) */
+#buildingFilterForm button {
     display: inline-block;
     padding: 10px 20px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
-  }
-  
-  /* Styles for when labels are hovered */
-  #buildingFilterForm label:hover {
+}
+
+/* Styles for when labels are hovered */
+#buildingFilterForm button:hover {
     background-color: #e0e0e0;
-  }
-  
-  /* Styles for when labels are clicked (selected) */
-  #buildingFilterForm input[type="radio"]:checked + label {
-    background-color: #ddd;
+}
+
+/* Styles for when labels are clicked (selected) */
+#buildingFilterForm button.active {
+    background-color: #e0e0e0; /* Change this to the hover color */
     border-color: #999;
-  }
-  
+}
+

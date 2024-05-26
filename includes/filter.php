@@ -1,7 +1,7 @@
 <!-- Filter Form -->
 
 
-<form id="filterForm" class="filter-form-container" method="GET" action="">
+<form id="filterForm" class="filter-form-container" method="GET">
     <div>
         <label for="room_number">Room Number:</label>
         <input type="text" name="room_number" id="room_number" value="<?php echo isset($_GET['room_number']) ? $_GET['room_number'] : ''; ?>">
