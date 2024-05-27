@@ -1,4 +1,5 @@
 <?php
+session_start();
 include "includes/dbh.inc.php";
 
 // Define variables for error messages
@@ -6,7 +7,6 @@ $emailError = $usernameError = $passwordError = "";
 
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    session_start(); // Make sure to start the session
     $newEmail = $_POST['email'] ?? null;
     $newUsername = $_POST['username'] ?? null;
     $newPassword = $_POST['password'] ?? null; // New password
@@ -60,6 +60,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 }
+
+$userId = $_SESSION['Id'];
+$queryUserDetails = "SELECT full_name, fn, egn FROM users WHERE Id = ?";
+$stmtUserDetails = $pdo->prepare($queryUserDetails);
+$stmtUserDetails->execute([$userId]);
+$userDetails = $stmtUserDetails->fetch(PDO::FETCH_ASSOC);
+
+$egnLength = strlen($userDetails['egn']);
+$maskedEgn = $egnLength > 2 ? substr($userDetails['egn'], 0, 2) . str_repeat('*', $egnLength - 2) : $userDetails['egn'];
 ?>
 
 <!DOCTYPE html>
@@ -87,67 +96,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <p>Username: <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Not set'; ?></p>
     <?php if (!empty($usernameError)) echo "<p style='color:red;'>$usernameError</p>"; ?>
     
-    <form id="profileForm" method="post" class="hidden">
-        <div>
-            <label for="email">New Email:</label>
-            <input type="text" name="email" placeholder="New Email" value="<?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : ''; ?>">
-        </div>
-        <div>
-            <label for="username">New Username:</label>
-            <input type="text" name="username" placeholder="New Username" value="<?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : ''; ?>">
-        </div>
-        <div>
-            <label for="password">New Password:</label>
-            <input type="password" name="password" placeholder="New Password">
-        </div>
-        <div>
-            <label for="confirm_password">Confirm Password:</label>
-            <input type="password" name="confirm_password" placeholder="Confirm Password">
-        </div>
-        <?php if (!empty($passwordError)) echo "<p style='color:red;'>$passwordError</p>"; ?>
-        <button type="submit">Apply</button>
-    </form>
+    <p>Full Name: <?php echo htmlspecialchars($userDetails['full_name']); ?></p>
+    <p>Faculty Number (FN): <?php echo htmlspecialchars($userDetails['fn']); ?></p>
+    <p>EGN: <?php echo htmlspecialchars($maskedEgn); ?></p>
     
     <button id="editProfileButton">Edit Profile</button>
 </div>
 
 <script>
     document.getElementById('editProfileButton').addEventListener('click', function() {
-        var profileForm = document.getElementById('profileForm');
-        var editButton = document.getElementById('editProfileButton');
-        
-        // Check if the 'profileForm' element has the class 'hidden'
-        if (profileForm.classList.contains('hidden')) {
-            // If 'profileForm' is hidden, remove the 'hidden' class to show it
-            profileForm.classList.remove('hidden');
-            // Hide the edit button
-            editButton.style.display = 'none';
-        } else {
-            // If 'profileForm' is visible, add the 'hidden' class to hide it
-            profileForm.classList.add('hidden');
-            // Show the edit button
-            editButton.style.display = 'block';
-        }
+        window.location.href = 'edit_profile.php';
     });
 </script>
-
-<script>
-    document.getElementById('profileForm').addEventListener('submit', function(event) {
-        var profileForm = document.getElementById('profileForm');
-        var editButton = document.getElementById('editProfileButton');
-        var emailError = "<?php echo $emailError; ?>";
-        var usernameError = "<?php echo $usernameError; ?>";
-        var passwordError = "<?php echo $passwordError; ?>";
-        
-        // Check if there
-        if (!emailError && !usernameError && !passwordError) {
-            // If there are no errors, hide the edit elements
-            profileForm.classList.add('hidden');
-            // Show the edit button
-            editButton.style.display = 'block';
-        } else {
-            // If there are errors, prevent the form from submitting
-            event.preventDefault();
-        }
-    });
-</script>
+</body>
+</html>

@@ -59,18 +59,11 @@
                         $currentRoomBookings = $checkRoomBookingStmt->fetchColumn();
 
                         if ($currentRoomBookings < $room['room_capacity']) {
-                            if (isset($_POST['book_room'])) {
-                                // Book the room
-                                $bookingQuery = "INSERT INTO bookings (userN, building, room_number) VALUES (:userN, :building, :room_number)";
-                                $bookingStmt = $pdo->prepare($bookingQuery);
-                                $bookingStmt->execute(['userN' => $username, 'building' => $building, 'room_number' => $room_number]);
-
-                                echo '<p>Room booked successfully!</p>';
-                            } else {
-                                echo '<form method="post" action="">';
-                                echo '<button type="submit" name="book_room" class="button">Book Now</button>';
-                                echo '</form>';
-                            }
+                            echo '<form method="get" action="book.php">';
+                            echo '<input type="hidden" name="room_number" value="' . htmlspecialchars($room_number) . '">';
+                            echo '<input type="hidden" name="building" value="' . htmlspecialchars($building) . '">';
+                            echo '<button type="submit" class="button">Book Now</button>';
+                            echo '</form>';
                         } else {
                             echo '<p>This room is fully booked. Please choose another room.</p>';
                         }
