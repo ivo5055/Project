@@ -15,7 +15,17 @@ include "includes/dbh.inc.php";
 ?>
 
 <div class="header-container">
-    <?php include "includes/show_booked.php"; ?>
+
+<?php include "includes/show_booked.php"; 
+if (isset($_POST['room_id'])) {
+$roomId = $_POST['room_id'];
+$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+
+// Save the bookmark to the database (assuming you have a table named bookmarks)
+$stmt = $pdo->prepare("INSERT INTO bookmarks (user_id, room_id) VALUES (?, ?)");
+$stmt->execute([$userId, $roomId]);
+}
+?>
 
     <h1><p></p>Room Offers<p></p></h1>
     
@@ -64,53 +74,30 @@ include "includes/dbh.inc.php";
                     }
                 }
             } else {
-                // If building filter is not set, show all rooms
-                // Check if the room is available or the user is an admin
-                if ($currentBookings < $row['room_capacity'] || (isset($_SESSION['account']) && $_SESSION['account'] == "A")) {
-                    // Include room display
-                    if (isset($_SESSION['gender']) && $_SESSION['account'] == "U") {
-                        if ($row['gender_R'] == $_SESSION['gender']) {
+                // If building filter is not set, show rooms from Building 1
+                if ($row['building'] == 1) {
+                    // Check if the room is available or the user is an admin
+                    if ($currentBookings < $row['room_capacity'] || (isset($_SESSION['account']) && $_SESSION['account'] == "A")) {
+                        // Include room display
+                        if (isset($_SESSION['gender']) && $_SESSION['account'] == "U") {
+                            if ($row['gender_R'] == $_SESSION['gender']) {
+                                include "includes/offersDisplay.php";
+                            }
+                        } else if (!isset($_SESSION['gender']) || $_SESSION['account'] == "A") {
                             include "includes/offersDisplay.php";
                         }
-                    } else if (!isset($_SESSION['gender']) || $_SESSION['account'] == "A") {
-                        include "includes/offersDisplay.php";
                     }
                 }
             }
+            
         }
         ?>
     </div>
 </div>
 
 <script src="js/building_filter.js"></script>
+<script src="js/filter.js"></script>
 
 
-
-<script>
-    // Get references to filter button and form
-    const filterButton = document.getElementById('filterButton');
-    const filterForm = document.getElementById('filterForm');
-
-    // Add event listener to filter button
-    filterButton.addEventListener('click', function() {
-        // Toggle visibility of filter form
-        filterForm.classList.toggle('show');
-    });
-
-    // Add event listener to clear button
-    const clearFilterButton = document.getElementById('clearFilter');
-    clearFilterButton.addEventListener('click', function() {
-        // Reset filter form
-        filterForm.reset();
-        // Clear input values manually
-        const inputs = filterForm.getElementsByTagName('input');
-        for (let i = 0; i < inputs.length    ; i++) {
-        inputs[i].value = '';
-    }
-    // Clear select value manually
-    const select = filterForm.getElementsByTagName('select')[0];
-    select.selectedIndex = 0;
-});
-</script>
 </body>
 </html>

@@ -17,6 +17,9 @@ echo '<p>Price: $' . htmlspecialchars($row['price']) . ' per month</p>';
 // Link to room details
 echo '<p><a href="room_details.php?room_number=' . htmlspecialchars($row['room_number']) . '&building=' . htmlspecialchars($row['building']) . '" class="button">Book Now</a></p>';
 
+// Bookmark button
+echo '<button class="bookmark-button" data-offer-id="' . htmlspecialchars($row['Id']) . '" onclick="bookmarkRoom(' . htmlspecialchars($row['Id']) . ')"></button>';
+
 // Admin options
 if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
     echo '<form method="post" action="">';

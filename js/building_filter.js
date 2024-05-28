@@ -32,3 +32,7 @@ const buildingButtons = document.querySelectorAll('.building-button');
             selectedButton.classList.add('active');
         }
     }
+
+
+
+    
