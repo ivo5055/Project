@@ -13,6 +13,7 @@ if(!isset($_SESSION['Id']))session_start();
 
         <?php 
         if (isset($_SESSION['account']) && $_SESSION['account'] == 'A'): ?>
+        <a href="addNotification.php">Notify</a>
         <a href="addOffer.php">Add Offer</a>
         <a href="approve.php">Approve Admins</a>
         <?php endif; ?>
@@ -39,7 +40,7 @@ if(!isset($_SESSION['Id']))session_start();
             echo '<button class="dropbtn" onclick="toggleDropdown()">' . $_SESSION['username'] . '</button>';
             echo '<div class="dropdown-content" id="myDropdown">';
             echo '<a href="profile.php">Profile</a>';
-            echo '<a href="bookmark.php">Bookmark</a>';
+            echo '<a href="bookmarkedRooms.php">Bookmark</a>';
             echo '<a href="includes/logout.php">Logout</a>';
             echo '</div>';
             echo '</div>';

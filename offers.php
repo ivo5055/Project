@@ -97,6 +97,7 @@ $stmt->execute([$userId, $roomId]);
 
 <script src="js/building_filter.js"></script>
 <script src="js/filter.js"></script>
+<script src="js/bookmark.js"></script>
 
 
 </body>

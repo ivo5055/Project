@@ -120,16 +120,14 @@ header a:hover {
 
 
 
-
-/* Offers Start*//* CSS for bookmark button */
 .bookmark-button {
     position: absolute;
     top: 20px; /* Adjust as needed */
     right: 20px; /* Adjust as needed */
-    background-color: #007bff; /* Button background color */
-    color: #fff; /* Button text color */
+    background-color: transparent; /* Transparent background */
+    background-image: url('img/bookmark.png'); /* Path to your default transparent PNG */
+    background-size: cover; /* Make sure the image covers the button */
     border: none;
-    border-radius: 50%; /* Makes the button circular */
     width: 40px; /* Adjust width and height for desired size */
     height: 40px; /* Adjust width and height for desired size */
     font-size: 18px;
@@ -137,7 +135,13 @@ header a:hover {
     text-align: center;
     cursor: pointer;
     z-index: 1; /* Ensure the button is above the image */
+    color: transparent; /* Hide text */
 }
+
+.bookmarked {
+    background-image: url('img/bookmarkR.png'); /* Path to your clicked state transparent PNG */
+}
+
 
 /* CSS for room offer container */
 .room-offer {
