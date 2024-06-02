@@ -88,7 +88,7 @@ $maskedEgn = $egnLength > 2 ? substr($userDetails['egn'], 0, 2) . str_repeat('*'
 <?php include 'elements/header.php'; ?>
 
 <div>
-    <h2>Account</h2>
+    <h2>Account Details</h2>
     
     <p>Email: <?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Not set'; ?> 
     <?php if (!empty($emailError)) echo "<p style='color:red;'>$emailError</p>"; ?>
