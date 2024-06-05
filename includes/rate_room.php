@@ -20,8 +20,8 @@ if (isset($_SESSION['username']) && isset($_POST['rating']) && isset($_POST['roo
         $updateRoomStmt = $pdo->prepare($updateRoomQuery);
         $updateRoomStmt->execute(['rating' => $rating, 'room_number' => $room_number]);
 
-        // Update the booking to set has_rated to true
-        $updateBookingQuery = "UPDATE bookings SET has_rated = 1 WHERE userN = :username AND room_number = :room_number";
+        // Update the booking to set has_rated
+        $updateBookingQuery = "UPDATE bookings SET has_rated = :rating WHERE userN = :username AND room_number = :room_number";
         $updateBookingStmt = $pdo->prepare($updateBookingQuery);
         $updateBookingStmt->execute(['username' => $username, 'room_number' => $room_number]);
 

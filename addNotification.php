@@ -11,16 +11,27 @@
 <body>
     <h2>Add Notification</h2>
     <?php
+    // Function to delete expired notifications
+    function deleteExpiredNotifications($pdo) {
+        $currentDateTime = date('Y-m-d H:i:s');
+        $sql = "DELETE FROM notification WHERE duration <= :currentDateTime";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['currentDateTime' => $currentDateTime]);
+    }
+
+    // Delete expired notifications
+    deleteExpiredNotifications($pdo);
 
     // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
         // Validate and sanitize input
         $notificationMessage = htmlspecialchars($_POST['notification_message']);
+        $notificationDuration = htmlspecialchars($_POST['notification_duration']);
 
         // Insert the notification into the database
-        $sql = "INSERT INTO notification (message) VALUES (:message)";
+        $sql = "INSERT INTO notification (message, duration) VALUES (:message, :duration)";
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['message' => $notificationMessage]);
+        $stmt->execute(['message' => $notificationMessage, 'duration' => $notificationDuration]);
 
         // Redirect to a page after successful submission (you can change the URL)
         header("Location: addNotification.php?success=true");
@@ -38,16 +49,19 @@
         exit();
     }
 
-    // Fetch all notifications
-    $sql = "SELECT * FROM notification";
+    // Fetch all non-expired notifications
+    $currentDateTime = date('Y-m-d H:i:s');
+    $sql = "SELECT * FROM notification WHERE duration > :currentDateTime";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute();
+    $stmt->execute(['currentDateTime' => $currentDateTime]);
     $notifications = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>
 
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
         <label for="notification_message">Notification Message:</label><br>
         <textarea id="notification_message" name="notification_message" rows="4" cols="50" required></textarea><br>
+        <label for="notification_duration">Notification Duration:</label><br>
+        <input type="datetime-local" id="notification_duration" name="notification_duration" required><br>
         <input type="hidden" name="action" value="add">
         <input type="submit" value="Submit">
     </form>
@@ -58,6 +72,7 @@
         <?php foreach ($notifications as $notification): ?>
             <div class="notification">
                 <span><?php echo $notification['message']; ?></span>
+                <span> - Until: <?php echo $notification['duration']; ?></span>
                 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="delete_notification" value="<?php echo $notification['Id']; ?>">
                     <input type="hidden" name="action" value="delete">

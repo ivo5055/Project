@@ -28,6 +28,7 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         <a href="addNotification.php">Notify</a>
         <a href="addOffer.php">Add Offer</a>
         <a href="approve.php">Approve Admins</a>
+        <a href="requests.php">Requests</a>
         <?php endif; ?>
 
         <?php 

@@ -89,7 +89,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmtUpdateFnEgn = $pdo->prepare($queryUpdateFnEgn);
                     $stmtUpdateFnEgn->execute([$newFn, $newEgn, $userId]);
                 } else {
-                    $fnError = "Faculty number and EGN combination does not exist in students database.";
                     $egnError = "Faculty number and EGN combination does not exist in students database.";
                 }
             }
@@ -149,7 +148,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div>
             <label for="fn">Faculty Number (FN):</label>
             <input type="text" name="fn" placeholder="Faculty Number" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
-            <?php if (!empty($fnError)) echo "<p style='color:red;'>$fnError</p>"; ?>
         </div>
         <div>
             <label for="egn">EGN:</label>

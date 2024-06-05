@@ -84,6 +84,7 @@ if (isset($_SESSION['username'])) {
         } else {
             // Display the user's rating
             $userRating = $_SESSION['user_rating'];
+            
             echo '<div class="rating">';
             for ($i = 5; $i >= 1; $i--) {
                 if ($i == $userRating) {

@@ -45,46 +45,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isStudentValid = $verifyStmt->fetchColumn();
 
         if ($isStudentValid) {
-            // Update the user's record in the "users" table with the new details
-            $updateUserQuery = "UPDATE users SET full_name = :fullname, fn = :fn, egn = :egn WHERE Id = :userId";
-            $updateUserStmt = $pdo->prepare($updateUserQuery);
-            $updateUserStmt->execute(['fullname' => $fullname, 'fn' => $fn, 'egn' => $egn, 'userId' => $userId]);
-        
-            // Check if the user already booked a room
-            $checkBookingQuery = "SELECT COUNT(*) FROM bookings WHERE userN = :username";
-            $checkBookingStmt = $pdo->prepare($checkBookingQuery);
-            $checkBookingStmt->execute(['username' => $username]);
-            $userBookingCount = $checkBookingStmt->fetchColumn();
-        
-            if ($userBookingCount > 0) {
-                $error = "You have already booked a room. You can only book one room at a time.";
+            // Check if the user already requested a booking
+            $checkBookingRequestQuery = "SELECT COUNT(*) FROM booking_requests WHERE userN = :username AND status = 'pending'";
+            $checkBookingRequestStmt = $pdo->prepare($checkBookingRequestQuery);
+            $checkBookingRequestStmt->execute(['username' => $username]);
+            $userBookingRequestCount = $checkBookingRequestStmt->fetchColumn();
+
+            if ($userBookingRequestCount > 0) {
+                $error = "You have already requested a room. You can only request one room at a time.";
             } else {
-                // Check current bookings for this room
-                $checkRoomBookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number AND building = :building";
-                $checkRoomBookingStmt = $pdo->prepare($checkRoomBookingQuery);
-                $checkRoomBookingStmt->execute(['room_number' => $room_number, 'building' => $building]);
-                $currentRoomBookings = $checkRoomBookingStmt->fetchColumn();
+                // Insert booking request
+                $bookingRequestQuery = "INSERT INTO booking_requests (userN, building, room_number, fullname, fn, payment_method, status) 
+                                        VALUES (:userN, :building, :room_number, :fullname, :fn, :payment_method, 'pending')";
+                $bookingRequestStmt = $pdo->prepare($bookingRequestQuery);
+                $bookingRequestStmt->execute([
+                    'userN' => $username,
+                    'building' => $building,
+                    'room_number' => $room_number,
+                    'fullname' => $fullname,
+                    'fn' => $fn,
+                    'payment_method' => $payment_method
+                ]);
 
-                // Fetch room capacity
-                $roomQuery = "SELECT room_capacity FROM room WHERE room_number = :room_number AND building = :building";
-                $roomStmt = $pdo->prepare($roomQuery);
-                $roomStmt->execute(['room_number' => $room_number, 'building' => $building]);
-                $roomCapacity = $roomStmt->fetchColumn();
-
-                if ($currentRoomBookings < $roomCapacity) {
-                    // Book the room
-                    $bookingQuery = "INSERT INTO bookings (userN, building, room_number) VALUES (:userN, :building, :room_number)";
-                    $bookingStmt = $pdo->prepare($bookingQuery);
-                    $bookingStmt->execute(['userN' => $username, 'building' => $building, 'room_number' => $room_number]);
-
-                    $success = "Room booked successfully!";
-                    
-                    // Redirect to offers.php
-                    header("Location: offers.php");
-                    exit();
-                } else {
-                    $error = "This room is fully booked. Please choose another room.";
-                }
+                $success = "Booking request sent successfully!";
+                header("Location: offers.php");
+                exit();
             }
         } else {
             $error = "Invalid Data.";
@@ -135,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </select>
         <p></p>
 
-        <button type="submit">Book</button>
+        <button type="submit">Request Booking</button>
     </form>
 </div>
 

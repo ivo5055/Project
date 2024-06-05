@@ -12,6 +12,20 @@
 <?php 
 include "elements/header.php";
 include "includes/dbh.inc.php"; 
+
+// Fetch the user's grade from the database
+$grade = null;
+if (isset($_SESSION['Id'])) {
+    $userId = $_SESSION['Id'];
+    $stmt = $pdo->prepare("
+        SELECT sd.grade 
+        FROM students_db sd
+        JOIN users u ON u.fn = sd.fn
+        WHERE u.Id = ?
+    ");
+    $stmt->execute([$userId]);
+    $grade = $stmt->fetchColumn();
+}
 ?>
 
 <div class="header-container">
@@ -36,9 +50,8 @@ $stmt->execute([$userId, $roomId]);
             <button class="building-button" data-building="3">Building 3</button>
             <button class="building-button" data-building="4">Building 4</button>
             <button class="building-button" data-building="5">Building 5</button>
-            <button class="building-button" data-building="6">Building 6</button>
+            <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?>>Building 6</button>
             <button id="filterButton" class="Filter_B">Filter</button>
-            
         </div>
 
     <?php include "includes/filter.php";?>
@@ -98,7 +111,6 @@ $stmt->execute([$userId, $roomId]);
 <script src="js/building_filter.js"></script>
 <script src="js/filter.js"></script>
 <script src="js/bookmark.js"></script>
-
 
 </body>
 </html>
