@@ -27,8 +27,10 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
         if (isset($_SESSION['account']) && $_SESSION['account'] == 'A'): ?>
         <a href="addNotification.php">Notify</a>
         <a href="addOffer.php">Add Offer</a>
+        <a href="manage_offers.php">Manage Offers</a>
         <a href="approve.php">Approve Admins</a>
         <a href="requests.php">Requests</a>
+
         <?php endif; ?>
 
         <?php 
@@ -60,6 +62,18 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
                 } else {
                     echo "<p>No notifications</p>";
                 }
+
+                // Function to delete expired notifications
+                function deleteExpiredNotifications($pdo) {
+                    $currentDateTime = date('Y-m-d H:i:s');
+                    $sql = "DELETE FROM notification WHERE duration <= :currentDateTime";
+                    $stmt = $pdo->prepare($sql);
+                    $stmt->execute(['currentDateTime' => $currentDateTime]);
+                }
+
+                // Delete expired notifications
+                deleteExpiredNotifications($pdo);
+
                 ?>
             </div>
         </div>

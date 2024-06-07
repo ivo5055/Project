@@ -11,16 +11,7 @@
 <body>
     <h2>Add Notification</h2>
     <?php
-    // Function to delete expired notifications
-    function deleteExpiredNotifications($pdo) {
-        $currentDateTime = date('Y-m-d H:i:s');
-        $sql = "DELETE FROM notification WHERE duration <= :currentDateTime";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['currentDateTime' => $currentDateTime]);
-    }
-
-    // Delete expired notifications
-    deleteExpiredNotifications($pdo);
+    
 
     // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {

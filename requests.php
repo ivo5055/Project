@@ -72,7 +72,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <div class="requests-container">
-    <h1>Manage Booking Requests</h1>
+    <h1 class="centered-title">Manage Booking Requests</h1>
     <?php
     if (isset($error)) {
         echo '<p class="error">' . htmlspecialchars($error) . '</p>';

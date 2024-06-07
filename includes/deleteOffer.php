@@ -1,5 +1,8 @@
 <?php
 if(isset($_POST['delete_room'])) {
+
+    include 'dbh.inc.php';
+
                 $Id = $_POST['Id']; // Get the room ID to be deleted
             
                 //delete room from project
