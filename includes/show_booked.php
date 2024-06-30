@@ -47,7 +47,7 @@ if (isset($_SESSION['username'])) {
         echo '<p>Rating: ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($ratingData['number_of_reviews']) . ' reviews)</p>';
 
         // Rating system
-        if (isset($_POST['rate_room'])) {
+        if (isset($_POST['rate_room']) && isset($_POST['rating']) ) {
             $rating = $_POST['rating'];
             $room_number = $bookedRoom['room_number'];
             $building = $bookedRoom['building'];
@@ -68,17 +68,22 @@ if (isset($_SESSION['username'])) {
             header('Location: ' . $_SERVER['PHP_SELF']);
             exit;
         }
+        
 
         // Show star rating form if the user has not rated the room
         if (!isset($_SESSION['has_rated']) || $_SESSION['has_rated'] != $bookedRoom['room_number']) {
             echo '<form method="post" action="">';
-            echo '<label for="rating">Rate this room:</label>';
+            echo '<p for="rating">Rate this room:</p>';
             echo '<div class="rating">';
             for ($i = 5; $i >= 1; $i--) {
                 echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
                 echo '<label for="star' . $i . '">☆</label>';
             }
+            
             echo '</div>';
+            if(isset($_POST['rate_room']) && !isset($_POST['rating']) ) {
+                echo '<p style="color: red;">' . 'Please select a rating' . '</p>';
+            }
             echo '<button type="submit" name="rate_room" class="button">Submit Rating</button>';
             echo '</form>';
         } else {

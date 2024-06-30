@@ -92,7 +92,3 @@ $query .= " ORDER BY price " . ($sortOrder === 'desc' ? 'DESC' : 'ASC');
 $stmt = $pdo->prepare($query);
 $stmt->execute($params);
 ?>
-
-
-
-

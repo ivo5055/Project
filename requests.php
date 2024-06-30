@@ -38,6 +38,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $updateRequestQuery = "UPDATE booking_requests SET status = 'approved' WHERE id = :request_id";
             $updateRequestStmt = $pdo->prepare($updateRequestQuery);
             $updateRequestStmt->execute(['request_id' => $requestId]);
+
+            // Add notification for the user
+            $notificationMessage = "Your room request has been approved"; // for room $room_number building $building"
+            $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one week
+            $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
+            $notificationStmt = $pdo->prepare($notificationQuery);
+            $notificationStmt->execute([
+                'message' => $notificationMessage,
+                'duration' => $notificationDuration,
+                'userN' => $username
+            ]);
         } else {
             $error = "Room is fully booked.";
         }
@@ -46,6 +57,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $updateRequestQuery = "UPDATE booking_requests SET status = 'rejected' WHERE id = :request_id";
         $updateRequestStmt = $pdo->prepare($updateRequestQuery);
         $updateRequestStmt->execute(['request_id' => $requestId]);
+
+        // Add notification for the user
+        $notificationMessage = "Your room request has been rejected"; // for room $room_number building $building
+        $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one week
+        $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
+        $notificationStmt = $pdo->prepare($notificationQuery);
+        $notificationStmt->execute([
+            'message' => $notificationMessage,
+            'duration' => $notificationDuration,
+            'userN' => $username
+        ]);
     }
 }
 
@@ -72,7 +94,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <body>
 
 <div class="requests-container">
-    <h1 class="centered-title">Manage Booking Requests</h1>
+    <h1>Manage Booking Requests</h1>
     <?php
     if (isset($error)) {
         echo '<p class="error">' . htmlspecialchars($error) . '</p>';
@@ -86,7 +108,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>">Room Number</a></th>
                 <th>Full Name</th>
                 <th>FN</th>
-                <th><a href="?sort_column=userN&sort_order=<?php echo $newSortOrder; ?>">Grade</a></th>
+                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>">Grade</a></th>
                 <th>Payment Method</th>
                 <th>Action</th>
             </tr>

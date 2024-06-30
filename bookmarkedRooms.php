@@ -8,7 +8,6 @@ if (!isset($_SESSION['Id'])) {
 }
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +21,6 @@ if (!isset($_SESSION['Id'])) {
 
 <?php include "elements/header.php"; ?>
 
-
 <?php
 $userId = $_SESSION['Id'];
 
@@ -32,7 +30,6 @@ $query = "SELECT room.* FROM room
 $stmt = $pdo->prepare($query);
 $stmt->execute([':user_id' => $userId]);
 ?>
-
 
 <div class="header-container">
     <h1>Bookmarks</h1>
@@ -46,4 +43,6 @@ $stmt->execute([':user_id' => $userId]);
 </div>
 
 </body>
+
+<script src="js/bookmark.js"></script>
 </html>

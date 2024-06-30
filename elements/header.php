@@ -4,15 +4,19 @@ if(!isset($_SESSION['Id'])){
     session_start();
 }
 
-// Fetch notifications
-$sql = "SELECT message FROM notification";
+
+if(isset($_SESSION['username'])){
+$username = $_SESSION['username'];
+
+// Adjust the SQL query to fetch notifications for the logged-in user or for all users
+$sql = "SELECT message FROM notification WHERE userN = :username OR userN IS NULL OR userN = ''";
 $stmt = $pdo->prepare($sql);
-$stmt->execute();
+$stmt->execute([':username' => $username]);
 
 $notifications = [];
 while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
     $notifications[] = $row['message'];
-}
+}}
 
 ?>
 

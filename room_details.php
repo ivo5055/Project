@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Room Details</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="room_details.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
@@ -30,7 +31,8 @@
             if ($room) {
                 $averageRating = $room['number_of_reviews'] > 0 ? round($room['total_rating'] / $room['number_of_reviews'], 1) : 0;
                 echo '<div class="room-detail">';
-                echo '<img src="img/' . htmlspecialchars($room['image_url']) . '" alt="Room Image">';
+                echo '<div class="image"><img src="img/' . htmlspecialchars($room['image_url']) . '" alt="Room Image"></div>';
+                echo '<div class="info">';
                 echo '<p>Room number: ' . htmlspecialchars($room['room_number']) . '</p>';
                 echo '<p>Building: ' . htmlspecialchars($room['building']) . '</p>';
                 echo '<p>Room capacity: ' . htmlspecialchars($room['room_capacity']) . '</p>';
@@ -72,7 +74,8 @@
                     echo '<p>Please <a href="login.php">login</a> to book this room.</p>';
                 }
 
-                echo '</div>';
+                echo '</div>'; // Close .info
+                echo '</div>'; // Close .room-detail
             } else {
                 echo '<p>Room not found.</p>';
             }

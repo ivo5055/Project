@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="dropdown.css">    
 </head>
 <body>
-    
-<?php 
+
+<?php
 include "elements/header.php";
-include "includes/dbh.inc.php"; 
+include "includes/dbh.inc.php";
 
 // Fetch the user's grade from the database
 $grade = null;
@@ -29,37 +29,29 @@ if (isset($_SESSION['Id'])) {
 ?>
 
 <div class="header-container">
-
-<?php include "includes/show_booked.php"; 
-if (isset($_POST['room_id'])) {
-$roomId = $_POST['room_id'];
-$userId = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
-
-// Save the bookmark to the database (assuming you have a table named bookmarks)
-$stmt = $pdo->prepare("INSERT INTO bookmarks (user_id, room_id) VALUES (?, ?)");
-$stmt->execute([$userId, $roomId]);
-}
-?>
-
+    <?php include "includes/show_booked.php"; ?>
     <h1><p></p>Room Offers<p></p></h1>
-    
-        <!-- Building Filter -->
-        <div id="buildingFilterForm" class="radio-button-form">
-            <button class="building-button active" data-building="1">Building 1</button>
-            <button class="building-button" data-building="2">Building 2</button>
-            <button class="building-button" data-building="3">Building 3</button>
-            <button class="building-button" data-building="4">Building 4</button>
-            <button class="building-button" data-building="5">Building 5</button>
-            <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?>>Building 6</button>
-            <button id="filterButton" class="Filter_B">Filter</button>
-        </div>
 
-    <?php include "includes/filter.php";?>
+    <!-- Building Filter -->
+    <div id="buildingFilterForm" class="radio-button-form">
+        <button class="building-button active" data-building="1">Building 1</button>
+        <button class="building-button" data-building="2">Building 2</button>
+        <button class="building-button" data-building="3">Building 3</button>
+        <button class="building-button" data-building="4">Building 4</button>
+        <button class="building-button" data-building="5">Building 5</button>
+        <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?>>Building 6</button>
+        <button id="filterButton" class="Filter_B">Filter</button>
+    </div>
+    
+    
+    <?php
+    include "includes/deleteOffer.php"; 
+    include "includes/filter.php"; ?>
 
     <div class="room-offers">
         <?php
         // Delete
-        include "includes/deleteOffer.php";
+        
 
         // Loop through fetched room offers and generate HTML dynamically
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -102,7 +94,6 @@ $stmt->execute([$userId, $roomId]);
                     }
                 }
             }
-            
         }
         ?>
     </div>

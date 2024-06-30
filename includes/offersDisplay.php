@@ -1,20 +1,22 @@
-<?php
-// Fetch the room IDs from bookmarks table
-$bookmarks_query = "SELECT DISTINCT room_id FROM bookmarks";
-$bookmarks_result = $pdo->query($bookmarks_query);
+<!-- Hidden input to store user ID -->
+<input type="hidden" id="userId" value="<?php echo htmlspecialchars($userId); ?>">
 
-// Store booked room IDs in an array
+<?php
+// Fetch the current user's bookmarked rooms
+
+
+$userId = isset($_SESSION['Id']) ? $_SESSION['Id'] : null;
 $booked_rooms = [];
-while ($bookmark_row = $bookmarks_result->fetch(PDO::FETCH_ASSOC)) {
-    $booked_rooms[] = $bookmark_row['room_id'];
+if ($userId) {
+    $bookmarks_query = "SELECT room_id FROM bookmarks WHERE user_id = :user_id";
+    $bookmarks_stmt = $pdo->prepare($bookmarks_query);
+    $bookmarks_stmt->execute([':user_id' => $userId]);
+    $booked_rooms = $bookmarks_stmt->fetchAll(PDO::FETCH_COLUMN);
 }
 
-
+// Room details
 $bookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number";
 $bookingStmt = $pdo->prepare($bookingQuery);
-$bookingStmt->execute(['room_number' => $row['room_number']]);
-$currentBookings = $bookingStmt->fetchColumn();
-
 
 echo '<div class="room-offer">';
 echo '<a href="room_details.php?room_number=' . htmlspecialchars($row['room_number']) . '&building=' . htmlspecialchars($row['building']) . '">';
@@ -24,7 +26,9 @@ echo '<div class="offer-details">';
 echo '<p>Room number: ' . htmlspecialchars($row['room_number']) . '</p>';
 
 // Show how many rooms are booked
-echo '<p>Booked: ' . htmlspecialchars($currentBookings) . ' / ' .htmlspecialchars($row['room_capacity']) . '</p>';
+$bookingStmt->execute(['room_number' => $row['room_number']]);
+$currentBookings = $bookingStmt->fetchColumn();
+echo '<p>Booked: ' . htmlspecialchars($currentBookings) . ' / ' . htmlspecialchars($row['room_capacity']) . '</p>';
 
 // Calculate and display the average rating and number of reviews
 $averageRating = $row['number_of_reviews'] > 0 ? round($row['total_rating'] / $row['number_of_reviews'], 1) : 0;
@@ -38,7 +42,9 @@ echo '<p><a href="room_details.php?room_number=' . htmlspecialchars($row['room_n
 $isBookmarked = in_array($row['Id'], $booked_rooms) ? 'bookmarked' : '';
 
 // Bookmark button
-echo '<button class="bookmark-button ' . $isBookmarked . '" data-offer-id="' . htmlspecialchars($row['Id']) . '" onclick="bookmarkRoom(this, ' . htmlspecialchars($row['Id']) . ')"></button>';
+echo '<button class="bookmark-button ' . $isBookmarked . '" data-offer-id="' . htmlspecialchars($row['Id']) . '" onclick="bookmarkRoom(this)">';
+echo $isBookmarked ? 'Unbookmark' : 'Bookmark';
+echo '</button>';
 
 // Admin options
 if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
@@ -55,4 +61,3 @@ if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
 echo '</div>';
 echo '</div>';
 ?>
-

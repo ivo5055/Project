@@ -1,57 +1,57 @@
-    .dropdown {
-        position: relative;
-        display: inline-block;
-    }
+/* Dropdown menu container */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
 
-    .dropdown-content p, .dropdown-content a {
-        color: black;
-        padding: 12px 16px;
-        text-decoration: none;
-        display: block; /* Ensure each notification starts on a new line */
-    }
+/* Dropdown content styling */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #ddd6d6;
+    min-width: 160px;
+    z-index: 2; /* Ensure dropdown is in front */
+    left: 50%; /* Center horizontally relative to the button */
+    transform: translateX(-50%); /* Adjust position to center */
+}
 
-    /* Style the dropdown content */
-    .dropdown-content {
-        display: none;
-        position: absolute;
-        background-color: #ddd6d6;
-        min-width: 160px;
-        z-index: 1;
-        left: 50%; /* Center horizontally relative to the button */
-        transform: translateX(-50%); /* Adjust position to center */
-    }
+.dropdown-content p, .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block; /* Ensure each notification starts on a new line */
+}
 
-    .dropbtnN {
-      margin-left: 20px;
-      color: white;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-  }
-    /* Style the dropdown button */
-    .dropbtn {
-        margin-left: 20px;
-        background-color: black;
-        color: white;
-        padding: 12px;
-        font-size: 16px;
-        border: none;
-        cursor: pointer;
-    }
+/* Style the dropdown button */
+.dropbtn {
+    margin-left: 20px;
+    background-color: black;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
 
+.dropbtnN {
+    margin-left: 20px;
+    color: white;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+}
 
-    .dropbtn img, .dropbtnN img {
-        width: 30px; /* Adjust size as needed */
-        height: 30px; /* Adjust size as needed */
-        cursor: pointer;
-    }
+.dropbtn img, .dropbtnN img {
+    width: 30px; /* Adjust size as needed */
+    height: 30px; /* Adjust size as needed */
+    cursor: pointer;
+}
 
-    .dropdown-content a:hover {
-        background-color: #ccc; /* Optional: add a hover effect for the dropdown links */
-    }
+.dropdown-content a:hover {
+    background-color: #ccc; /* Optional: add a hover effect for the dropdown links */
+}
 
-    .dropbtn:hover, .dropbtn:focus {
-        background-color: #3c3f41;
-      }
-    
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3c3f41;
+}
