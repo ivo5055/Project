@@ -9,17 +9,18 @@
     display: none;
     position: absolute;
     background-color: #ddd6d6;
-    min-width: 160px;
+    min-width: 160px; /* Adjusted width to better fit form */
     z-index: 2; /* Ensure dropdown is in front */
-    left: 50%; /* Center horizontally relative to the button */
+    left: 50%; /* Align to the left edge of the button */
+    border-radius: 5px; /* Optional: Add border radius */
     transform: translateX(-50%); /* Adjust position to center */
 }
 
 .dropdown-content p, .dropdown-content a {
     color: black;
-    padding: 12px 16px;
     text-decoration: none;
     display: block; /* Ensure each notification starts on a new line */
+    padding: 10px 20px;
 }
 
 /* Style the dropdown button */
@@ -34,7 +35,6 @@
 }
 
 .dropbtnN {
-    margin-left: 20px;
     color: white;
     padding: 12px;
     font-size: 16px;
@@ -54,4 +54,48 @@
 
 .dropbtn:hover, .dropbtn:focus {
     background-color: #3c3f41;
+}
+
+.dropbtn:hover, .dropbtn:focus {
+    background-color: #3c3f41;
+}
+
+/* Removed the gap from the left side of the dropdown*/
+.dropbtn, .dropdown-content a {
+    margin: 0;
+}
+
+
+
+
+
+/* Initially hide filter form */
+.filter-form-container {
+    display: none;
+}
+
+/* Show filter form when it has class 'show' */
+.filter-form-container.show {
+    display: block;
+}
+
+/* Additional form styling for better layout */
+.filter-form-container form div {
+    margin-bottom: 10px;
+}
+
+.filter-form-container form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.filter-form-container form input,
+.filter-form-container form select {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.filter-form-container form button {
+    margin-top: 10px;
 }

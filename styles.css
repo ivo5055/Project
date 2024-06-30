@@ -201,7 +201,12 @@ header a:hover {
 /* Initially hide filter form */
 .filter-form-container {
     display: none;
-    margin-right: auto; 
+    align-items: center;
+    padding: 10px 20px;
+    border-radius: 1px;
+    margin-right: 75px;
+    border: 1px solid #ccc;
+    float: right; /* Float the button to the right */
 }
 
 /* Show filter form when it has class 'show' */
@@ -253,11 +258,16 @@ header a:hover {
 
 /* General Styles */
 body {
+    overflow-x:hidden;
     justify-content: left;
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f8f8f8;
+}
+
+.hideS{
+    overflow: hidden;
 }
 
 .booked-room {

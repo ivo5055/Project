@@ -9,8 +9,7 @@
 </head>
 <?php include 'elements/header.php'; ?>
 
-<body>
-    
+<body class="hideS">
     <div class="container">
         <div class="content">
             <h1>Информационно табло за студенти</h1>
@@ -28,4 +27,6 @@
         </div>
     </div>
 </body>
+
+
 </html>

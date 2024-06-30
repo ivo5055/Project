@@ -40,13 +40,13 @@ if (isset($_SESSION['Id'])) {
         <button class="building-button" data-building="4">Building 4</button>
         <button class="building-button" data-building="5">Building 5</button>
         <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?>>Building 6</button>
+        
         <button id="filterButton" class="Filter_B">Filter</button>
+        <?php include "includes/filter.php"; ?>
     </div>
     
     
-    <?php
-    include "includes/deleteOffer.php"; 
-    include "includes/filter.php"; ?>
+    <?php include "includes/deleteOffer.php";?>
 
     <div class="room-offers">
         <?php
