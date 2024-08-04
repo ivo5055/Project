@@ -18,6 +18,7 @@ include 'elements/header.php';
     <img src="img/menuBG.jpg" alt="Dorm">
 
     <!-- Dropdown to select the day of the week -->
+    <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="day-selector-container">
         <form method="GET">
             <label for="day-select">Select Day:</label>
@@ -33,6 +34,7 @@ include 'elements/header.php';
             </select>
         </form>
     </div>
+    <?php endif; ?>
 
     <div class="menu-items">
         <ul>
@@ -71,14 +73,20 @@ include 'elements/header.php';
                                 echo "<span class='item-name'>" . htmlspecialchars($itemName) . "</span>";
                                 echo "<span class='item-price'>$" . number_format($itemPrice, 2) . "</span>";
 
-                                // Reservation form for each item
-                                echo "<form method='POST' style='display:inline;'>";
-                                echo "<input type='hidden' name='item_id' value='$itemId'>";
-                                echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($_SESSION["username"]) . "'>";
-                                echo "<input type='submit' name='reserve' value='Reserve' class='reserve-button'>";
-                                echo "</form>";
+                                // Reservation form for users with account type 'A' or 'U'
+                                if (isset($_SESSION['account']) && ($_SESSION['account'] == 'A' || $_SESSION['account'] == 'U')) {
+                                    echo "<form method='POST' style='display:inline;'>";
+                                    echo "<input type='hidden' name='item_id' value='$itemId'>";
+                                    echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($_SESSION["username"]) . "'>";
+                                    echo "<input type='submit' name='reserve' value='Reserve' class='reserve-button'>";
+                                    echo "</form>";
+                                }
 
-                                echo "<a href='includes/delete_item.php?Id=$itemId' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this item?');\">Delete</a>";
+                                // Delete button only available for account type 'C'
+                                if (isset($_SESSION['account']) && $_SESSION['account'] == 'C') {
+                                    echo "<a href='includes/delete_item.php?Id=$itemId' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this item?');\">Delete</a>";
+                                }
+
                                 echo "</li>";
                             }
                         }
@@ -97,16 +105,37 @@ include 'elements/header.php';
     </div>
 
     <!-- Reserved Items Container -->
+    <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="reserved-items-container">
         <h2>Reserved Items</h2>
+
+        <!-- Search Form for Reserved Items -->
+        <form method="GET">
+            <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Enter username">
+            <input type="submit" value="Search">
+        </form>
+        <br></br>
         <ul>
         <?php
         if (isset($pdo)) {
             try {
+                $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
+
                 $sql = "SELECT reserved_items.id, menu_items.nameSu, menu_items.priceSu, reserved_items.user_name
                         FROM reserved_items
                         JOIN menu_items ON reserved_items.item_id = menu_items.Id";
-                $stmt = $pdo->query($sql);
+
+                if ($searchUser !== '') {
+                    $sql .= " WHERE reserved_items.user_name LIKE :search_user";
+                }
+
+                $stmt = $pdo->prepare($sql);
+                
+                if ($searchUser !== '') {
+                    $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
+                }
+
+                $stmt->execute();
 
                 if ($stmt->rowCount() > 0) {
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -121,7 +150,7 @@ include 'elements/header.php';
                         echo "</li>";
                     }
                 } else {
-                    echo "<li>No reserved items.</li>";
+                    echo "<li>No reserved items found for the given username.</li>";
                 }
             } catch (PDOException $e) {
                 echo "Error: " . htmlspecialchars($e->getMessage());
@@ -132,8 +161,10 @@ include 'elements/header.php';
         ?>
         </ul>
     </div>
+    <?php endif; ?>
 
     <!-- Form for adding menu items -->
+    <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="form-container">
         <h2>Add Menu Item</h2>
         <form method="POST">
@@ -154,6 +185,7 @@ include 'elements/header.php';
             <input type="submit" value="Add Item">
         </form>
     </div>
+    <?php endif; ?>
 </div>
 
 <?php

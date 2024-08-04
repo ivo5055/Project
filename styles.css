@@ -154,8 +154,8 @@ header a:hover {
 
 .day-selector-container {
     position: absolute;
-    top: 10px; /* Adjust as needed */
-    left: 20px; /* Adjust as needed */
+    top: 150px; /* Adjust as needed */
+    left: 160px; /* Adjust as needed */
     background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
     padding: 10px;
     border-radius: 5px;

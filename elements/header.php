@@ -1,6 +1,6 @@
 <?php 
 include "includes/dbh.inc.php"; 
-if(!isset($_SESSION['Id'])){
+if(!isset($_SESSION)){
     session_start();
 }
 
