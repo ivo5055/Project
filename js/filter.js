@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', function () {
     const filterButton = document.getElementById('filterButton');
     const filterForm = document.getElementById('filterForm');
@@ -9,11 +8,17 @@ document.addEventListener('DOMContentLoaded', function () {
     const filterFields = document.querySelectorAll('.filter-field');
     const otherDropdownButtons = document.querySelectorAll('.dropbtn, .dropbtnN');
 
-    console.log('filterForm:', filterForm); // Debugging line
-
     // Toggle filter form visibility when filter button is clicked
     filterButton.addEventListener('click', function (event) {
         event.stopPropagation();
+        const buttonRect = filterButton.getBoundingClientRect();
+        const formRect = filterForm.getBoundingClientRect();
+
+        // Calculate left offset to center form below button
+        const offsetLeft = buttonRect.left + (buttonRect.width / 2) - (formRect.width / 2);
+        filterForm.style.left = offsetLeft + 'px';
+
+        // Toggle 'show' class to display or hide the filter form
         filterForm.classList.toggle('show');
     });
 
@@ -30,9 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
         // Reset building input to default value
         buildingInput.value = '1'; // or the default building value
-    
     });
-    
 
     // Handle building button clicks
     buildingButtons.forEach(button => {

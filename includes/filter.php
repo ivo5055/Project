@@ -1,5 +1,4 @@
-<!-- Filter Form -->
- 
+
     <div id="filterForm" class="dropdown-content filter-form-container">
         <form method="GET">
             <input type="hidden" name="building" id="building" value="<?php echo isset($_GET['building']) ? $_GET['building'] : '1'; ?>">
