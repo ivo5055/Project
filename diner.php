@@ -118,44 +118,70 @@ include 'elements/header.php';
         <ul>
         <?php
         if (isset($pdo)) {
-            try {
-                $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
+    try {
+        $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
 
-                $sql = "SELECT reserved_items.id, menu_items.nameSu, menu_items.priceSu, reserved_items.user_name
-                        FROM reserved_items
-                        JOIN menu_items ON reserved_items.item_id = menu_items.Id";
+        // Define column names for names and prices
+        $nameColumns = ['nameM', 'nameTu', 'nameWe', 'nameTh', 'nameFr', 'nameSa', 'nameSu'];
+        $priceColumns = ['priceM', 'priceTu', 'priceWe', 'priceTh', 'priceFr', 'priceSa', 'priceSu'];
 
-                if ($searchUser !== '') {
-                    $sql .= " WHERE reserved_items.user_name LIKE :search_user";
-                }
+        // Start building the SQL query
+        $sql = "SELECT reserved_items.id, " . implode(', ', array_map(fn($col) => "menu_items.$col", $nameColumns)) . ", " .
+                implode(', ', array_map(fn($col) => "menu_items.$col", $priceColumns)) . ", reserved_items.user_name
+                FROM reserved_items
+                JOIN menu_items ON reserved_items.item_id = menu_items.Id";
 
-                $stmt = $pdo->prepare($sql);
-                
-                if ($searchUser !== '') {
-                    $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
-                }
+        // Add WHERE clause for the search term if provided
+        if ($searchUser !== '') {
+            $sql .= " WHERE reserved_items.user_name LIKE :search_user";
+        }
 
-                $stmt->execute();
+        // Add condition to exclude items with a price of 0
+        $priceConditions = array_map(fn($col) => "$col > 0", $priceColumns);
+        if ($searchUser !== '') {
+            $sql .= " AND " . implode(' OR ', $priceConditions);
+        } else {
+            $sql .= " WHERE " . implode(' OR ', $priceConditions);
+        }
 
-                if ($stmt->rowCount() > 0) {
-                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                        $reservedItemName = htmlspecialchars($row['nameSu']);
-                        $reservedItemPrice = htmlspecialchars($row['priceSu']);
-                        $reservedUserName = htmlspecialchars($row['user_name']);
+        // Prepare and execute the statement
+        $stmt = $pdo->prepare($sql);
 
+        // Bind search term if provided
+        if ($searchUser !== '') {
+            $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
+        }
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                $reservedUserName = htmlspecialchars($row['user_name']);
+
+                // Iterate through name and price columns for output
+                foreach ($nameColumns as $i => $nameCol) {
+                    $reservedItemName = htmlspecialchars($row[$nameCol]);
+                    $reservedItemPrice = htmlspecialchars($row[$priceColumns[$i]]);
+
+                    // Display item information if the price is greater than 0
+                    if ($reservedItemPrice > 0) {
                         echo "<li>";
                         echo "<span class='reserved-user-name'>" . $reservedUserName . "</span>";
                         echo "<span class='reserved-item-name'>" . $reservedItemName . "</span>";
                         echo "<span class='reserved-item-price'>$" . number_format($reservedItemPrice, 2) . "</span>";
                         echo "</li>";
                     }
-                } else {
-                    echo "<li>No reserved items found for the given username.</li>";
                 }
-            } catch (PDOException $e) {
-                echo "Error: " . htmlspecialchars($e->getMessage());
             }
         } else {
+            echo "<li>No reserved items found for the given username.</li>";
+        }
+    } catch (PDOException $e) {
+        echo "Error: " . htmlspecialchars($e->getMessage());
+    }
+}
+
+         else {
             echo "<li>Database connection not established.</li>";
         }
         ?>
@@ -249,5 +275,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve'])) {
     }
 }
 ?>
+
+<script src="js/reserve_list.js"></script>
 </body>
 </html>

@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
-    
+
 <?php include 'elements/header.php'; ?>
 
-    <div class="">
+    <div class="login-container"> 
         <h1>Login</h1>
         <div class="login-form">
             <form action="includes/login.php" method="post">
