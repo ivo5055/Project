@@ -10,7 +10,7 @@
 <body class="hideS">
     
 <?php 
-session_start(); // Ensure session is started
+session_start();
 include 'elements/header.php'; 
 ?>
 
@@ -104,7 +104,7 @@ include 'elements/header.php';
         </ul>
     </div>
 
-    <!-- Reserved Items Container -->
+    <!-- Reserved Items Container ChefA -->
     <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="reserved-items-container">
         <h2>Reserved Items</h2>
@@ -220,7 +220,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reserve'])) {
     $itemId = $_POST['item_id'] ?? '';
     $userName = $_POST['user_name'] ?? '';
 
-    // Sanitize inputs
     $itemId = htmlspecialchars($itemId);
     $userName = htmlspecialchars($userName);
 
@@ -275,6 +274,45 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve'])) {
     }
 }
 ?>
+
+<?php if (isset($_SESSION['account']) && $_SESSION['account'] != 'C'): ?>
+<div class="reserved-items-container">
+    <h2>Basket</h2>
+    
+    <!-- Container to hold selected items -->
+    <ul id="selected-items">
+        <!-- Items will be appended here dynamically -->
+    </ul>
+
+    <!-- Confirm and Clear buttons -->
+    <form method="POST" id="confirm-form" style="display: none;">
+        <input type="hidden" id="selected-items-data" name="selected_items">
+        <input type="submit" name="confirm_reserve" value="Confirm" class="reserve-button">
+        <button type="button" id="clear-selection" class="delete-button">Clear</button>
+    </form>
+</div>
+<?php endif; ?>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
+    $selectedItems = isset($_POST['selected_items']) ? json_decode($_POST['selected_items'], true) : [];
+
+    foreach ($selectedItems as $item) {
+        $itemId = ''; 
+        $userName = $_SESSION['username'];
+
+        $sql = "INSERT INTO reserved_items (item_id, user_name) VALUES (:item_id, :user_name)";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([
+            ':item_id' => $itemId,
+            ':user_name' => $userName
+        ]);
+    }
+
+    echo "<p>Items reserved successfully!</p>";
+}
+?>
+
 
 <script src="js/reserve_list.js"></script>
 </body>

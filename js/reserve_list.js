@@ -1,64 +1,38 @@
-<script>
-    function addItemToList(itemId, itemName, itemPrice) {
-        const list = document.getElementById('selected-items-list');
-        const listItem = document.createElement('li');
-        listItem.dataset.itemId = itemId;
-        listItem.innerHTML = `
-            <span class='item-name'>${itemName}</span>
-            <span class='item-price'>$${itemPrice.toFixed(2)}</span>
-            <button type='button' onclick='removeItem(this)'>Remove</button>
-        `;
-        list.appendChild(listItem);
-    }
+document.addEventListener('DOMContentLoaded', function () {
+    const reserveButtons = document.querySelectorAll('.reserve-button');
+    const selectedItemsContainer = document.getElementById('selected-items');
+    const confirmForm = document.getElementById('confirm-form');
+    const selectedItemsData = document.getElementById('selected-items-data');
+    const clearButton = document.getElementById('clear-selection');
 
-    function removeItem(button) {
-        const listItem = button.parentElement;
-        listItem.remove();
-    }
+    let selectedItems = [];
 
-    function clearAllItems() {
-        const list = document.getElementById('selected-items-list');
-        list.innerHTML = '';
-    }
+    reserveButtons.forEach(button => {
+        button.addEventListener('click', function (event) {
+            event.preventDefault();
 
-    document.querySelectorAll('.reserve-button').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
+            const itemName = this.closest('li').querySelector('.item-name').textContent;
+            const itemPrice = this.closest('li').querySelector('.item-price').textContent;
 
-            const itemId = this.previousElementSibling.value;
-            const itemName = this.previousElementSibling.previousElementSibling.value;
-            const itemPrice = parseFloat(this.previousElementSibling.previousElementSibling.previousElementSibling.value);
-
-            addItemToList(itemId, itemName, itemPrice);
+            selectedItems.push({ name: itemName, price: itemPrice });
+            renderSelectedItems();
         });
     });
 
-    document.getElementById('confirm-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        const list = document.getElementById('selected-items-list');
-        const items = Array.from(list.children).map(item => item.dataset.itemId);
-
-        if (items.length === 0) {
-            alert('No items selected.');
-            return;
-        }
-
-        fetch('reserve_items.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ items: items })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                alert('Items reserved successfully!');
-                clearAllItems();
-            } else {
-                alert('Error reserving items.');
-            }
+    function renderSelectedItems() {
+        selectedItemsContainer.innerHTML = '';
+        selectedItems.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - ${item.price}`;
+            selectedItemsContainer.appendChild(li);
         });
+
+        confirmForm.style.display = selectedItems.length > 0 ? 'block' : 'none';
+        selectedItemsData.value = JSON.stringify(selectedItems);
+    }
+
+    clearButton.addEventListener('click', function () {
+        selectedItems = [];
+        renderSelectedItems();
     });
-</script>
+});

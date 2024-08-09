@@ -72,7 +72,6 @@ header a:hover {
     max-width: calc(50% - 50px); /* Set maximum width to half of the container width minus 50px */
 }
 
-/* Rest of your CSS remains unchanged */
 .content h1 {
     /*text-align: center;*/
     color: #993300;
@@ -125,17 +124,17 @@ header a:hover {
     text-decoration: none;
     border-radius: 5px;
     color: white;
-    background-color: #2196F3; /* Blue color for Edit */
+    background-color: #2196F3; 
     transition: background-color 0.3s;
 }
 
 .delete-button {
-    background-color: #f44336; /* Red color for Delete */
+    background-color: #f44336;
 }
 
 
 .delete-button:hover {
-    background-color: #d32f2f; /* Darker red for Delete */
+    background-color: #d32f2f; 
 }
 .reserve-button {
     padding: 5px 10px;
@@ -145,7 +144,7 @@ header a:hover {
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-left: 10px; /* Add margin to push the button 10px more to the right */
+    margin-left: 10px; 
 }
 
 .reserve-button:hover {
@@ -154,9 +153,9 @@ header a:hover {
 
 .day-selector-container {
     position: absolute;
-    top: 150px; /* Adjust as needed */
-    left: 160px; /* Adjust as needed */
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    top: 150px; 
+    left: 160px; 
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 10px;
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -200,7 +199,7 @@ header a:hover {
 .menu-items {
     position: relative;
     padding: 50px;
-    padding-left: 160px; /* Adjust the left padding to fit items 50px more to the right */
+    padding-left: 160px; 
     color: white;
     font-size: 1.2rem;
     z-index: 1;
@@ -243,15 +242,15 @@ header a:hover {
 }
 
 .reserved-items-container {
-    position: fixed; /* Use fixed positioning to stay at a specific location on the screen */
-    right: 450px; /* Move 100px to the left from the right edge (originally 20px + 100px) */
-    top: 250px; /* Move 100px down from the top (originally 30px + 100px) */
-    width: 300px; /* Adjust width as needed for a smaller box */
-    max-height: 80vh; /* Limit the height to prevent overflow */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds max-height */
-    z-index: 2; /* Ensure it appears in front of the background image */
+    position: fixed; 
+    right: 450px; 
+    top: 250px; 
+    width: 300px;
+    max-height: 40vh; /* This sets the maximum height of the container */
+    overflow-y: auto; /* This enables vertical scrolling when content exceeds max-height */
+    z-index: 2;
     padding: 20px;
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -273,6 +272,7 @@ header a:hover {
     justify-content: space-between;
     align-items: center;
 }
+
 
 .reserved-item-name,
 .reserved-item-price,
@@ -335,20 +335,20 @@ header a:hover {
 
 .bookmark-button {
     position: absolute;
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
-    background-color: transparent; /* Transparent background */
-    background-image: url('img/bookmark.png'); /* Path to your default transparent PNG */
-    background-size: cover; /* Make sure the image covers the button */
+    top: 20px; 
+    right: 20px;
+    background-color: transparent; 
+    background-image: url('img/bookmark.png'); 
+    background-size: cover; 
     border: none;
-    width: 40px; /* Adjust width and height for desired size */
-    height: 40px; /* Adjust width and height for desired size */
+    width: 40px; 
+    height: 40px; 
     font-size: 18px;
-    line-height: 40px; /* Vertically center text */
+    line-height: 40px; 
     text-align: center;
     cursor: pointer;
-    z-index: 1; /* Ensure the button is above the image */
-    color: transparent; /* Hide text */
+    z-index: 1; 
+    color: transparent; 
 }
 
 .bookmarked {
@@ -682,7 +682,7 @@ form {
 
 
 
-/* Search form styles */
+/* Search form */
 .search-form {
     display: flex;
     justify-content: left;
