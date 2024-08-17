@@ -840,3 +840,72 @@ form {
 
 
 
+/* Add Offer Page Styles */
+.add-offer-container {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add-offer-container h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.add-offer-form label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.add-offer-form input[type="text"],
+.add-offer-form select,
+.add-offer-form input[type="file"] {
+    width: calc(100% - 22px); /* Subtracting padding and border */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.add-offer-form input[type="radio"] {
+    margin-right: 10px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    gap: 15px; /* Space between radio buttons */
+    margin-bottom: 20px; /* Space below the radio group */
+}
+
+.radio-group label {
+    margin: 0;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px; /* Space between radio button and label */
+}
+
+
+.add-offer-form button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.add-offer-form button:hover {
+    background-color: #414141;
+}

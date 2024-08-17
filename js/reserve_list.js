@@ -1,38 +1,48 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const reserveButtons = document.querySelectorAll('.reserve-button');
-    const selectedItemsContainer = document.getElementById('selected-items');
-    const confirmForm = document.getElementById('confirm-form');
-    const selectedItemsData = document.getElementById('selected-items-data');
-    const clearButton = document.getElementById('clear-selection');
+    const basket = [];
 
-    let selectedItems = [];
+    function updateBasketUI() {
+        const basketItemsContainer = document.getElementById('basket-items');
+        basketItemsContainer.innerHTML = '';
+        basket.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+            basketItemsContainer.appendChild(li);
+        });
+    }
 
-    reserveButtons.forEach(button => {
-        button.addEventListener('click', function (event) {
-            event.preventDefault();
-
-            const itemName = this.closest('li').querySelector('.item-name').textContent;
-            const itemPrice = this.closest('li').querySelector('.item-price').textContent;
-
-            selectedItems.push({ name: itemName, price: itemPrice });
-            renderSelectedItems();
+    document.querySelectorAll('.reserve-button').forEach(button => {
+        button.addEventListener('click', function () {
+            const itemId = this.dataset.itemId;
+            const itemName = this.dataset.itemName;
+            const itemPrice = parseFloat(this.dataset.itemPrice);
+            basket.push({ id: itemId, name: itemName, price: itemPrice });
+            updateBasketUI();
         });
     });
 
-    function renderSelectedItems() {
-        selectedItemsContainer.innerHTML = '';
-        selectedItems.forEach((item, index) => {
-            const li = document.createElement('li');
-            li.textContent = `${item.name} - ${item.price}`;
-            selectedItemsContainer.appendChild(li);
-        });
+    document.getElementById('clear-basket').addEventListener('click', function () {
+        basket.length = 0; // Clear the basket array
+        updateBasketUI();
+    });
 
-        confirmForm.style.display = selectedItems.length > 0 ? 'block' : 'none';
-        selectedItemsData.value = JSON.stringify(selectedItems);
-    }
-
-    clearButton.addEventListener('click', function () {
-        selectedItems = [];
-        renderSelectedItems();
+    document.getElementById('confirm-basket').addEventListener('click', function () {
+        if (basket.length > 0) {
+            // Send basket data to the server via POST
+            fetch('includes/reserve_item.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ items: basket })
+            }).then(response => response.json())
+              .then(data => {
+                  alert('Reservation confirmed!');
+                  basket.length = 0;
+                  updateBasketUI();
+              }).catch(error => console.error('Error:', error));
+        } else {
+            alert('Your basket is empty.');
+        }
     });
 });

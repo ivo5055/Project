@@ -78,7 +78,7 @@ include 'elements/header.php';
                                     echo "<form method='POST' style='display:inline;'>";
                                     echo "<input type='hidden' name='item_id' value='$itemId'>";
                                     echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($_SESSION["username"]) . "'>";
-                                    echo "<input type='submit' name='reserve' value='Reserve' class='reserve-button'>";
+                                    echo "<button type='button' class='reserve-button' data-item-id='$itemId' data-item-name='" . htmlspecialchars($itemName) . "' data-item-price='$itemPrice'>Reserve</button>";
                                     echo "</form>";
                                 }
 
@@ -114,7 +114,9 @@ include 'elements/header.php';
             <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Enter username">
             <input type="submit" value="Search">
         </form>
+
         <br></br>
+        
         <ul>
         <?php
         if (isset($pdo)) {
@@ -235,7 +237,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reserve'])) {
 }
 
 // Handle form submission for adding menu items
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve']) && !isset($_POST['confirm_reserve'])) {
     $dayOfWeek = $_POST['day'] ?? '';
     $itemName = $_POST['name'] ?? '';
     $itemPrice = $_POST['price'] ?? '';
@@ -273,32 +275,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve'])) {
         echo "<p>Invalid day of the week.</p>";
     }
 }
-?>
 
-<?php if (isset($_SESSION['account']) && $_SESSION['account'] != 'C'): ?>
-<div class="reserved-items-container">
-    <h2>Basket</h2>
-    
-    <!-- Container to hold selected items -->
-    <ul id="selected-items">
-        <!-- Items will be appended here dynamically -->
-    </ul>
-
-    <!-- Confirm and Clear buttons -->
-    <form method="POST" id="confirm-form" style="display: none;">
-        <input type="hidden" id="selected-items-data" name="selected_items">
-        <input type="submit" name="confirm_reserve" value="Confirm" class="reserve-button">
-        <button type="button" id="clear-selection" class="delete-button">Clear</button>
-    </form>
-</div>
-<?php endif; ?>
-
-<?php
+// Handle confirmation of reserved items
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
     $selectedItems = isset($_POST['selected_items']) ? json_decode($_POST['selected_items'], true) : [];
 
     foreach ($selectedItems as $item) {
-        $itemId = ''; 
+        $itemId = $item['Id'];
         $userName = $_SESSION['username'];
 
         $sql = "INSERT INTO reserved_items (item_id, user_name) VALUES (:item_id, :user_name)";
@@ -310,10 +293,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
     }
 
     echo "<p>Items reserved successfully!</p>";
-}
+}   
 ?>
+
+<?php if (isset($_SESSION['account']) && $_SESSION['account'] != 'C'): ?>
+
+<!-- Basket Container -->
+<div class="reserved-items-container">
+    <h2>Your Basket</h2>
+    <ul id="basket-items">
+        <!-- Dynamically filled with JavaScript -->
+    </ul>
+    
+    <button id="confirm-basket" class="reserve-button">Confirm</button>
+    <button id="clear-basket" class="delete-button">Clear</button>
+</div>
 
 
 <script src="js/reserve_list.js"></script>
+<?php endif; ?>
+
+
 </body>
 </html>
+    

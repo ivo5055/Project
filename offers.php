@@ -1,17 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offers</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="dropdown.css">    
-</head>
-<body>
-
 <?php
-include "elements/header.php";
+session_start();
 include "includes/dbh.inc.php";
+include "includes/deleteOffer.php"; // Include deleteOffer.php before any output
 
 // Fetch the user's grade from the database
 $grade = null;
@@ -26,6 +16,21 @@ if (isset($_SESSION['Id'])) {
     $stmt->execute([$userId]);
     $grade = $stmt->fetchColumn();
 }
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offers</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="dropdown.css">    
+</head>
+<body>
+
+<?php
+include "elements/header.php";
 ?>
 
 <div class="header-container">
@@ -45,30 +50,61 @@ if (isset($_SESSION['Id'])) {
         <?php include "includes/filter.php"; ?>
     </div>
     
-    
-    <?php include "includes/deleteOffer.php";?>
-
     <div class="room-offers">
         <?php
-        // Delete
-        
+        // Prepare and execute the query based on filters
+        $query = "SELECT * FROM room WHERE 1=1";
+        $params = [];
+
+        if (!empty($_GET['room_number'])) {
+            $query .= " AND room_number = :room_number";
+            $params['room_number'] = $_GET['room_number'];
+        }
+        if (!empty($_GET['min_capacity'])) {
+            $query .= " AND room_capacity >= :min_capacity";
+            $params['min_capacity'] = $_GET['min_capacity'];
+        }
+        if (!empty($_GET['max_capacity'])) {
+            $query .= " AND room_capacity <= :max_capacity";
+            $params['max_capacity'] = $_GET['max_capacity'];
+        }
+        if (!empty($_GET['min_rating'])) {
+            $query .= " AND (total_rating / number_of_reviews) >= :min_rating";
+            $params['min_rating'] = $_GET['min_rating'];
+        }
+        if (!empty($_GET['max_rating'])) {
+            $query .= " AND (total_rating / number_of_reviews) <= :max_rating";
+            $params['max_rating'] = $_GET['max_rating'];
+        }
+        if (!empty($_GET['min_price'])) {
+            $query .= " AND price >= :min_price";
+            $params['min_price'] = $_GET['min_price'];
+        }
+        if (!empty($_GET['max_price'])) {
+            $query .= " AND price <= :max_price";
+            $params['max_price'] = $_GET['max_price'];
+        }
+        if (!empty($_GET['building'])) {
+            $query .= " AND building = :building";
+            $params['building'] = $_GET['building'];
+        }
+
+        $sortOrder = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'asc';
+        $query .= " ORDER BY price " . ($sortOrder === 'desc' ? 'DESC' : 'ASC');
+
+        $stmt = $pdo->prepare($query);
+        $stmt->execute($params);
 
         // Loop through fetched room offers and generate HTML dynamically
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-
-            // Count current bookings for this room
             $bookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number";
             $bookingStmt = $pdo->prepare($bookingQuery);
             $bookingStmt->execute(['room_number' => $row['room_number']]);
             $currentBookings = $bookingStmt->fetchColumn();
 
-            // Check if the building filter is set
             if (isset($_GET['building'])) {
-                // Check if the room belongs to the selected building
                 if ($_GET['building'] == $row['building']) {
-                    // Check if the room is available or the user is an admin
                     if ($currentBookings < $row['room_capacity'] || (isset($_SESSION['account']) && $_SESSION['account'] == "A")) {
-                        // Include room display
                         if (isset($_SESSION['gender']) && $_SESSION['account'] == "U") {
                             if ($row['gender_R'] == $_SESSION['gender']) {
                                 include "includes/offersDisplay.php";
@@ -79,11 +115,8 @@ if (isset($_SESSION['Id'])) {
                     }
                 }
             } else {
-                // If building filter is not set, show rooms from Building 1
                 if ($row['building'] == 1) {
-                    // Check if the room is available or the user is an admin
                     if ($currentBookings < $row['room_capacity'] || (isset($_SESSION['account']) && $_SESSION['account'] == "A")) {
-                        // Include room display
                         if (isset($_SESSION['gender']) && $_SESSION['account'] == "U") {
                             if ($row['gender_R'] == $_SESSION['gender']) {
                                 include "includes/offersDisplay.php";

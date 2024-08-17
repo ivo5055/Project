@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 }else {
                     $em = "You can't upload files of this type";
-                    header("Location: offersAdmin.php?error=$em");
+                    header("Location: ../offers.php");
                 }
             }
         }

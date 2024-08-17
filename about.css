@@ -1,0 +1,138 @@
+/* Basic Reset and Box-Sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    color: #333;
+    background-color: #f4f4f4;
+    line-height: 1.6;
+    background-image: url('img/BG.jpg');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-repeat: no-repeat; 
+}
+
+.main-container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white to enhance readability */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.hero {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.hero h1 {
+    font-size: 2.5em;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.hero p {
+    font-size: 1.15em;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.application-docs {
+    margin-bottom: 40px;
+}
+
+.application-docs h2 {
+    font-size: 2.2em;
+    color: #007BFF;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #007BFF;
+    padding-bottom: 10px;
+}
+
+.docs-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.doc-item {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.doc-item h3 {
+    font-size: 1.4em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.doc-item p {
+    font-size: 1em;
+    color: #666;
+}
+
+.doc-item a {
+    color: #007BFF;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.doc-item a:hover {
+    text-decoration: underline;
+}
+
+.payment-info {
+    padding: 20px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.payment-info h2 {
+    font-size: 2.2em;
+    color: #007BFF;
+    margin-bottom: 20px;
+    border-bottom: 3px solid #007BFF;
+    padding-bottom: 10px;
+}
+
+.payment-info address {
+    font-size: 1em;
+    color: #333;
+    line-height: 1.6;
+}
+
+.payment-info strong {
+    font-size: 1.1em;
+    display: block;
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .hero h1 {
+        font-size: 2em;
+    }
+
+    .application-docs h2 {
+        font-size: 1.8em;
+    }
+
+    .doc-item h3 {
+        font-size: 1.2em;
+    }
+
+    .payment-info h2 {
+        font-size: 1.8em;
+    }
+}
