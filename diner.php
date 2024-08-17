@@ -78,7 +78,7 @@ include 'elements/header.php';
                                     echo "<form method='POST' style='display:inline;'>";
                                     echo "<input type='hidden' name='item_id' value='$itemId'>";
                                     echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($_SESSION["username"]) . "'>";
-                                    echo "<button type='button' class='reserve-button' data-item-id='$itemId' data-item-name='" . htmlspecialchars($itemName) . "' data-item-price='$itemPrice'>Reserve</button>";
+                                    echo "<button type='button' class='reserve-button' onclick='addToBasket(\"$itemId\", \"" . htmlspecialchars($itemName) . "\", \"" . number_format($itemPrice, 2) . "\")'>Reserve</button>";
                                     echo "</form>";
                                 }
 
@@ -217,24 +217,6 @@ include 'elements/header.php';
 </div>
 
 <?php
-// Handle reservation form submission
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['reserve'])) {
-    $itemId = $_POST['item_id'] ?? '';
-    $userName = $_POST['user_name'] ?? '';
-
-    $itemId = htmlspecialchars($itemId);
-    $userName = htmlspecialchars($userName);
-
-    // Prepare and execute SQL query for reservation
-    $sql = "INSERT INTO reserved_items (item_id, user_name) VALUES (:item_id, :user_name)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([
-        ':item_id' => $itemId,
-        ':user_name' => $userName
-    ]);
-
-    echo "<p>Item reserved successfully!</p>";
-}
 
 // Handle form submission for adding menu items
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve']) && !isset($_POST['confirm_reserve'])) {
@@ -304,14 +286,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
     <ul id="basket-items">
         <!-- Dynamically filled with JavaScript -->
     </ul>
-    
-    <button id="confirm-basket" class="reserve-button">Confirm</button>
-    <button id="clear-basket" class="delete-button">Clear</button>
+    <button id="confirm-basket" class="reserve-button" onclick="confirmBasket()">Confirm</button>
+    <button id="clear-basket" class="delete-button" onclick="clearBasket()">Clear</button>
+    <script src="js/reserve_list.js"></script>
 </div>
 
 
-<script src="js/reserve_list.js"></script>
+
 <?php endif; ?>
+
+
 
 
 </body>
