@@ -1,98 +1,181 @@
-/* styles.css */
-
-
-
-.room-details {
-    width: 80%;
-    margin: 10% auto;
-    padding: 20px;
-    background-color: white;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.room-details h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
+/* Base styling for the room details page */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
     color: #333;
+    background-color: #f4f7f9;
 }
 
-.room-detail {
+h1.room-details-header {
+    color: #444;
+    margin: 20px 0;
+    font-size: 32px;
+    font-weight: 700;
+    text-align: center; /* Center the header */
+}
+
+/* Room details styling */
+.room-details {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
-.room-detail img {
-    max-width: 100%;
+.room-image {
+    flex: 1;
+    max-width: 400px;
+    margin-right: 20px;
+}
+
+.room-image img {
+    width: 100%;
     height: auto;
     border-radius: 8px;
-    margin-bottom: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer; /* Indicate the image is clickable */
 }
 
-.room-detail p {
-    font-size: 1.2em;
-    margin: 10px 0;
-    color: #666;
-}
-
-.room-detail .button {
-    padding: 10px 20px;
-    font-size: 1.2em;
-    color: white;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 20px;
-    text-align: center;
-}
-
-.room-detail .button:hover {
-    background-color: #0056b3;
-}
-
-.room-detail form {
+/* Room info styling */
+.room-info {
+    flex: 2;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Paragraph styling for info items */
+.room-info p {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    font-size: 16px;
+}
+
+.room-info strong {
+    color: #007bff;
+}
+
+/* Button styling */
+.button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    text-align: center;
     width: 100%;
 }
 
-.room-detail p a {
-    color: #007bff;
-    text-decoration: none;
+.button:hover {
+    background-color: #0056b3;
 }
 
-.room-detail p a:hover {
-    text-decoration: underline;
+/* Modal styles for image zoom */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.8);
+    justify-content: center;
+    align-items: center;
 }
 
-@media (min-width: 768px) {
-    .room-detail {
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: flex-start;
-    }
-
-    .room-detail img {
-        max-width: 50%;
-        margin-right: 20px;
-    }
-
-    .room-detail .info {
-        max-width: 45%;
-    }
+.modal-content {
+    margin: auto;
+    display: block;
+    max-width: 90%;
+    max-height: 80%;
 }
 
-@media (min-width: 1024px) {
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #ffffff;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal-close:hover {
+    color: #ff0000;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
     .room-details {
-        width: 60%;
+        flex-direction: column;
+        align-items: center; /* Center content on smaller screens */
     }
 
-    .room-detail img {
-        max-width: 40%;
+    .room-image {
+        max-width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px; /* Add spacing below the image */
     }
+}
+/* Modal styles for image zoom */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* Hide scrollbars */
+    background-color: rgba(0, 0, 0, 0.8);
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease;
+    opacity: 0; /* Start with hidden modal */
+}
 
-    .room-detail .info {
-        max-width: 55%;
-    }
+.modal.show {
+    display: flex;
+    opacity: 1; /* Show modal with fade effect */
+}
+
+.modal-content {
+    max-width: 90%;
+    max-height: 80%;
+    transition: transform 0.4s ease, transform-origin 0.4s ease;
+    cursor: zoom-in;
+    will-change: transform, transform-origin;
+}
+
+.modal-content.zoomed {
+    cursor: zoom-out;
+    transform: scale(1.5); /* Slightly higher zoom level for modern feel */
+    transform-origin: center center; /* Center zoom by default */
+}
+
+/* Adjust modal-close styling */
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    color: #ffffff;
+    font-size: 35px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: #ff0000;
 }

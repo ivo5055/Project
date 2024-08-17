@@ -104,120 +104,7 @@ include 'elements/header.php';
         </ul>
     </div>
 
-    <!-- Reserved Items Container ChefA -->
-    <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
-    <div class="reserved-items-container">
-        <h2>Reserved Items</h2>
-
-        <!-- Search Form for Reserved Items -->
-        <form method="GET">
-            <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Enter username">
-            <input type="submit" value="Search">
-        </form>
-
-        <br></br>
-        
-        <ul>
-        <?php
-        if (isset($pdo)) {
-    try {
-        $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
-
-        // Define column names for names and prices
-        $nameColumns = ['nameM', 'nameTu', 'nameWe', 'nameTh', 'nameFr', 'nameSa', 'nameSu'];
-        $priceColumns = ['priceM', 'priceTu', 'priceWe', 'priceTh', 'priceFr', 'priceSa', 'priceSu'];
-
-        // Start building the SQL query
-        $sql = "SELECT reserved_items.id, " . implode(', ', array_map(fn($col) => "menu_items.$col", $nameColumns)) . ", " .
-                implode(', ', array_map(fn($col) => "menu_items.$col", $priceColumns)) . ", reserved_items.user_name
-                FROM reserved_items
-                JOIN menu_items ON reserved_items.item_id = menu_items.Id";
-
-        // Add WHERE clause for the search term if provided
-        if ($searchUser !== '') {
-            $sql .= " WHERE reserved_items.user_name LIKE :search_user";
-        }
-
-        // Add condition to exclude items with a price of 0
-        $priceConditions = array_map(fn($col) => "$col > 0", $priceColumns);
-        if ($searchUser !== '') {
-            $sql .= " AND " . implode(' OR ', $priceConditions);
-        } else {
-            $sql .= " WHERE " . implode(' OR ', $priceConditions);
-        }
-
-        // Prepare and execute the statement
-        $stmt = $pdo->prepare($sql);
-
-        // Bind search term if provided
-        if ($searchUser !== '') {
-            $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
-        }
-
-        $stmt->execute();
-
-        if ($stmt->rowCount() > 0) {
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                $reservedUserName = htmlspecialchars($row['user_name']);
-
-                // Iterate through name and price columns for output
-                foreach ($nameColumns as $i => $nameCol) {
-                    $reservedItemName = htmlspecialchars($row[$nameCol]);
-                    $reservedItemPrice = htmlspecialchars($row[$priceColumns[$i]]);
-
-                    // Display item information if the price is greater than 0
-                    if ($reservedItemPrice > 0) {
-                        echo "<li>";
-                        echo "<span class='reserved-user-name'>" . $reservedUserName . "</span>";
-                        echo "<span class='reserved-item-name'>" . $reservedItemName . "</span>";
-                        echo "<span class='reserved-item-price'>$" . number_format($reservedItemPrice, 2) . "</span>";
-                        echo "</li>";
-                    }
-                }
-            }
-        } else {
-            echo "<li>No reserved items found for the given username.</li>";
-        }
-    } catch (PDOException $e) {
-        echo "Error: " . htmlspecialchars($e->getMessage());
-    }
-}
-
-         else {
-            echo "<li>Database connection not established.</li>";
-        }
-        ?>
-        </ul>
-    </div>
-    <?php endif; ?>
-
-    <!-- Form for adding menu items -->
-    <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
-    <div class="form-container">
-        <h2>Add Menu Item</h2>
-        <form method="POST">
-            <label for="day">Day of the Week:</label>
-            <select id="day" name="day" required>
-                <option value="mon">Monday</option>
-                <option value="tue">Tuesday</option>
-                <option value="wed">Wednesday</option>
-                <option value="thu">Thursday</option>
-                <option value="fri">Friday</option>
-                <option value="sat">Saturday</option>
-                <option value="sun">Sunday</option>
-            </select>
-            <label for="name">Item Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" step="0.01" required>
-            <input type="submit" value="Add Item">
-        </form>
-    </div>
-    <?php endif; ?>
-</div>
-
 <?php
-
 // Handle form submission for adding menu items
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve']) && !isset($_POST['confirm_reserve'])) {
     $dayOfWeek = $_POST['day'] ?? '';
@@ -290,12 +177,167 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
     <button id="clear-basket" class="delete-button" onclick="clearBasket()">Clear</button>
     <script src="js/reserve_list.js"></script>
 </div>
-
-
-
 <?php endif; ?>
 
 
+
+
+<!-- Reserved Items Container ChefA -->
+<?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
+    <div class="reserved-items-container">
+        <h2>Reserved Items</h2>
+
+        <!-- Search Form for Reserved Items -->
+        <form method="GET">
+            <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Enter username">
+            <input type="submit" value="Search">
+        </form>
+
+        <br><br>
+
+        <ul>
+        <?php
+        if (isset($pdo)) {
+            try {
+                $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
+
+                // Define column names for names and prices
+                $nameColumns = ['nameM', 'nameTu', 'nameWe', 'nameTh', 'nameFr', 'nameSa', 'nameSu'];
+                $priceColumns = ['priceM', 'priceTu', 'priceWe', 'priceTh', 'priceFr', 'priceSa', 'priceSu'];
+
+                // Start building the SQL query
+                $sql = "SELECT reserved_items.id, reserved_items.user_name, " . 
+                    implode(', ', array_map(fn($col) => "menu_items.$col", $nameColumns)) . ", " . 
+                    implode(', ', array_map(fn($col) => "menu_items.$col", $priceColumns)) . "
+                    FROM reserved_items
+                    JOIN menu_items ON reserved_items.item_id = menu_items.Id";
+
+                // Add WHERE clause for the search term if provided
+                if ($searchUser !== '') {
+                    $sql .= " WHERE reserved_items.user_name LIKE :search_user";
+                }
+
+                // Add condition to exclude items with a price of 0
+                $priceConditions = array_map(fn($col) => "$col > 0", $priceColumns);
+                if ($searchUser !== '') {
+                    $sql .= " AND (" . implode(' OR ', $priceConditions) . ")";
+                } else {
+                    $sql .= " WHERE (" . implode(' OR ', $priceConditions) . ")";
+                }
+
+                // Prepare and execute the statement
+                $stmt = $pdo->prepare($sql);
+
+                // Bind search term if provided
+                if ($searchUser !== '') {
+                    $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
+                }
+
+                $stmt->execute();
+
+                if ($stmt->rowCount() > 0) {
+                    $users = []; // Array to hold users and their items
+
+                    // Fetch data and group items by username
+                    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+                        $reservedUserName = htmlspecialchars($row['user_name']);
+
+                        // Iterate through name and price columns
+                        foreach ($nameColumns as $i => $nameCol) {
+                            $reservedItemName = htmlspecialchars($row[$nameCol]);
+                            $reservedItemPrice = htmlspecialchars($row[$priceColumns[$i]]);
+
+                            // Only add items with price > 0
+                            if ($reservedItemPrice > 0) {
+                                $users[$reservedUserName][] = [
+                                    'name' => $reservedItemName,
+                                    'price' => $reservedItemPrice
+                                ];
+                            }
+                        }
+                    }
+
+                    // Display items grouped by user
+                    foreach ($users as $userName => $items) {
+                        $totalPrice = 0; // Initialize total price for the user
+                        echo "<div class='user-items-container'>";
+                        echo "<h3>" . htmlspecialchars($userName) . "</h3>";
+                        echo "<ul>";
+
+                        foreach ($items as $item) {
+                            echo "<li>";
+                            echo "<span class='reserved-item-name'>" . $item['name'] . "</span>";
+                            echo "<span class='reserved-item-price'>$" . number_format($item['price'], 2) . "</span>";
+                            echo "</li>";
+                            $totalPrice += $item['price']; // Accumulate the total price
+                        }
+
+                        // Display total price for the user
+                        echo "<li class='total-price'><strong>Total: $" . number_format($totalPrice, 2) . "</strong></li>";
+
+                        // Add Finish button with a form to delete all items for this user
+                        echo "<form method='POST' style='display:inline; margin-top: 10px;'>";
+                        echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($userName) . "'>";
+                        echo "<input type='submit' name='finish' value='Finish' class='finish-button' onclick=\"return confirm('Do you want to finnish the transaction?');\">";
+                        echo "</form>";
+
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<li>No reserved items found.</li>";
+                }
+            } catch (PDOException $e) {
+                echo "Error: " . htmlspecialchars($e->getMessage());
+            }
+        } else {
+            echo "<li>Database connection not established.</li>";
+        }
+        ?>
+        </ul>
+    </div>
+<?php endif; ?>
+
+<?php
+// Handle Finish button
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['finish'])) {
+    $userName = $_POST['user_name'] ?? '';
+
+    $userName = htmlspecialchars($userName);
+
+    // Prepare and execute SQL query to delete all reserved items for the given user
+    $sql = "DELETE FROM reserved_items WHERE user_name = :user_name";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([':user_name' => $userName]);
+
+    echo "<p>All reserved items for user '$userName' have been deleted.</p>";
+}
+?>
+
+
+<!-- Form for adding menu items -->
+<?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
+<div class="form-container">
+        <h2>Add Menu Item</h2>
+        <form method="POST">
+            <label for="day">Day of the Week:</label>
+            <select id="day" name="day" required>
+                <option value="mon">Monday</option>
+                <option value="tue">Tuesday</option>
+                <option value="wed">Wednesday</option>
+                <option value="thu">Thursday</option>
+                <option value="fri">Friday</option>
+                <option value="sat">Saturday</option>
+                <option value="sun">Sunday</option>
+            </select>
+            <label for="name">Item Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="price">Price:</label>
+            <input type="number" id="price" name="price" step="0.01" required>
+            <input type="submit" value="Add Item">
+        </form>
+    </div>
+    <?php endif; ?>
+</div>
 
 
 </body>

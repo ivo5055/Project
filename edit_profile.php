@@ -111,52 +111,53 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Edit Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
+    <link rel="stylesheet" href="profile.css"> <!-- Link to the CSS file -->
 </head>
 <body>
     
 <?php include 'elements/header.php'; ?>
 
-<div>
-    <h2>Edit Profile</h2>
+<div class="edit-profile-page">
+    <h2 class="edit-profile-header">Edit Profile</h2>
 
     <form id="profileForm" method="post">
         <div>
-            <label for="email">New Email:</label>
+            <label for="email" class="edit-profile-label">New Email:</label>
             <input type="text" name="email" placeholder="New Email" value="<?php echo htmlspecialchars($userDetails['email']); ?>">
-            <?php if (!empty($emailError)) echo "<p style='color:red;'>$emailError</p>"; ?>
+            <?php if (!empty($emailError)) echo "<p class='edit-profile-error'>$emailError</p>"; ?>
         </div>
         <div>
-            <label for="username">New Username:</label>
+            <label for="username" class="edit-profile-label">New Username:</label>
             <input type="text" name="username" placeholder="New Username" value="<?php echo htmlspecialchars($userDetails['user']); ?>">
-            <?php if (!empty($usernameError)) echo "<p style='color:red;'>$usernameError</p>"; ?>
+            <?php if (!empty($usernameError)) echo "<p class='edit-profile-error'>$usernameError</p>"; ?>
         </div>
         <div>
-            <label for="password">New Password:</label>
+            <label for="password" class="edit-profile-label">New Password:</label>
             <input type="password" name="password" placeholder="New Password">
         </div>
         <div>
-            <label for="confirm_password">Confirm Password:</label>
+            <label for="confirm_password" class="edit-profile-label">Confirm Password:</label>
             <input type="password" name="confirm_password" placeholder="Confirm Password">
-            <?php if (!empty($passwordError)) echo "<p style='color:red;'>$passwordError</p>"; ?>
+            <?php if (!empty($passwordError)) echo "<p class='edit-profile-error'>$passwordError</p>"; ?>
         </div>
         <div>
-            <label for="full_name">Full Name:</label>
+            <label for="full_name" class="edit-profile-label">Full Name:</label>
             <input type="text" name="full_name" placeholder="Full Name" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>">
         </div>
 
         <?php if (strlen($userDetails['egn']) < 10): ?>
         <div>
-            <label for="fn">Faculty Number (FN):</label>
+            <label for="fn" class="edit-profile-label">Faculty Number (FN):</label>
             <input type="text" name="fn" placeholder="Faculty Number" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
         </div>
         <div>
-            <label for="egn">EGN:</label>
+            <label for="egn" class="edit-profile-label">EGN:</label>
             <input type="text" name="egn" placeholder="EGN" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
-            <?php if (!empty($egnError)) echo "<p style='color:red;'>$egnError</p>"; ?>
+            <?php if (!empty($egnError)) echo "<p class='edit-profile-error'>$egnError</p>"; ?>
         </div>
         <?php endif; ?>
         
-        <button type="submit">Save Data</button>
+        <button type="submit" class="edit-profile-button">Save Data</button>
     </form>
 </div>
 

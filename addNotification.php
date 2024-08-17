@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
-<body>
+<body class="add-notification-page">
     <h2>Add Notification</h2>
     <?php
     
@@ -63,7 +63,7 @@
         <?php foreach ($notifications as $notification): ?>
             <div class="notification">
                 <span><?php echo $notification['message']; ?></span>
-                <span> - Until: <?php echo $notification['duration']; ?></span>
+                <span> - Until: <?php echo $notification['duration'];?></span>
                 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="delete_notification" value="<?php echo $notification['Id']; ?>">
                     <input type="hidden" name="action" value="delete">

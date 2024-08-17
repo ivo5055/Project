@@ -1,8 +1,9 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
 }
+
 
 /*h1{
     margin:10px;
@@ -10,12 +11,17 @@ body {
 
 
 header {
+
     background-color: #333;
     color: #fff;
     padding: 10px 20px;
     display: flex;
     align-items: center;
-    
+    width: 100%; /* Ensure the header takes up the full width */
+    top: 0; /* Position the header at the very top */
+    left: 0; /* Align it to the left edge */
+    z-index: 1000; /* Ensure it stays above other content */
+    box-sizing: border-box; /* Includes padding in the width calculation */
 }
 
 header a {
@@ -279,6 +285,60 @@ header a:hover {
 .reserved-user-name {
     margin-right: 10px;
 }
+
+.user-items-container {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: rgba(240, 240, 240, 0.9);
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.user-items-container h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+}
+
+.user-items-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.user-items-container li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+
+.user-items-container li:last-child {
+    border-bottom: none;
+}
+.total-price {
+    font-weight: bold;
+    margin-top: 10px;
+    font-size: 1.2rem;
+}
+.finish-button {
+    background-color: #5fd94f; /* Red color for danger */
+    color: white;
+    border: none;
+    padding: 5px 10px;  
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.finish-button:hover {
+    background-color: #118617;
+}
+
+
+
 
 .form-container {
     position: absolute;
@@ -908,4 +968,243 @@ form {
 
 .add-offer-form button:hover {
     background-color: #414141;
+}
+
+
+
+/* profile.css */
+/* Base styling for the profile page */
+.profile-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f7f9;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align items to the start (left) */
+    padding: 20px;
+    margin: 0 auto; /* Center the container horizontally in larger screens */
+    max-width: 800px; /* Limit the maximum width for better readability */
+}
+
+/* Heading styling */
+.profile-header {
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Details styling */
+.profile-details {
+    background: #ffffff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    max-width: 100%; /* Ensure it fits within the container */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Adjust label and value styling for left alignment */
+.profile-label {
+    font-weight: 500;
+    color: #555;
+    font-size: 16px;
+    margin-right: 10px; /* Space between label and value */
+}
+
+/* Error message styling */
+.profile-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/* Button styling */
+.profile-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+.profile-button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .profile-details {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .profile-button {
+        width: 100%;
+    }
+}
+
+
+
+
+
+
+/* Base styling to apply specifically to addNotification.php */
+.add-notification-page {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+    background-color: #f4f7f9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Heading styling */
+.add-notification-page h2 {
+    color: #444;
+    margin-bottom: 20px;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+/* Form container styling */
+.add-notification-page .form-container {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 450px;
+    width: 100%;
+    margin-bottom: 40px;
+}
+
+/* Form styling */
+.add-notification-page form {
+    display: flex;
+    flex-direction: column;
+}
+
+.add-notification-page label {
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #555;
+    font-size: 15px;
+}
+
+.add-notification-page textarea,
+.add-notification-page input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 16px;
+    background-color: #f9f9f9;
+}
+
+.add-notification-page textarea {
+    resize: vertical;
+}
+
+.add-notification-page input[type="submit"] {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    align-self: flex-end;
+    width: auto;
+}
+
+.add-notification-page input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* Notification list styling */
+.add-notification-page .notification-list {
+    margin-top: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.add-notification-page .notification {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.add-notification-page .notification:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.add-notification-page .notification span {
+    margin-left: 3px;
+    font-size: 16px;
+    color: #333;
+    max-width: 75%;
+}
+
+.add-notification-page .notification form {
+    margin-left: 5px;
+}
+
+.add-notification-page .notification button {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.add-notification-page .notification button:hover {
+    background-color: #c82333;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .add-notification-page .form-container {
+        padding: 20px;
+        width: 90%;
+    }
+
+    .add-notification-page .notification-list {
+        width: 90%;
+    }
+
+    .add-notification-page .notification {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .add-notification-page .notification span {
+        margin-bottom: 10px;
+        max-width: 100%;
+    }
+
+    .add-notification-page .notification button {
+        width: 100%;
+    }
 }

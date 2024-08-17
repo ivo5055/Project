@@ -8,78 +8,86 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #ddd6d6;
-    min-width: 160px; /* Adjusted width to better fit form */
+    background-color: #ffffff; /* White background for a clean look */
+    min-width: 200px; /* Adjusted width for better visibility */
     z-index: 2; /* Ensure dropdown is in front */
-    left: 50%; /* Align to the left edge of the button */
-    border-radius: 5px; /* Optional: Add border radius */
-    transform: translateX(-50%); /* Adjust position to center */
+    left: 50%; /* Center align dropdown content */
+    border-radius: 8px; /* Smooth border radius */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transform: translateX(-50%); /* Center alignment adjustment */
+    overflow: hidden; /* Ensure content doesn't overflow rounded corners */
+    padding: 10px 0; /* Space inside the dropdown */
 }
 
-.dropdown-content p, .dropdown-content a {
-    color: black;
+/* Style for dropdown links */
+.dropdown-content p,
+.dropdown-content a {
+    color: #333; /* Darker text for readability */
     text-decoration: none;
-    display: block; /* Ensure each notification starts on a new line */
-    padding: 10px 20px;
+    display: block; /* Ensure each item starts on a new line */
+    padding: 12px 20px; /* Adequate padding for better touch targets */
+    transition: background-color 0.3s ease; /* Smooth hover effect */
+    font-size: 14px; /* Slightly smaller font size */
+    font-weight: 500; /* Medium font weight for a modern look */
 }
 
-/* Style the dropdown button */
+/* Style for the dropdown button */
 .dropbtn {
     margin-left: 20px;
-    background-color: black;
-    color: white;
-    padding: 12px;
+    background-color: black; /* Modern blue background */
+    color: #fff; /* White text for contrast */
+    padding: 12px 20px; /* Balanced padding */
     font-size: 16px;
     border: none;
+    border-radius: 4px; /* Slight rounding for a modern look */
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth hover effect */
 }
 
+/* Additional styling for alternative button */
 .dropbtnN {
-    color: white;
+    color: #007BFF; /* Blue text color for link-style button */
     padding: 12px;
     font-size: 16px;
     border: none;
+    background: none; /* Transparent background */
     cursor: pointer;
 }
 
-.dropbtn img, .dropbtnN img {
-    width: 30px; /* Adjust size as needed */
-    height: 30px; /* Adjust size as needed */
+.dropbtn img,
+.dropbtnN img {
+    width: 30px; /* Adjusted size */
+    height: 30px; /* Adjusted size */
     cursor: pointer;
 }
 
+/* Hover effects */
 .dropdown-content a:hover {
-    background-color: #ccc; /* Optional: add a hover effect for the dropdown links */
+    background-color: #f0f0f0; /* Subtle hover effect */
 }
 
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #3c3f41;
+.dropbtn:hover,
+.dropbtn:focus {
+    background-color: #303030; /* Darker blue on hover */
 }
 
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #3c3f41;
-}
-
-/* Removed the gap from the left side of the dropdown*/
-.dropbtn, .dropdown-content a {
+/* Remove gaps */
+.dropbtn,
+.dropdown-content a {
     margin: 0;
 }
 
-
-
-
-
-/* Initially hide filter form */
+/* Filter form container */
 .filter-form-container {
     display: none;
 }
 
-/* Show filter form when it has class 'show' */
+/* Show filter form when active */
 .filter-form-container.show {
     display: block;
 }
 
-/* Additional form styling for better layout */
+/* Additional form styling */
 .filter-form-container form div {
     margin-bottom: 10px;
 }
@@ -93,9 +101,22 @@
 .filter-form-container form select {
     width: 100%;
     padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
     box-sizing: border-box;
 }
 
 .filter-form-container form button {
     margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.filter-form-container form button:hover {
+    background-color: #0056b3;
 }

@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $userId = $_SESSION['Id'];
-$queryUserDetails = "SELECT full_name, fn, egn FROM users WHERE Id = ?";
+$queryUserDetails = "SELECT full_name, fn, egn, gender, account FROM users WHERE Id = ?";
 $stmtUserDetails = $pdo->prepare($queryUserDetails);
 $stmtUserDetails->execute([$userId]);
 $userDetails = $stmtUserDetails->fetch(PDO::FETCH_ASSOC);
@@ -79,28 +79,28 @@ $maskedEgn = $egnLength > 2 ? substr($userDetails['egn'], 0, 2) . str_repeat('*'
     <title>Profile</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
-    <style>
-        .hidden { display: none; }
-    </style>
+    <link rel="stylesheet" href="profile.css"> <!-- Link to the new CSS file -->
 </head>
 <body>
     
 <?php include 'elements/header.php'; ?>
 
-<div>
-    <h2>Account Details</h2>
+<div class="profile-container">
+    <h2 class="profile-header">Account Details</h2>
     
-    <p>Email: <?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Not set'; ?> 
-    <?php if (!empty($emailError)) echo "<p style='color:red;'>$emailError</p>"; ?>
+    <p class="profile-details"><span class="profile-label">Email:</span> <?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Not set'; ?></p>
+    <?php if (!empty($emailError)) echo "<p class='profile-error'>$emailError</p>"; ?>
     
-    <p>Username: <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Not set'; ?></p>
-    <?php if (!empty($usernameError)) echo "<p style='color:red;'>$usernameError</p>"; ?>
+    <p class="profile-details"><span class="profile-label">Username:</span> <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Not set'; ?></p>
+    <?php if (!empty($usernameError)) echo "<p class='profile-error'>$usernameError</p>"; ?>
     
-    <p>Full Name: <?php echo htmlspecialchars($userDetails['full_name']); ?></p>
-    <p>Faculty Number (FN): <?php echo htmlspecialchars($userDetails['fn']); ?></p>
-    <p>EGN: <?php echo htmlspecialchars($maskedEgn); ?></p>
+    <p class="profile-details"><span class="profile-label">Full Name:</span> <?php echo htmlspecialchars($userDetails['full_name']); ?></p>
+    <p class="profile-details"><span class="profile-label">Faculty Number (FN):</span> <?php echo htmlspecialchars($userDetails['fn']); ?></p>
+    <p class="profile-details"><span class="profile-label">EGN:</span> <?php echo htmlspecialchars($maskedEgn); ?></p>
+    <p class="profile-details"><span class="profile-label">Gender:</span> <?php echo htmlspecialchars($userDetails['gender']); ?></p>
+    <p class="profile-details"><span class="profile-label">Account Type:</span> <?php echo htmlspecialchars($userDetails['account']); ?></p>
     
-    <button id="editProfileButton">Edit Profile</button>
+    <button id="editProfileButton" class="profile-button">Edit Profile</button>
 </div>
 
 <script>
