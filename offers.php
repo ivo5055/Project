@@ -1,7 +1,7 @@
 <?php
 session_start();
 include "includes/dbh.inc.php";
-include "includes/deleteOffer.php"; // Include deleteOffer.php before any output
+include "includes/deleteOffer.php";
 
 // Fetch the user's grade from the database
 $grade = null;
@@ -23,7 +23,7 @@ if (isset($_SESSION['Id'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offers</title>
+    <title data-translate="true">Offers</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">    
 </head>
@@ -35,16 +35,16 @@ include "elements/header.php";
 
 <div class="header-container">
     <?php include "includes/show_booked.php"; ?>
-    <h1><p></p>Room Offers<p></p></h1>
+    <h1 data-translate="true"><p></p>Налични Оферти<p></p></h1>
 
     <!-- Building Filter -->
     <div id="buildingFilterForm" class="radio-button-form">
-        <button class="building-button active" data-building="1">Building 1</button>
-        <button class="building-button" data-building="2">Building 2</button>
-        <button class="building-button" data-building="3">Building 3</button>
-        <button class="building-button" data-building="4">Building 4</button>
-        <button class="building-button" data-building="5">Building 5</button>
-        <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?>>Building 6</button>
+        <button class="building-button active" data-building="1" data-translate="true">Блок 1</button>
+        <button class="building-button" data-building="2" data-translate="true">Блок 2</button>
+        <button class="building-button" data-building="3" data-translate="true">Блок 3</button>
+        <button class="building-button" data-building="4" data-translate="true">Блок 4</button>
+        <button class="building-button" data-building="5" data-translate="true">Блок 5</button>
+        <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?> data-translate="true">Блок 6</button>
         
         <button id="filterButton" class="Filter_B">Filter</button>
         <?php include "includes/filter.php"; ?>
@@ -52,7 +52,6 @@ include "elements/header.php";
     
     <div class="room-offers">
         <?php
-        // Prepare and execute the query based on filters
         $query = "SELECT * FROM room WHERE 1=1";
         $params = [];
 

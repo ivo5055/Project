@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offers</title>
+    <title data-translate="true">Меню</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
@@ -15,22 +15,22 @@ include 'elements/header.php';
 ?>
 
 <div class="diner-container">
-    <img src="img/menuBG.jpg" alt="Dorm">
+    <img src="img/menuBG.jpg" alt="Образ на меню" data-translate="true">
 
     <!-- Dropdown to select the day of the week -->
     <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="day-selector-container">
         <form method="GET">
-            <label for="day-select">Select Day:</label>
+            <label for="day-select" data-translate="true">Избери ден:</label>
             <select id="day-select" name="day" onchange="this.form.submit()">
-                <option value="sel">-------------</option>
-                <option value="mon" <?= (isset($_GET['day']) && $_GET['day'] === 'mon') ? 'selected' : '' ?>>Monday</option>
-                <option value="tue" <?= (isset($_GET['day']) && $_GET['day'] === 'tue') ? 'selected' : '' ?>>Tuesday</option>
-                <option value="wed" <?= (isset($_GET['day']) && $_GET['day'] === 'wed') ? 'selected' : '' ?>>Wednesday</option>
-                <option value="thu" <?= (isset($_GET['day']) && $_GET['day'] === 'thu') ? 'selected' : '' ?>>Thursday</option>
-                <option value="fri" <?= (isset($_GET['day']) && $_GET['day'] === 'fri') ? 'selected' : '' ?>>Friday</option>
-                <option value="sat" <?= (isset($_GET['day']) && $_GET['day'] === 'sat') ? 'selected' : '' ?>>Saturday</option>
-                <option value="sun" <?= (isset($_GET['day']) && $_GET['day'] === 'sun') ? 'selected' : '' ?>>Sunday</option>
+                <option value="sel" data-translate="true">-------------</option>
+                <option value="mon" <?= (isset($_GET['day']) && $_GET['day'] === 'mon') ? 'selected' : '' ?> data-translate="true">Понеделник</option>
+                <option value="tue" <?= (isset($_GET['day']) && $_GET['day'] === 'tue') ? 'selected' : '' ?> data-translate="true">Вторник</option>
+                <option value="wed" <?= (isset($_GET['day']) && $_GET['day'] === 'wed') ? 'selected' : '' ?> data-translate="true">Сряда</option>
+                <option value="thu" <?= (isset($_GET['day']) && $_GET['day'] === 'thu') ? 'selected' : '' ?> data-translate="true">Четвъртък</option>
+                <option value="fri" <?= (isset($_GET['day']) && $_GET['day'] === 'fri') ? 'selected' : '' ?> data-translate="true">Петък</option>
+                <option value="sat" <?= (isset($_GET['day']) && $_GET['day'] === 'sat') ? 'selected' : '' ?> data-translate="true">Събота</option>
+                <option value="sun" <?= (isset($_GET['day']) && $_GET['day'] === 'sun') ? 'selected' : '' ?> data-translate="true">Неделя</option>
             </select>
         </form>
     </div>
@@ -70,35 +70,35 @@ include 'elements/header.php';
 
                             if ($itemPrice != "0") {
                                 echo "<li>";
-                                echo "<span class='item-name'>" . htmlspecialchars($itemName) . "</span>";
-                                echo "<span class='item-price'>$" . number_format($itemPrice, 2) . "</span>";
+                                echo "<span class='item-name' data-translate='true'>" . htmlspecialchars($itemName) . "</span>";
+                                echo "<span class='item-price' data-translate='true'>" . number_format($itemPrice, 2) ."лв.". "</span>";
 
                                 // Reservation form for users with account type 'A' or 'U'
                                 if (isset($_SESSION['account']) && ($_SESSION['account'] == 'A' || $_SESSION['account'] == 'U')) {
                                     echo "<form method='POST' style='display:inline;'>";
                                     echo "<input type='hidden' name='item_id' value='$itemId'>";
                                     echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($_SESSION["username"]) . "'>";
-                                    echo "<button type='button' class='reserve-button' onclick='addToBasket(\"$itemId\", \"" . htmlspecialchars($itemName) . "\", \"" . number_format($itemPrice, 2) . "\")'>Reserve</button>";
+                                    echo "<button type='button' class='reserve-button' onclick='addToBasket(\"$itemId\", \"" . htmlspecialchars($itemName) . "\", \"" . number_format($itemPrice, 2) . "\")' data-translate='true'>Запази</button>";
                                     echo "</form>";
                                 }
 
                                 // Delete button only available for account type 'C'
                                 if (isset($_SESSION['account']) && $_SESSION['account'] == 'C') {
-                                    echo "<a href='includes/delete_item.php?Id=$itemId' class='delete-button' onclick=\"return confirm('Are you sure you want to delete this item?');\">Delete</a>";
+                                    echo "<a href='includes/delete_item.php?Id=$itemId' class='delete-button' onclick=\"return confirm('Сигурен ли си, че искаш да изтриеш този елемент?');\" data-translate='true'>Изтрий</a>";
                                 }
 
                                 echo "</li>";
                             }
                         }
                     } else {
-                        echo "<li>No menu items available.</li>";
+                        echo "<li data-translate='true'>Няма налични ястия за този ден.</li>";
                     }
                 }
             } catch (PDOException $e) {
                 echo "Error: " . htmlspecialchars($e->getMessage());
             }
         } else {
-            echo "<li>Database connection not established.</li>";
+            echo "<li data-translate='true'>Не е установена връзка с базата данни.</li>";
         }
         ?>
         </ul>
@@ -139,9 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve']) && !isset(
             ':price' => $itemPrice
         ]);
 
-        echo "<p>Menu item added successfully!</p>";
+        echo "<p data-translate='true'>Продуктът беше добавен успешно!</p>";
     } else {
-        echo "<p>Invalid day of the week.</p>";
+        echo "<p data-translate='true'>Невалиден ден от седмицата.</p>";
     }
 }
 
@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
         ]);
     }
 
-    echo "<p>Items reserved successfully!</p>";
+    echo "<p data-translate='true'>Продуктът беше добавен успешно!</p>";
 }   
 ?>
 
@@ -169,28 +169,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
 
 <!-- Basket Container -->
 <div class="reserved-items-container">
-    <h2>Your Basket</h2>
+    <h2 data-translate="true">Твоята Кошница</h2>
     <ul id="basket-items">
         <!-- Dynamically filled with JavaScript -->
     </ul>
-    <button id="confirm-basket" class="reserve-button" onclick="confirmBasket()">Confirm</button>
-    <button id="clear-basket" class="delete-button" onclick="clearBasket()">Clear</button>
+    <button id="confirm-basket" class="reserve-button" onclick="confirmBasket()" data-translate="true">Потвърди</button>
+    <button id="clear-basket" class="delete-button" onclick="clearBasket()" data-translate="true">Изчисти</button>
     <script src="js/reserve_list.js"></script>
 </div>
 <?php endif; ?>
 
-
-
-
 <!-- Reserved Items Container ChefA -->
 <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
     <div class="reserved-items-container">
-        <h2>Reserved Items</h2>
+        <h2 data-translate="true">Резервирани ястия</h2>
 
         <!-- Search Form for Reserved Items -->
         <form method="GET">
-            <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Enter username">
-            <input type="submit" value="Search">
+            <input type="text" id="search-user" name="search_user" value="<?= isset($_GET['search_user']) ? htmlspecialchars($_GET['search_user']) : '' ?>" placeholder="Въведете потребителско име" data-translate="true">
+            <input type="submit" value="Търси" data-translate="true">
         </form>
 
         <br><br>
@@ -261,36 +258,36 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
                     foreach ($users as $userName => $items) {
                         $totalPrice = 0; // Initialize total price for the user
                         echo "<div class='user-items-container'>";
-                        echo "<h3>" . htmlspecialchars($userName) . "</h3>";
+                        echo "<h3 data-translate='true'>" . htmlspecialchars($userName) . "</h3>";
                         echo "<ul>";
 
                         foreach ($items as $item) {
                             echo "<li>";
-                            echo "<span class='reserved-item-name'>" . $item['name'] . "</span>";
-                            echo "<span class='reserved-item-price'>$" . number_format($item['price'], 2) . "</span>";
+                            echo "<span class='reserved-item-name' data-translate='true'>" . $item['name'] . "</span>";
+                            echo "<span class='reserved-item-price' data-translate='true'>" . number_format($item['price'], 2) . "лв."."</span>";
                             echo "</li>";
                             $totalPrice += $item['price']; // Accumulate the total price
                         }
 
                         // Display total price for the user
-                        echo "<li class='total-price'><strong>Total: $" . number_format($totalPrice, 2) . "</strong></li>";
+                        echo "<li class='total-price' data-translate='true'><strong>Общо: " . number_format($totalPrice, 2) . "лв. </strong></li>";
 
                         // Add Finish button with a form to delete all items for this user
                         echo "<form method='POST' style='display:inline; margin-top: 10px;'>";
                         echo "<input type='hidden' name='user_name' value='" . htmlspecialchars($userName) . "'>";
-                        echo "<input type='submit' name='finish' value='Finish' class='finish-button' onclick=\"return confirm('Do you want to finnish the transaction?');\">";
+                        echo "<input type='submit' name='finish' value='Завърши' class='finish-button' onclick=\"return confirm('Сигурен ли си, че искаш да приключиш транзакцията?');\" data-translate='true'>";
                         echo "</form>";
 
                         echo "</div>";
                     }
                 } else {
-                    echo "<li>No reserved items found.</li>";
+                    echo "<li data-translate='true'>Не са намерени резервирани ястия.</li>";
                 }
             } catch (PDOException $e) {
                 echo "Error: " . htmlspecialchars($e->getMessage());
             }
         } else {
-            echo "<li>Database connection not established.</li>";
+            echo "<li data-translate='true'>Не е установена връзка с базата данни.</li>";
         }
         ?>
         </ul>
@@ -309,7 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['finish'])) {
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_name' => $userName]);
 
-    echo "<p>All reserved items for user '$userName' have been deleted.</p>";
+    echo "<p data-translate='true'>Всички резервирани ястия за '$userName' бяха изтрити.</p>";
 }
 ?>
 
@@ -317,29 +314,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['finish'])) {
 <!-- Form for adding menu items -->
 <?php if (isset($_SESSION['account']) && $_SESSION['account'] == 'C'): ?>
 <div class="form-container">
-        <h2>Add Menu Item</h2>
-        <form method="POST">
-            <label for="day">Day of the Week:</label>
-            <select id="day" name="day" required>
-                <option value="mon">Monday</option>
-                <option value="tue">Tuesday</option>
-                <option value="wed">Wednesday</option>
-                <option value="thu">Thursday</option>
-                <option value="fri">Friday</option>
-                <option value="sat">Saturday</option>
-                <option value="sun">Sunday</option>
-            </select>
-            <label for="name">Item Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" step="0.01" required>
-            <input type="submit" value="Add Item">
-        </form>
-    </div>
-    <?php endif; ?>
+    <h2 data-translate="true">Добави ястие в менюто</h2>
+    <form method="POST">
+        <label for="day" data-translate="true">Ден от седмицата:</label>
+        <select id="day" name="day" required>
+            <option value="mon" data-translate="true">Понеделник</option>
+            <option value="tue" data-translate="true">Вторник</option>
+            <option value="wed" data-translate="true">Сряда</option>
+            <option value="thu" data-translate="true">Четвъртък</option>
+            <option value="fri" data-translate="true">Петък</option>
+            <option value="sat" data-translate="true">Събота</option>
+            <option value="sun" data-translate="true">Неделя</option>
+        </select>
+        <label for="name" data-translate="true">Име на продукта:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="price" data-translate="true">Цена:</label>
+        <input type="number" id="price" name="price" step="0.01" required>
+        <input type="submit" value="Добави ястие" data-translate="true">
+    </form>
 </div>
-
+<?php endif; ?>
+</div>
 
 </body>
 </html>
-    

@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtEmail = $pdo->prepare($queryEmail);
             $stmtEmail->execute([$newEmail]);
             if ($stmtEmail->rowCount() > 0) {
-                $emailError = "Email already registered. Please choose a different email.";
+                $emailError = "Имейлът вече е регистриран. Моля, изберете различен имейл.";
             } else {
                 $queryUpdateEmail = "UPDATE users SET email = ? WHERE Id = ?";
                 $stmtUpdateEmail = $pdo->prepare($queryUpdateEmail);
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtUser = $pdo->prepare($queryUser);
             $stmtUser->execute([$newUsername]);
             if ($stmtUser->rowCount() > 0) {
-                $usernameError = "Username already taken. Please choose a different username.";
+                $usernameError = "Потребителското име вече е заето. Моля, изберете различно име.";
             } else {
                 $queryUpdateUser = "UPDATE users SET user = ? WHERE Id = ?";
                 $stmtUpdateUser = $pdo->prepare($queryUpdateUser);
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Validate password and confirm password
         if ($newPassword && $newPassword !== $confirmPassword) {
-            $passwordError = "Passwords do not match.";
+            $passwordError = "Паролите не съвпадат.";
         } elseif ($newPassword) {
             // Update password if confirmed
             $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -74,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Check if FN and EGN are both provided or both are left unchanged
         if (($newFn && !$newEgn) || (!$newFn && $newEgn)) {
             if ($newFn && !$newEgn) {
-                $fnError = "Please provide both FN and EGN.";
+                $fnError = "Моля, предоставете както FN, така и EGN.";
             } elseif (!$newFn && $newEgn) {
-                $egnError = "Please provide both FN and EGN.";
+                $egnError = "Моля, предоставете както FN, така и EGN.";
             }
         } else {
             // Update faculty number (fn) and EGN if both are provided and if EGN has less than 10 characters
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $stmtUpdateFnEgn = $pdo->prepare($queryUpdateFnEgn);
                     $stmtUpdateFnEgn->execute([$newFn, $newEgn, $userId]);
                 } else {
-                    $egnError = "Faculty number and EGN combination does not exist in students database.";
+                    $egnError = "Комбинацията от факултетен номер и ЕГН не съществува в базата данни на студентите.";
                 }
             }
         }
@@ -104,11 +104,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+    <title data-translate="true">Редактиране на профил</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
     <link rel="stylesheet" href="profile.css"> <!-- Link to the CSS file -->
@@ -118,46 +118,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <?php include 'elements/header.php'; ?>
 
 <div class="edit-profile-page">
-    <h2 class="edit-profile-header">Edit Profile</h2>
+    <h2 class="edit-profile-header" data-translate="true">Редактиране на профил</h2>
 
     <form id="profileForm" method="post">
         <div>
-            <label for="email" class="edit-profile-label">New Email:</label>
-            <input type="text" name="email" placeholder="New Email" value="<?php echo htmlspecialchars($userDetails['email']); ?>">
+            <label for="email" class="edit-profile-label" data-translate="true">Нов имейл:</label>
+            <input type="text" name="email" placeholder="Нов имейл" value="<?php echo htmlspecialchars($userDetails['email']); ?>">
             <?php if (!empty($emailError)) echo "<p class='edit-profile-error'>$emailError</p>"; ?>
         </div>
         <div>
-            <label for="username" class="edit-profile-label">New Username:</label>
-            <input type="text" name="username" placeholder="New Username" value="<?php echo htmlspecialchars($userDetails['user']); ?>">
+            <label for="username" class="edit-profile-label" data-translate="true">Ново потребителско име:</label>
+            <input type="text" name="username" placeholder="Ново потребителско име" value="<?php echo htmlspecialchars($userDetails['user']); ?>">
             <?php if (!empty($usernameError)) echo "<p class='edit-profile-error'>$usernameError</p>"; ?>
         </div>
         <div>
-            <label for="password" class="edit-profile-label">New Password:</label>
-            <input type="password" name="password" placeholder="New Password">
+            <label for="password" class="edit-profile-label" data-translate="true">Нова парола:</label>
+            <input type="password" name="password" placeholder="Нова парола">
         </div>
         <div>
-            <label for="confirm_password" class="edit-profile-label">Confirm Password:</label>
-            <input type="password" name="confirm_password" placeholder="Confirm Password">
+            <label for="confirm_password" class="edit-profile-label" data-translate="true">Потвърдете паролата:</label>
+            <input type="password" name="confirm_password" placeholder="Потвърдете паролата">
             <?php if (!empty($passwordError)) echo "<p class='edit-profile-error'>$passwordError</p>"; ?>
         </div>
         <div>
-            <label for="full_name" class="edit-profile-label">Full Name:</label>
-            <input type="text" name="full_name" placeholder="Full Name" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>">
+            <label for="full_name" class="edit-profile-label" data-translate="true">Пълно име:</label>
+            <input type="text" name="full_name" placeholder="Пълно име" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>">
         </div>
 
         <?php if (strlen($userDetails['egn']) < 10): ?>
         <div>
-            <label for="fn" class="edit-profile-label">Faculty Number (FN):</label>
-            <input type="text" name="fn" placeholder="Faculty Number" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
+            <label for="fn" class="edit-profile-label" data-translate="true">Факултетен номер (FN):</label>
+            <input type="text" name="fn" placeholder="Факултетен номер" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
         </div>
         <div>
-            <label for="egn" class="edit-profile-label">EGN:</label>
-            <input type="text" name="egn" placeholder="EGN" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
+            <label for="egn" class="edit-profile-label" data-translate="true">ЕГН:</label>
+            <input type="text" name="egn" placeholder="ЕГН" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
             <?php if (!empty($egnError)) echo "<p class='edit-profile-error'>$egnError</p>"; ?>
         </div>
         <?php endif; ?>
         
-        <button type="submit" class="edit-profile-button">Save Data</button>
+        <button type="submit" class="edit-profile-button" data-translate="true">Запази данните</button>
     </form>
 </div>
 

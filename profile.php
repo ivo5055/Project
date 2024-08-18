@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtEmail = $pdo->prepare($queryEmail);
             $stmtEmail->execute([$newEmail]);
             if ($stmtEmail->rowCount() > 0) {
-                $emailError = "Email already registered. Please choose a different email.";
+                $emailError = "Имейлът вече е регистриран. Моля, изберете различен имейл.";
             } else {
                 $queryUpdateEmail = "UPDATE users SET email = ? WHERE Id = ?";
                 $stmtUpdateEmail = $pdo->prepare($queryUpdateEmail);
@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmtUser = $pdo->prepare($queryUser);
             $stmtUser->execute([$newUsername]);
             if ($stmtUser->rowCount() > 0) {
-                $usernameError = "Username already taken. Please choose a different username.";
+                $usernameError = "Потребителското име вече е заето. Моля, изберете различно име.";
             } else {
                 $queryUpdateUser = "UPDATE users SET user = ? WHERE Id = ?";
                 $stmtUpdateUser = $pdo->prepare($queryUpdateUser);
@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Validate password and confirm password
         if ($newPassword !== $confirmPassword) {
-            $passwordError = "Passwords do not match.";
+            $passwordError = "Паролите не съвпадат.";
         } else {
             // Update password if confirmed
             if ($newPassword) {
@@ -72,11 +72,11 @@ $maskedEgn = $egnLength > 2 ? substr($userDetails['egn'], 0, 2) . str_repeat('*'
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profile</title>
+    <title data-translate="true">Профил</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
     <link rel="stylesheet" href="profile.css"> <!-- Link to the new CSS file -->
@@ -86,21 +86,21 @@ $maskedEgn = $egnLength > 2 ? substr($userDetails['egn'], 0, 2) . str_repeat('*'
 <?php include 'elements/header.php'; ?>
 
 <div class="profile-container">
-    <h2 class="profile-header">Account Details</h2>
+    <h2 class="profile-header" data-translate="true">Детайли на акаунта</h2>
     
-    <p class="profile-details"><span class="profile-label">Email:</span> <?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Not set'; ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Имейл:</span> <?php echo isset($_SESSION['email']) ? htmlspecialchars($_SESSION['email']) : 'Не е зададен'; ?></p>
     <?php if (!empty($emailError)) echo "<p class='profile-error'>$emailError</p>"; ?>
     
-    <p class="profile-details"><span class="profile-label">Username:</span> <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Not set'; ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Потребителско име:</span> <?php echo isset($_SESSION['username']) ? htmlspecialchars($_SESSION['username']) : 'Не е зададен'; ?></p>
     <?php if (!empty($usernameError)) echo "<p class='profile-error'>$usernameError</p>"; ?>
     
-    <p class="profile-details"><span class="profile-label">Full Name:</span> <?php echo htmlspecialchars($userDetails['full_name']); ?></p>
-    <p class="profile-details"><span class="profile-label">Faculty Number (FN):</span> <?php echo htmlspecialchars($userDetails['fn']); ?></p>
-    <p class="profile-details"><span class="profile-label">EGN:</span> <?php echo htmlspecialchars($maskedEgn); ?></p>
-    <p class="profile-details"><span class="profile-label">Gender:</span> <?php echo htmlspecialchars($userDetails['gender']); ?></p>
-    <p class="profile-details"><span class="profile-label">Account Type:</span> <?php echo htmlspecialchars($userDetails['account']); ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Пълно име:</span> <?php echo htmlspecialchars($userDetails['full_name']); ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Факултетен номер (FN):</span> <?php echo htmlspecialchars($userDetails['fn']); ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">ЕГН:</span> <?php echo htmlspecialchars($maskedEgn); ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Пол:</span> <?php echo htmlspecialchars($userDetails['gender']); ?></p>
+    <p class="profile-details"><span class="profile-label" data-translate="true">Тип акаунт:</span> <?php echo htmlspecialchars($userDetails['account']); ?></p>
     
-    <button id="editProfileButton" class="profile-button">Edit Profile</button>
+    <button id="editProfileButton" class="profile-button" data-translate="true">Редактиране на профила</button>
 </div>
 
 <script>

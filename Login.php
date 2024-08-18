@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title data-translate="true">Вход</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
@@ -12,22 +12,22 @@
 <?php include 'elements/header.php'; ?>
 
     <div class="login-container"> 
-        <h1>Login</h1>
+        <h1 data-translate="true">Вход</h1>
         <div class="login-form">
             <form action="includes/login.php" method="post">
-                <label for="username">Username or Email:</label>
+                <label for="username" data-translate="true">Потребителско име или имейл:</label>
                 <input type="text" id="username" name="username" required><br><br>
 
-                <label for="pwd">Password:</label>
+                <label for="pwd" data-translate="true">Парола:</label>
                 <input type="password" id="pwd" name="pwd" required><br><br>
 
                 <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Remember me</label><br><br>
+                <label for="remember" data-translate="true">Запомни ме</label><br><br>
 
-                <a href="forgot_username.php">Forgotten Username</a><br>
-                <a href="forgot_password.php">Forgotten Password</a><br>
-                <a href="Register.php" action="register.php">Register</a><br><br>
-                <button type="submit">Login</button>
+                <a href="forgot_username.php" data-translate="true">Забравено потребителско име</a><br>
+                <a href="forgot_password.php" data-translate="true">Забравена парола</a><br>
+                <a href="Register.php" action="register.php" data-translate="true">Регистрация</a><br><br>
+                <button type="submit" data-translate="true">Вход</button>
             </form>
         </div>
     </div>

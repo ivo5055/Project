@@ -36,34 +36,34 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Offers</title>
+    <title data-translate="true">Управление на офертите</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
 
 <div class="requests-container">
-    <h1 class="centered-title">Manage Offers</h1>
+    <h1 class="centered-title" data-translate="true">Управление на офертите</h1>
     
     <form method="get" action="" class="search-form">
-    <input type="text" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>">
-    <button type="submit">Search</button>
+        <input type="text" name="search" value="<?php echo isset($_GET['search']) ? htmlspecialchars($_GET['search']) : ''; ?>" data-translate="true" placeholder="Търсене">
+        <button type="submit" data-translate="true">Търси</button>
     </form>
 
     <table>
         <thead>
             <tr>
-                <th>Building</th>
-                <th>Room Number</th>
-                <th>User</th>
-                <th>Full Name</th>
-                <th>Faculty Number</th>
-                <th>Gender</th>
-                <th>Action</th>
+                <th data-translate="true">Сграда</th>
+                <th data-translate="true">Номер на стаята</th>
+                <th data-translate="true">Потребител</th>
+                <th data-translate="true">Пълно име</th>
+                <th data-translate="true">Факултетен номер</th>
+                <th data-translate="true">Пол</th>
+                <th data-translate="true">Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -78,7 +78,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <td>
                         <form method="post" style="display:inline;">
                             <input type="hidden" name="Id" value="<?php echo $booking['Id']; ?>">
-                            <button type="submit" name="delete_room">Delete</button>
+                            <button type="submit" name="delete_room" data-translate="true">Изтрий</button>
                         </form>
                     </td>
                 </tr>

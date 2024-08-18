@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Room Offer</title>
+    <title data-translate="true">Редактиране на оферта за стая</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
@@ -13,7 +13,7 @@
 <?php include "includes/dbh.inc.php"; ?>
 
 <div class="edit-room-offer">
-    <h1>Edit Room Offer</h1>
+    <h1 data-translate="true">Редактиране на оферта за стая</h1>
     <?php
     // Check if room_number is provided in the URL
     if (isset($_GET['room_number'])) {
@@ -44,14 +44,14 @@
                     'room_number' => $room_number
                 ]);
 
-                echo '<p>Room details updated successfully!</p>';
+                echo '<p data-translate="true">Детайлите на стаята бяха актуализирани успешно!</p>';
             }
             ?>
             <form method="post" action="">
-                <label for="room_number">Room Number:</label>
+                <label for="room_number" data-translate="true">Номер на стаята:</label>
                 <input type="number" name="room_number" id="room_number" value="<?php echo htmlspecialchars($room['room_number']); ?>" required><br>
 
-                <label for="room_capacity">Room Capacity:</label>
+                <label for="room_capacity" data-translate="true">Капацитет на стаята:</label>
                 <select name="room_capacity" id="room_capacity" required>
                     <option value="1" <?php if ($room['room_capacity'] == 1) echo 'selected'; ?>>1</option>
                     <option value="2" <?php if ($room['room_capacity'] == 2) echo 'selected'; ?>>2</option>
@@ -59,20 +59,20 @@
                     <option value="4" <?php if ($room['room_capacity'] == 4) echo 'selected'; ?>>4</option>
                 </select><br>
 
-                <label for="description">Description:</label>
+                <label for="description" data-translate="true">Описание:</label>
                 <textarea name="description" id="description" required><?php echo htmlspecialchars($room['description']); ?></textarea><br>
 
-                <label for="price">Price:</label>
+                <label for="price" data-translate="true">Цена:</label>
                 <input type="number" name="price" id="price" value="<?php echo htmlspecialchars($room['price']); ?>" required><br>
 
-                <button type="submit" name="edit_room" class="button">Save Changes</button>
+                <button type="submit" name="edit_room" class="button" data-translate="true">Запази промените</button>
             </form>
             <?php
         } else {
-            echo '<p>Room not found.</p>';
+            echo '<p data-translate="true">Стаята не беше намерена.</p>';
         }
     } else {
-        echo '<p>No room number provided.</p>';
+        echo '<p data-translate="true">Не е предоставен номер на стая.</p>';
     }
     ?>
 </div>

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $updateRequestStmt->execute(['request_id' => $requestId]);
 
             // Add notification for the user
-            $notificationMessage = "Your room request has been approved"; // for room $room_number building $building"
+            $notificationMessage = "Вашето искане за стая е одобрено"; // for room $room_number building $building
             $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one week
             $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
             $notificationStmt = $pdo->prepare($notificationQuery);
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 'userN' => $username
             ]);
         } else {
-            $error = "Room is fully booked.";
+            $error = "Стаята е напълно резервирана.";
         }
     } else if ($action == 'reject') {
         // Reject the request
@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $updateRequestStmt->execute(['request_id' => $requestId]);
 
         // Add notification for the user
-        $notificationMessage = "Your room request has been rejected"; // for room $room_number building $building
+        $notificationMessage = "Вашето искане за стая е отхвърлено"; // for room $room_number building $building
         $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one week
         $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
         $notificationStmt = $pdo->prepare($notificationQuery);
@@ -83,34 +83,34 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Booking Requests</title>
+    <title data-translate="true">Управление на заявките за резервация</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
 
 <div class="requests-container">
-    <h1>Manage Booking Requests</h1>
+    <h1 data-translate="true">Управление на заявките за резервация</h1>
     <?php
     if (isset($error)) {
-        echo '<p class="error">' . htmlspecialchars($error) . '</p>';
+        echo '<p class="error" data-translate="true">' . htmlspecialchars($error) . '</p>';
     }
     ?>
     <table>
         <thead>
             <tr>
-                <th>User</th>
-                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>">Building</a></th>
-                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>">Room Number</a></th>
-                <th>Full Name</th>
-                <th>FN</th>
-                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>">Grade</a></th>
-                <th>Payment Method</th>
-                <th>Action</th>
+                <th data-translate="true">Потребител</th>
+                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Сграда</a></th>
+                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Номер на стаята</a></th>
+                <th data-translate="true">Пълно име</th>
+                <th data-translate="true">ФН</th>
+                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Оценка</a></th>
+                <th data-translate="true">Метод на плащане</th>
+                <th data-translate="true">Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -129,8 +129,8 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="hidden" name="username" value="<?php echo $request['userN']; ?>">
                             <input type="hidden" name="room_number" value="<?php echo $request['room_number']; ?>">
                             <input type="hidden" name="building" value="<?php echo $request['building']; ?>">
-                            <button type="submit" name="action" value="approve">Approve</button>
-                            <button type="submit" name="action" value="reject">Reject</button>
+                            <button type="submit" name="action" value="approve" data-translate="true">Одобри</button>
+                            <button type="submit" name="action" value="reject" data-translate="true">Отхвърли</button>
                         </form>
                     </td>
                 </tr>

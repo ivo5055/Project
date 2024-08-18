@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $isFnEgnRegistered = $checkFnEgnStmt->fetchColumn();
 
     if ($isFnEgnRegistered > 0) {
-        $error = "Student Information registered for other account.";
+        $error = "Информацията за студента е регистрирана на друг акаунт.";
     } else {
         // Verify the user's details
         $verifyQuery = "SELECT COUNT(*) FROM students_db WHERE fn = :fn AND egn = :egn";
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $userBookingRequestCount = $checkBookingRequestStmt->fetchColumn();
 
             if ($userBookingRequestCount > 0) {
-                $error = "You have already requested a room. You can only request one room at a time.";
+                $error = "Вие вече сте подали заявка за стая. Можете да подадете само една заявка наведнъж.";
             } else {
                 // Insert booking request
                 $bookingRequestQuery = "INSERT INTO booking_requests (userN, building, room_number, fullname, fn, payment_method, status) 
@@ -67,60 +67,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'payment_method' => $payment_method
                 ]);
 
-                $success = "Booking request sent successfully!";
+                $success = "Заявката за резервация беше изпратена успешно!";
                 header("Location: offers.php");
                 exit();
             }
         } else {
-            $error = "Invalid Data.";
+            $error = "Невалидни данни.";
         }
     }
 }
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Room</title>
+    <title data-translate="true">Резервиране на стая</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
 
 <div class="booking-form">
-    <h1>Enter your details</h1>
+    <h1 data-translate="true">Въведете вашите данни</h1>
     <?php
     if (isset($error)) {
-        echo '<p class="error">' . htmlspecialchars($error) . '</p>';
+        echo '<p class="error" data-translate="true">' . htmlspecialchars($error) . '</p>';
     }
     if (isset($success)) {
-        echo '<p class="success">' . htmlspecialchars($success) . '</p>';
+        echo '<p class="success" data-translate="true">' . htmlspecialchars($success) . '</p>';
     }
     ?>
     <form method="post" action="">
-        <label for="fullname">Full Name:</label>
+        <label for="fullname" data-translate="true">Пълно име:</label>
         <input type="text" id="fullname" name="fullname" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>" <?php echo $editable; ?> required>
         <p></p>
 
-        <label for="fn">Faculty Number (FN):</label>
+        <label for="fn" data-translate="true">Факултетен номер (FN):</label>
         <input type="text" id="fn" name="fn" value="<?php echo htmlspecialchars($userDetails['fn']); ?>" <?php echo $editable; ?> required>
         <p></p>
 
-        <label for="egn">EGN:</label>
+        <label for="egn" data-translate="true">ЕГН:</label>
         <input type="text" id="egn" name="egn" value="" required>
         <p></p>
 
-        <label for="payment_method">Payment Method:</label>
+        <label for="payment_method" data-translate="true">Метод на плащане:</label>
         <select id="payment_method" name="payment_method" required>
-            <option value="credit_card">Credit Card</option>
-            <option value="paypal">PayPal</option>
-            <option value="bank_transfer">Bank Transfer</option>
+            <option value="credit_card" data-translate="true">Кредитна карта</option>
+            <option value="paypal" data-translate="true">PayPal</option>
+            <option value="bank_transfer" data-translate="true">Банков превод</option>
         </select>
         <p></p>
 
-        <button type="submit">Request Booking</button>
+        <button type="submit" data-translate="true">Изпрати заявка за резервация</button>
     </form>
 </div>
 

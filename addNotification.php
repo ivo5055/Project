@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include "elements/header.php"; ?>
-    <title>Add Notification</title>
+    <title data-translate="true">Добавяне на уведомление</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body class="add-notification-page">
-    <h2>Add Notification</h2>
+    <h2 data-translate="true">Добавяне на уведомление</h2>
     <?php
     
-
     // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
         // Validate and sanitize input
@@ -49,30 +48,30 @@
     ?>
 
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="notification_message">Notification Message:</label><br>
+        <label for="notification_message" data-translate="true">Съобщение за уведомление:</label><br>
         <textarea id="notification_message" name="notification_message" rows="4" cols="50" required></textarea><br>
-        <label for="notification_duration">Notification Duration:</label><br>
+        <label for="notification_duration" data-translate="true">Продължителност на уведомлението:</label><br>
         <input type="datetime-local" id="notification_duration" name="notification_duration" required><br>
         <input type="hidden" name="action" value="add">
-        <input type="submit" value="Submit">
+        <input type="submit" data-translate="true" value="Изпрати" >
     </form>
     
     <br>
-    <h2>Notifications</h2>
+    <h2 data-translate="true">Уведомления</h2>
     <?php if ($notifications): ?>
         <?php foreach ($notifications as $notification): ?>
             <div class="notification">
-                <span><?php echo $notification['message']; ?></span>
-                <span> - Until: <?php echo $notification['duration'];?></span>
+                <span data-translate="true"><?php echo $notification['message']; ?></span>
+                <span data-translate="true"> - До: <?php echo $notification['duration'];?></span>
                 <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <input type="hidden" name="delete_notification" value="<?php echo $notification['Id']; ?>">
                     <input type="hidden" name="action" value="delete">
-                    <button type="submit">Delete</button>
+                    <button type="submit" data-translate="true">Изтрий</button>
                 </form>
             </div>
         <?php endforeach; ?>
     <?php else: ?>
-        <p>No notifications available.</p>
+        <p data-translate="true">Няма налични уведомления.</p>
     <?php endif; ?>
 </body>
 </html>
