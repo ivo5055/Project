@@ -28,13 +28,12 @@ if (isset($_SESSION['username'])) {
 
     if ($bookedRoom) {
         echo '<div class="booked-room">';
-        echo '<h1>Booked Room - B' . htmlspecialchars($bookedRoom['building']) . '</h1>';
+        echo '<h1>Текуща стая - Бл.' . htmlspecialchars($bookedRoom['building']) . '</h1>';
         echo '<div class="room-detail">';
         //echo '<img src="img/' . htmlspecialchars($bookedRoom['image_url']) . '" alt="Room Image">';
-        echo '<p>Room number: ' . htmlspecialchars($bookedRoom['room_number']) . '</p>';
-        //echo '<p>Building: ' . htmlspecialchars($bookedRoom['building']) . '</p>';
-        echo '<p>Room capacity: ' . htmlspecialchars($bookedRoom['room_capacity']) . '</p>';
-        echo '<p>Price: $' . htmlspecialchars($bookedRoom['price']) . ' per month' .'</p>';
+        echo '<p>Номер на стая: ' . htmlspecialchars($bookedRoom['room_number']) . '</p>';
+        echo '<p>Капацитет: ' . htmlspecialchars($bookedRoom['room_capacity']) . '</p>';
+        echo '<p>Цена: ' . htmlspecialchars($bookedRoom['price']) . 'лв. на месец' .'</p>';
 
 
         // Fetch the updated rating
@@ -44,7 +43,7 @@ if (isset($_SESSION['username'])) {
         $ratingData = $ratingStmt->fetch(PDO::FETCH_ASSOC);
 
         $averageRating = $ratingData['number_of_reviews'] > 0 ? round($ratingData['total_rating'] / $ratingData['number_of_reviews'], 1) : 0;
-        echo '<p>Rating: ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($ratingData['number_of_reviews']) . ' reviews)</p>';
+        echo '<p>Рейтинг: ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($ratingData['number_of_reviews']) . ' ревюта)</p>';
 
         // Rating system
         if (isset($_POST['rate_room']) && isset($_POST['rating']) ) {
@@ -103,7 +102,7 @@ if (isset($_SESSION['username'])) {
         }
 
         echo '<form method="post" action="">';
-        echo '<p></p><button type="submit" name="cancel_booking" class="button">Cancel Booking</button>';
+        echo '<p></p><button type="submit" name="cancel_booking" class="button">Прекрати Престой</button>';
         echo '</form>';
         echo '</div>';
         echo '</div>';

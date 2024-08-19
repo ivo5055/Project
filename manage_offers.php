@@ -57,7 +57,7 @@ $bookings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <table>
         <thead>
             <tr>
-                <th data-translate="true">Сграда</th>
+                <th data-translate="true">Блок</th>
                 <th data-translate="true">Номер на стаята</th>
                 <th data-translate="true">Потребител</th>
                 <th data-translate="true">Пълно име</th>

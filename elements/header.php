@@ -30,7 +30,7 @@ if(isset($_SESSION['username'])){
         if (isset($_SESSION['account']) && $_SESSION['account'] == 'A'): ?>
         <a href="addNotification.php" data-translate="true">Уведоми</a>
         <a href="addOffer.php" data-translate="true">Добавяне на оферти</a>
-        <a href="manage_offers.php" data-translate="true">Оправление на оферти</a>
+        <a href="manage_offers.php" data-translate="true">Управление на оферти</a>
         <a href="requests.php" data-translate="true">Заявки</a>
 
         <?php endif; ?>

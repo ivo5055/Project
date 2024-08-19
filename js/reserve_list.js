@@ -10,7 +10,7 @@ let basket = [];
         basketList.innerHTML = '';
         basket.forEach(item => {
             const li = document.createElement('li');
-            li.innerHTML = `${item.name} - $${item.price}`;
+            li.innerHTML = `${item.name} - ${item.price}лв.`;
             basketList.appendChild(li);
         });
     }
@@ -33,7 +33,7 @@ let basket = [];
         xhr.onload = function() {
             if (xhr.status === 200) {
                 alert('Items reserved successfully!');
-                clearBasket(); // Clear the basket after confirming
+                clearBasket();
             } else {
                 alert('Failed to reserve items. Please try again.');
             }

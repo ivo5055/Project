@@ -17,7 +17,7 @@
 
             <?php
             if (!isset($_SESSION['username'])) {
-                echo '<a href="Register.php" class="register-button" data-translate="true">Регистрирайте се</a>';
+                echo '<a href="Register.php" class="register-button" data-translate="true">Регистрирай се</a>';
             }
             ?>
         </div>

@@ -21,6 +21,11 @@
         $room_number = $_GET['room_number'];
         $building = $_GET['building'];
         
+        $bookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number";
+        $bookingStmt = $pdo->prepare($bookingQuery);
+        $bookingStmt->execute(['room_number' => $room_number]);
+        $currentBookings = $bookingStmt->fetchColumn();
+        
         // Fetch room details from database
         $query = "SELECT * FROM room WHERE room_number = :room_number AND building = :building";
         $stmt = $pdo->prepare($query);
@@ -29,18 +34,41 @@
 
         if ($room) {
             $averageRating = $room['number_of_reviews'] > 0 ? round($room['total_rating'] / $room['number_of_reviews'], 1) : 0;
+
+            // Array of all possible amenities (use consistent case)
+            $allAmenities = ['wifi', 'bathroom', 'air_conditioning', 'dryer', 'fridge', 'washing_machine'];
+            
+            // Fetch amenities from database and convert to lower case
+            $dbAmenities = array_map('trim', explode(',', strtolower($room['amenities'])));
+            
             echo '<div class="room-details">';
             echo '<div class="room-image">';
             echo '<img src="img/' . htmlspecialchars($room['image_url']) . '" alt="Снимка на стаята" onclick="openModal(this.src)" data-translate="true">';
-            echo '</div>';
+            echo '<div class="amenities">';
+            
+            // Loop through all possible amenities
+            foreach ($allAmenities as $amenity) {
+                // Check if this amenity exists in the database
+                $isAvailable = in_array($amenity, $dbAmenities);
+                
+                $iconFile = 'img/' . $amenity . '.png'; // Assuming icons are named like 'wifi.png', 'fridge.png'
+                $class = $isAvailable ? '' : 'missing'; // Add 'missing' class if the amenity is not available
+                
+                echo '<div class="amenity ' . $class . '">';
+                echo '<img src="' . $iconFile . '" alt="' . htmlspecialchars(ucfirst($amenity)) . '" title="' . htmlspecialchars(ucfirst($amenity)) . '">';
+                echo '</div>';
+            }
+            
+            echo '</div>'; // Close amenities div
+            echo '</div>'; // Close room-image div
             echo '<div class="room-info">';
             echo '<p><strong data-translate="true">Номер на стаята:</strong> ' . htmlspecialchars($room['room_number']) . '</p>';
-            echo '<p><strong data-translate="true">Сграда:</strong> ' . htmlspecialchars($room['building']) . '</p>';
-            echo '<p><strong data-translate="true">Капацитет:</strong> ' . htmlspecialchars($room['room_capacity']) . '</p>';
+            echo '<p><strong data-translate="true">Блок:</strong> ' . htmlspecialchars($room['building']) . '</p>';
+            echo '<p><strong data-translate="true">Капацитет:</strong> '. htmlspecialchars($currentBookings) . ' / ' . htmlspecialchars($room['room_capacity']) . '</p>';
             echo '<p><strong data-translate="true">Описание:</strong> ' . htmlspecialchars($room['description']) . '</p>';
-            echo '<p><strong data-translate="true">Оценка:</strong> ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($room['number_of_reviews']) . ' отзива)</p>';
-            echo '<p><strong data-translate="true">Цена:</strong> $' . htmlspecialchars($room['price']) . ' на месец</p>';
-            
+            echo '<p><strong data-translate="true">Рейтинг:</strong> ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($room['number_of_reviews']) . ' отзива)</p>';
+            echo '<p><strong data-translate="true">Цена:</strong> ' . htmlspecialchars($room['price']) . 'лв. на месец</p>';
+
             // Check if user is logged in
             if (isset($_SESSION['username'])) {
                 $username = $_SESSION['username'];
@@ -75,8 +103,8 @@
                 echo '<p data-translate="true">Моля, <a href="login.php" data-translate="true">влезте</a>, за да резервирате тази стая.</p>';
             }
 
-            echo '</div>'; // Close .room-info
-            echo '</div>'; // Close .room-details
+            echo '</div>'; // Close room-info div
+            echo '</div>'; // Close room-details div
         } else {
             echo '<p data-translate="true">Стая не е намерена.</p>';
         }
@@ -138,7 +166,6 @@ document.getElementById('modalImage').addEventListener('mousemove', function(eve
 // Remove zoom effect when mouse leaves the image
 document.getElementById('modalImage').addEventListener('mouseleave', function() {
     this.classList.remove('zoomed');
-    this.style.transformOrigin = 'center'; // Reset transform origin
 });
 </script>
 

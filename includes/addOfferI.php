@@ -1,5 +1,5 @@
 <?php
-session_start(); // Start session to access session variables
+session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if user is logged in (assuming 'user_id' is set in session upon login)
@@ -10,18 +10,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }*/
 
     // Retrieve offer data from POST
-    
     $building = $_POST["building"];
     $description = $_POST["description"];
     $price = $_POST["price"];
     $room_number = $_POST["room_number"];
     $room_capacity = $_POST["room_capacity"];
     $gender_R = $_POST["gender_R"];
+    $amenities = isset($_POST['amenities']) ? implode(', ', $_POST['amenities']) : '';
 
-    
     try {
-        include "dbh.inc.php"; // Include database connection file
-
+        include "dbh.inc.php";
 
         echo "<pre>";
         print_r($_FILES['my_image']);
@@ -35,24 +33,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if ($error === 0) {
             if ($img_size > 30000000) {
                 $em = "Sorry, your file is too large.";
-                header("Location: ../offers.php?error=$em");
-            }else {
-    
+                header("Location: ../addOffer.php?error=$em");
+                exit();
+            } else {
                 $img_ex = pathinfo($img_name, PATHINFO_EXTENSION);
                 $img_ex_lc = strtolower($img_ex);
-    
-                $allowed_exs = array("jpg", "jpeg", "png"); 
-    
-                if (in_array($img_ex_lc, $allowed_exs)) {
-                    $new_img_name = uniqid("IMG-", true).'.'.$img_ex_lc;
-                    $img_upload_path = '../img/'.$new_img_name;
-                    move_uploaded_file($tmp_name, $img_upload_path);
-    
-                    
+                $allowed_exs = array("jpg", "jpeg", "png");
 
-                }else {
-                    $em = "You can't upload files of this type";
-                    header("Location: ../offers.php");
+                if (in_array($img_ex_lc, $allowed_exs)) {
+                    $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
+                    $img_upload_path = '../img/' . $new_img_name;
+                    move_uploaded_file($tmp_name, $img_upload_path);
+                } else {
+                    $em = "Не можете да качвате файлове от този тип";
+                    header("Location: ../addOffer.php?error=$em");
+                    exit();
                 }
             }
         }
@@ -62,24 +57,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmtRoom = $pdo->prepare($queryRoom);
         $stmtRoom->execute([$room_number, $building]);
         if ($stmtRoom->rowCount() > 0) {
-            die("Room already registered for this building. Please choose a different room number.");
+            $em = "Номерът на стаята е вече регистрирана за този блок.";
+            header("Location: ../addOffer.php?errorN=$em");
+            exit();
         }
 
-
-        // Insert offer data into database
-        $queryInsert = "INSERT INTO room (building, room_number, description, price,image_url,  room_capacity, gender_R) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        // Insert offer into database
+        $queryInsert = "INSERT INTO room (building, room_number, description, price, image_url, room_capacity, gender_R, amenities) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         $stmtInsert = $pdo->prepare($queryInsert);
-        $stmtInsert->execute([$building, $room_number, $description, $price,$new_img_name,  $room_capacity, $gender_R]);
+        $stmtInsert->execute([$building, $room_number, $description, $price, $new_img_name, $room_capacity, $gender_R, $amenities]);
 
-        // Redirect to offers page after adding offer
         header("Location: ../offers.php");
         exit();
     } catch (PDOException $e) {
-        // Handle database errors
         die("Query failed: " . $e->getMessage());
     }
 } else {
-    // If the request method is not POST, redirect to MainPage.html
     header("Location: ../MainPage.php");
     exit();
 }

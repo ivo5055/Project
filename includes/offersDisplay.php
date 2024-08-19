@@ -26,12 +26,12 @@ echo '<p data-translate="true">Номер на стая: ' . htmlspecialchars($r
 // Show how many rooms are booked
 $bookingStmt->execute(['room_number' => $row['room_number']]);
 $currentBookings = $bookingStmt->fetchColumn();
-echo '<p data-translate="true">Живущи: ' . htmlspecialchars($currentBookings) . ' / ' . htmlspecialchars($row['room_capacity']) . '</p>';
+echo '<p data-translate="true">Капацитет: ' . htmlspecialchars($currentBookings) . ' / ' . htmlspecialchars($row['room_capacity']) . '</p>';
 
 // Calculate and display the average rating and number of reviews
 $averageRating = $row['number_of_reviews'] > 0 ? round($row['total_rating'] / $row['number_of_reviews'], 1) : 0;
-echo '<p data-translate="true">Рейтинг: ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($row['number_of_reviews']) . ' reviews)</p>';
-echo '<p data-translate="true">Цена: ' . htmlspecialchars($row['price']) . ' лв. на месец</p>';
+echo '<p data-translate="true">Рейтинг: ' . htmlspecialchars($averageRating) . '/5 (' . htmlspecialchars($row['number_of_reviews']) . ' отзива)</p>';
+echo '<p data-translate="true">Цена: ' . htmlspecialchars($row['price']) . 'лв. на месец</p>';
 
 // Link to room details
 echo '<p><a href="room_details.php?room_number=' . htmlspecialchars($row['room_number']) . '&building=' . htmlspecialchars($row['building']) . '" class="button" data-translate="true">Резервирай</a></p>';

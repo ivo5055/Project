@@ -42,9 +42,9 @@ include "elements/header.php";
         <button class="building-button active" data-building="1" data-translate="true">Блок 1</button>
         <button class="building-button" data-building="2" data-translate="true">Блок 2</button>
         <button class="building-button" data-building="3" data-translate="true">Блок 3</button>
-        <button class="building-button" data-building="4" data-translate="true">Блок 4</button>
-        <button class="building-button" data-building="5" data-translate="true">Блок 5</button>
-        <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled'; ?> data-translate="true">Блок 6</button>
+        <button class="building-button" data-building="4" <?php if ($grade !== null && $grade < 3.5) echo 'disabled title="Недостатъчен успех."'; ?> data-translate="true">Блок 4</button>
+        <button class="building-button" data-building="5" <?php if ($grade !== null && $grade < 4) echo 'disabled title="Недостатъчен успех."'; ?> data-translate="true">Блок 5</button>
+        <button class="building-button" data-building="6" <?php if ($grade !== null && $grade < 5) echo 'disabled title="Недостатъчен успех."'; ?> data-translate="true">Блок 6</button>
         
         <button id="filterButton" class="Filter_B">Filter</button>
         <?php include "includes/filter.php"; ?>

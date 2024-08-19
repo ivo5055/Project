@@ -1,45 +1,62 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST["email"];
-    $user = $_POST["user"];
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $email = trim($_POST["email"]);
+    $user = trim($_POST["user"]);
     $pwd = $_POST["pwd"];
     $gender = $_POST["gender"];
+    $errors = [];
 
     try {
         include "dbh.inc.php";
 
+        // Begin a transaction
+        $pdo->beginTransaction();
+
         // Check if email already exists
-        $queryEmail = "SELECT * FROM users WHERE email = ?";
+        $queryEmail = "SELECT 1 FROM users WHERE email = ?";
         $stmtEmail = $pdo->prepare($queryEmail);
         $stmtEmail->execute([$email]);
-        if ($stmtEmail->rowCount() > 0) {
-            die("Email already registered. Please choose a different email.");
+        if ($stmtEmail->fetch()) {
+            $errors['email'] = "Имейл адресът вече е регистриран. Моля, изберете друг имейл.";
         }
 
         // Check if username already exists
-        $queryUser = "SELECT * FROM users WHERE user = ?";
+        $queryUser = "SELECT 1 FROM users WHERE user = ?";
         $stmtUser = $pdo->prepare($queryUser);
         $stmtUser->execute([$user]);
-        if ($stmtUser->rowCount() > 0) {
-            die("Username already taken. Please choose a different username.");
+        if ($stmtUser->fetch()) {
+            $errors['user'] = "Потребителското име вече е заето. Моля, изберете друго потребителско име.";
         }
 
-        // Hash the password
+        if (!empty($errors)) {
+            $pdo->rollBack();
+            $queryString = http_build_query($errors);
+            header("Location: ../Register.php?" . $queryString);
+            exit();
+        }
+
+        // Hash the password securely
         $hashedPassword = password_hash($pwd, PASSWORD_DEFAULT);
 
-        // Insert new user into database with hashed password
+        // Insert new user into the database with hashed password
         $queryInsert = "INSERT INTO users (email, user, password, gender, account) VALUES (?, ?, ?, ?, ?)";
         $stmtInsert = $pdo->prepare($queryInsert);
         $stmtInsert->execute([$email, $user, $hashedPassword, $gender, "U"]);
 
-        // Redirect after successful registration
+        // Commit the transaction
+        $pdo->commit();
+
         header("Location: ../MainPage.php");
         exit();
     } catch (PDOException $e) {
-        die("Database error: " . $e->getMessage());
+        $pdo->rollBack();
+        $errors['db'] = "Database error: " . $e->getMessage();
+        $queryString = http_build_query($errors);
+        header("Location: ../Register.php?" . $queryString);
+        exit();
     }
 } else {
     header("Location: ../MainPage.php");
-    die();
+    exit();
 }
 ?>

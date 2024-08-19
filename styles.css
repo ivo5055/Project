@@ -503,25 +503,20 @@ header a:hover {
 }
   
   /* Styles for the building buttons */
-  .building-button {
+.building-button {
     padding: 10px 20px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
     
-  }
+}
   
-  /* Styles for when buttons are hovered */
-  .building-button:hover {
+.building-button:hover {
     background-color: #e0e0e0;
-  }
+}
   
-  /* Styles for when buttons are clicked (selected) */
-  .building-button.active {
-    background-color: #ddd;
-    border-color: #999;
-  }
+  
 
 
 
@@ -890,14 +885,6 @@ form {
     text-decoration: underline;
 }
 
-#password-match {
-    color: red;
-    font-weight: bold;
-}
-
-
-
-
 
 
 /* Add Offer Page Styles */
@@ -925,13 +912,18 @@ form {
 
 .add-offer-form input[type="text"],
 .add-offer-form select,
-.add-offer-form input[type="file"] {
+.add-offer-form input[type="file"],
+.add-offer-form textarea {
     width: calc(100% - 22px); /* Subtracting padding and border */
     padding: 10px;
     margin-bottom: 20px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.add-offer-form textarea {
+    resize: vertical; /* Allow vertical resizing only */
 }
 
 .add-offer-form input[type="radio"] {
@@ -953,6 +945,76 @@ form {
     margin-right: 5px; /* Space between radio button and label */
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Space between grid items */
+    margin-bottom: 20px; /* Space below the grid */
+}
+
+.form-grid-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.amenities-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px; /* Space between icons */
+}
+
+.amenity {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.amenity input[type="checkbox"] {
+    display: none; /* Hide the checkbox */
+}
+
+.amenity label {
+    display: inline-block;
+    width: 40px; /* Adjust width of icons */
+    height: 40px; /* Adjust height of icons */
+    cursor: pointer;
+    border: 2px solid #ccc; /* Border color for unselected state */
+    border-radius: 5px;
+    transition: border-color 0.3s, background-color 0.3s;
+}
+
+.amenity label img {
+    width: 100%; /* Make image fit the label */
+    height: 100%;
+    display: block;
+}
+
+.amenity input[type="checkbox"]:checked + label {
+    border-color: #007BFF; /* Highlight border color when selected */
+    background-color: #E8F0FF; /* Background color for selected state */
+}
+
+.amenity label::after {
+    content: attr(title);
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: white;
+    padding: 5px;
+    border-radius: 5px;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+}
+
+.amenity label:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
 
 .add-offer-form button {
     width: 100%;
@@ -969,6 +1031,8 @@ form {
 .add-offer-form button:hover {
     background-color: #414141;
 }
+
+
 
 
 
