@@ -127,37 +127,32 @@ h1.room-details-header {
 
 /* Base styling for amenities */
 .amenities {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px; /* Space between amenities */
     margin-top: 15px; /* Space between the image and amenities */
 }
 
 /* Individual amenity styling */
 .amenity {
-    display: flex;
-    align-items: center;
-    gap: 10px; /* Space between icon and text */
+    display: inline-block; /* Use inline-block to allow natural wrapping */
+    width: 30%; /* Approximately 3 per row */
+    margin: 10px 1.5%; /* Space between amenities */
+    vertical-align: top; /* Align items to the top */
+    text-align: center; /* Center content within the amenity */
+    position: relative; /* Position relative for overlay */
+    cursor: help; /* Change cursor to help icon to indicate hover */
 }
 
+/* Adjusted icon size */
 .amenity img {
-    width: 40px; /* Icon size */
-    height: 40px; /* Icon size */
-    border-radius: 5px; /* Optional: Add border-radius if needed */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Optional: Add shadow to icons */
+    width: 80px; /* Icon size */
+    height: 80px;
 }
 
 /* Styling for missing amenities */
 .amenity.missing img {
-    border: 2px solid red; /* Highlight with a red border */
+    border: 2px solid red; /* Red border for missing amenities */
 }
 
-
-/* Optionally, you can add a red background or overlay */
-.amenity.missing {
-    position: relative;
-}
-
+/* Overlay and text for missing amenities */
 .amenity.missing::after {
     content: 'Missing';
     position: absolute;
@@ -167,14 +162,37 @@ h1.room-details-header {
     bottom: 0;
     background: rgba(255, 0, 0, 0.3); /* Red overlay */
     color: red;
-    font-size: 12px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 5px; /* Match the border-radius of the image */
+    border-radius: 8px;
 }
 
+
+
+
 /* Responsive styles */
+@media (max-width: 768px) {
+    .amenity {
+        width: 45%; /* 2 per row on smaller screens */
+        margin: 10px 2.5%;
+    }
+}
+
+@media (max-width: 480px) {
+    .amenity {
+        width: 90%; /* 1 per row on very small screens */
+        margin: 10px 5%;
+    }
+
+    .amenity img {
+        width: 70px; /* Reduce icon size for small screens */
+        height: 70px;
+    }
+}
+
+/* Responsive styles for room details */
 @media (max-width: 768px) {
     .room-details {
         flex-direction: column;

@@ -2,6 +2,9 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
+    overflow-x:hidden;
+    justify-content: left;
+    background-color: #f0f9ff;
 }
 
 
@@ -11,9 +14,8 @@ body {
 
 
 header {
-
-    background-color: #333;
-    color: #fff;
+    background-color: #2a2d34;
+    color: #ffffff;
     padding: 10px 20px;
     display: flex;
     align-items: center;
@@ -25,7 +27,7 @@ header {
 }
 
 header a {
-    color: #fff;
+    color: #ffffff;
     text-decoration: none;
     margin-left: 20px;
     font-weight: bold;
@@ -42,7 +44,7 @@ header a:hover {
 .logo-circle {
     width: 50px;
     height: 50px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -67,8 +69,23 @@ header a:hover {
 
 .language-selector,
 .login-button {
-    margin-left: 20px;
+    margin-left: -5px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: black;
+    color: #ffffff;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
 }
+
+/* Ensure the button’s color is not overridden on hover or focus */
+.language-selector:hover,
+.login-button:hover {
+    background-color: #555; /* Slightly lighter shade on hover */
+}
+
 
 .content {
     
@@ -94,8 +111,8 @@ header a:hover {
 .register-button {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
+    background-color: black;
+    color: #ffffff;
     border-radius: 5px;
     text-decoration: none;
     font-size: 1em;
@@ -125,12 +142,11 @@ header a:hover {
 
 /* DINER */
 .delete-button {
-    padding: 5px 10px;
+    padding: 2px 5px;
     margin-left: 5px;
     text-decoration: none;
     border-radius: 5px;
     color: white;
-    background-color: #2196F3; 
     transition: background-color 0.3s;
 }
 
@@ -424,7 +440,7 @@ header a:hover {
     margin: 10px;
     border: 1px solid #ccc;
     padding: 10px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -503,37 +519,29 @@ header a:hover {
 }
   
   /* Styles for the building buttons */
-.building-button {
+  .building-button {
     padding: 10px 20px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;
     border-radius: 5px;
     cursor: pointer;
     
-}
+  }
   
-.building-button:hover {
+  /* Styles for when buttons are hovered */
+  .building-button:hover {
     background-color: #e0e0e0;
-}
+  }
   
+  /* Styles for when buttons are clicked (selected) */
+  .building-button.active {
+    background-color: #ddd;
+    border-color: #999;
+  }
   
 
 
-
-
-
-
-
-
-/* General Styles */
-body {
-    overflow-x:hidden;
-    justify-content: left;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f8f8f8;
-}
+/* General Styles Detete maybe*/
 
 .hideS{
     overflow: hidden;
@@ -543,7 +551,7 @@ body {
     max-width: 600px;
     margin: 50px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -595,7 +603,7 @@ body {
     display: inline-block;
     padding: 10px 20px;
     font-size: 16px;
-    color: #fff;
+    color: #ffffff;
     background-color: #007BFF;
     border: none;
     border-radius: 5px;
@@ -612,20 +620,7 @@ body {
 
 /* Requests */
 
-/*
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f9;
-    margin: 0;
-    padding: 0;
-}
 
- General styles 
-h1 {
-    color: #333;
-    text-align: center;
-    margin-top: 20px;
-}*/
 .centered-title {
     text-align: center;
 }
@@ -640,7 +635,7 @@ h1 {
     max-width: 1000px;
     margin: 40px auto;
     padding: 20px;
-    background-color: #fff;
+    background-color: #ffffff;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -771,7 +766,7 @@ form {
 
 
 
-/* Login Page Styles */ 
+/* Login Page*/ 
 .login-container {
     max-width: 400px;
     margin: 50px auto;
@@ -825,7 +820,7 @@ form {
     text-decoration: underline;
 }
 
-/* Register Page Styles */
+/* Register Page*/
 .register-container {
     max-width: 400px;
     margin: 50px auto;
@@ -887,7 +882,7 @@ form {
 
 
 
-/* Add Offer Page Styles */
+/* Add Offer Page*/
 .add-offer-container {
     max-width: 600px;
     margin: 50px auto;
@@ -971,50 +966,30 @@ form {
 }
 
 .amenity input[type="checkbox"] {
-    display: none; /* Hide the checkbox */
+    display: none;
 }
 
 .amenity label {
     display: inline-block;
-    width: 40px; /* Adjust width of icons */
-    height: 40px; /* Adjust height of icons */
+    width: 40px;
+    height: 40px;
     cursor: pointer;
-    border: 2px solid #ccc; /* Border color for unselected state */
+    border: 2px solid #ccc;
     border-radius: 5px;
     transition: border-color 0.3s, background-color 0.3s;
 }
 
 .amenity label img {
-    width: 100%; /* Make image fit the label */
+    width: 100%;
     height: 100%;
     display: block;
 }
 
 .amenity input[type="checkbox"]:checked + label {
-    border-color: #007BFF; /* Highlight border color when selected */
-    background-color: #E8F0FF; /* Background color for selected state */
+    border-color: #007BFF;
+    background-color: #E8F0FF;
 }
 
-.amenity label::after {
-    content: attr(title);
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: #333;
-    color: white;
-    padding: 5px;
-    border-radius: 5px;
-    white-space: nowrap;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s;
-}
-
-.amenity label:hover::after {
-    opacity: 1;
-    visibility: visible;
-}
 
 .add-offer-form button {
     width: 100%;
@@ -1033,29 +1008,101 @@ form {
 }
 
 
+/* Edit offer*/
+.edit-room-offer {
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
 
-
-
-/* profile.css */
-/* Base styling for the profile page */
-.profile-container {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+.edit-room-offer h1 {
+    text-align: center;
+    margin-bottom: 20px;
     color: #333;
-    background-color: #f4f7f9;
+}
+
+.edit-room-offer label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.edit-room-offer input[type="text"],
+.edit-room-offer input[type="number"],
+.edit-room-offer select,
+.edit-room-offer input[type="file"],
+.edit-room-offer textarea {
+    width: calc(100% - 22px); /* Subtracting padding and border */
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+.edit-room-offer textarea {
+    resize: vertical; /* Allow vertical resizing only */
+}
+
+.edit-room-offer input[type="radio"] {
+    margin-right: 10px;
+}
+
+.radio-group {
+    display: flex;
+    align-items: center; /* Center align items vertically */
+    gap: 15px; /* Space between radio buttons */
+    margin-bottom: 20px; /* Space below the radio group */
+}
+
+.radio-group label {
+    margin: 0;
+}
+
+.radio-group input[type="radio"] {
+    margin-right: 5px; /* Space between radio button and label */
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px; /* Space between grid items */
+    margin-bottom: 20px; /* Space below the grid */
+}
+
+.form-grid-item {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Align items to the start (left) */
+}
+.edit-room-offer button {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.edit-room-offer button:hover {
+    background-color: #414141;
+}
+
+/* Profile page*/
+.profile-container {
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Align items to the start (left) */
     padding: 20px;
     margin: 0 auto; /* Center the container horizontally in larger screens */
     max-width: 800px; /* Limit the maximum width for better readability */
-}
-
-/* Heading styling */
-.profile-header {
-    color: #444;
-    margin-bottom: 20px;
-    font-size: 28px;
-    font-weight: 600;
 }
 
 /* Details styling */
@@ -1066,7 +1113,7 @@ form {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin-bottom: 10px;
     max-width: 100%; /* Ensure it fits within the container */
-    width: 100%;
+    width: 50%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1119,6 +1166,78 @@ form {
 }
 
 
+
+
+/* Edit Profile Page */
+.edit-profile-page {
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.edit-profile-form {
+    width: 50%;
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Adjust form elements */
+.edit-profile-label {
+    font-weight: 500;
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.edit-profile-input {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.edit-profile-error {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+.edit-profile-button {
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.edit-profile-button:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .edit-profile-form {
+        padding: 15px;
+    }
+
+    .edit-profile-button {
+        width: 100%;
+    }
+}
 
 
 

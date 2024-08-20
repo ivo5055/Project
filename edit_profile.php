@@ -120,39 +120,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <div class="edit-profile-page">
     <h2 class="edit-profile-header" data-translate="true">Редактиране на профил</h2>
 
-    <form id="profileForm" method="post">
+    <form id="profileForm" method="post" class="edit-profile-form">
+        <div>
+            <label for="full_name" class="edit-profile-label" data-translate="true">Пълно име:</label>
+            <input type="text" name="full_name" class="edit-profile-input" placeholder="Пълно име" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>">
+        </div>
         <div>
             <label for="email" class="edit-profile-label" data-translate="true">Нов имейл:</label>
-            <input type="text" name="email" placeholder="Нов имейл" value="<?php echo htmlspecialchars($userDetails['email']); ?>">
+            <input type="text" name="email" class="edit-profile-input" placeholder="Нов имейл" value="<?php echo htmlspecialchars($userDetails['email']); ?>">
             <?php if (!empty($emailError)) echo "<p class='edit-profile-error'>$emailError</p>"; ?>
         </div>
         <div>
             <label for="username" class="edit-profile-label" data-translate="true">Ново потребителско име:</label>
-            <input type="text" name="username" placeholder="Ново потребителско име" value="<?php echo htmlspecialchars($userDetails['user']); ?>">
+            <input type="text" name="username" class="edit-profile-input" placeholder="Ново потребителско име" value="<?php echo htmlspecialchars($userDetails['user']); ?>">
             <?php if (!empty($usernameError)) echo "<p class='edit-profile-error'>$usernameError</p>"; ?>
         </div>
         <div>
             <label for="password" class="edit-profile-label" data-translate="true">Нова парола:</label>
-            <input type="password" name="password" placeholder="Нова парола">
+            <input type="password" name="password" class="edit-profile-input" placeholder="Нова парола">
         </div>
         <div>
             <label for="confirm_password" class="edit-profile-label" data-translate="true">Потвърдете паролата:</label>
-            <input type="password" name="confirm_password" placeholder="Потвърдете паролата">
-            <?php if (!empty($passwordError)) echo "<p class='edit-profile-error'>$passwordError</p>"; ?>
+            <input type="password" name="confirm_password" class="edit-profile-input" placeholder="Потвърдете паролата">
+            <?php if (!empty($passwordError)) echo "<br><br><p class='edit-profile-error'>$passwordError</p>"; ?>
         </div>
-        <div>
-            <label for="full_name" class="edit-profile-label" data-translate="true">Пълно име:</label>
-            <input type="text" name="full_name" placeholder="Пълно име" value="<?php echo htmlspecialchars($userDetails['full_name']); ?>">
-        </div>
+
 
         <?php if (strlen($userDetails['egn']) < 10): ?>
         <div>
             <label for="fn" class="edit-profile-label" data-translate="true">Факултетен номер (FN):</label>
-            <input type="text" name="fn" placeholder="Факултетен номер" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
+            <input type="text" name="fn" class="edit-profile-input" placeholder="Факултетен номер" value="<?php echo htmlspecialchars($userDetails['fn']); ?>">
         </div>
         <div>
             <label for="egn" class="edit-profile-label" data-translate="true">ЕГН:</label>
-            <input type="text" name="egn" placeholder="ЕГН" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
+            <input type="text" name="egn" class="edit-profile-input" placeholder="ЕГН" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
             <?php if (!empty($egnError)) echo "<p class='edit-profile-error'>$egnError</p>"; ?>
         </div>
         <?php endif; ?>

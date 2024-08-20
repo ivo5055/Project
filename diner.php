@@ -177,6 +177,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
     <button id="clear-basket" class="delete-button" onclick="clearBasket()" data-translate="true">Изчисти</button>
     <script src="js/reserve_list.js"></script>
 </div>
+
 <?php endif; ?>
 
 <!-- Reserved Items Container ChefA -->

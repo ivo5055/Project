@@ -8,15 +8,17 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #ffffff; /* White background for a clean look */
-    min-width: 200px; /* Adjusted width for better visibility */
-    z-index: 2; /* Ensure dropdown is in front */
-    left: 50%; /* Center align dropdown content */
-    border-radius: 8px; /* Smooth border radius */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    background-color: #ffffff; /* Clean white background */
+    min-width: 200px; /* Adequate width for visibility */
+    z-index: 2; /* Ensure dropdown is above other elements */
+    left: 50%; /* Center alignment */
+    border-radius: 8px; /* Smooth rounded corners */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
     transform: translateX(-50%); /* Center alignment adjustment */
-    overflow: hidden; /* Ensure content doesn't overflow rounded corners */
-    padding: 10px 0; /* Space inside the dropdown */
+    overflow: hidden; /* Prevent content from overflowing rounded corners */
+    padding: 10px 0; /* Padding inside the dropdown */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font */
+    font-size: 14px; /* Consistent font size */
 }
 
 /* Style for dropdown links */

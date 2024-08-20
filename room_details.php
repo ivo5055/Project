@@ -54,8 +54,20 @@
                 $iconFile = 'img/' . $amenity . '.png'; // Assuming icons are named like 'wifi.png', 'fridge.png'
                 $class = $isAvailable ? '' : 'missing'; // Add 'missing' class if the amenity is not available
                 
-                echo '<div class="amenity ' . $class . '">';
-                echo '<img src="' . $iconFile . '" alt="' . htmlspecialchars(ucfirst($amenity)) . '" title="' . htmlspecialchars(ucfirst($amenity)) . '">';
+                // Map amenities to their translated titles
+                $translatedTitles = [
+                    'wifi' => 'WiFi',
+                    'bathroom' => 'Самостоятелна баня',
+                    'air_conditioning' => 'Климатик',
+                    'dryer' => 'Сушилня',
+                    'fridge' => 'Хладилник',
+                    'washing_machine' => 'Пералня',
+                ];
+
+                $title = $translatedTitles[$amenity]; // Get the translated title
+
+                echo '<div class="amenity ' . $class . '" title="' . htmlspecialchars($title) . '">';
+                echo '<img src="' . $iconFile . '" alt="' . htmlspecialchars($title) . '">';
                 echo '</div>';
             }
             
@@ -168,6 +180,5 @@ document.getElementById('modalImage').addEventListener('mouseleave', function() 
     this.classList.remove('zoomed');
 });
 </script>
-
 </body>
 </html>

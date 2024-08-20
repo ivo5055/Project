@@ -75,31 +75,31 @@
                         </label>
                     </div>
                     <div class="amenity">
-                        <input type="checkbox" id="fridge" name="amenities[]" value="Хладилник">
+                        <input type="checkbox" id="fridge" name="amenities[]" value="fridge">
                         <label for="fridge" title="Хладилник">
                             <img src="img/fridge.png" alt="Хладилник">
                         </label>
                     </div>
                     <div class="amenity">
-                        <input type="checkbox" id="bathroom" name="amenities[]" value="Самостоятелна баня">
+                        <input type="checkbox" id="bathroom" name="amenities[]" value="bathroom">
                         <label for="bathroom" title="Самостоятелна баня">
                             <img src="img/bathroom.png" alt="Самостоятелна баня">
                         </label>
                     </div>
                     <div class="amenity">
-                        <input type="checkbox" id="air_conditioning" name="amenities[]" value="Климатик">
+                        <input type="checkbox" id="air_conditioning" name="amenities[]" value="air_conditioning">
                         <label for="air_conditioning" title="Климатик">
                             <img src="img/air_conditioning.png" alt="Климатик">
                         </label>
                     </div>
                     <div class="amenity">
-                        <input type="checkbox" id="washing_machine" name="amenities[]" value="Пералня">
+                        <input type="checkbox" id="washing_machine" name="amenities[]" value="washing_machine">
                         <label for="washing_machine" title="Пералня">
                             <img src="img/washing_machine.png" alt="Пералня">
                         </label>
                     </div>
                     <div class="amenity">
-                        <input type="checkbox" id="dryer" name="amenities[]" value="Сушилня">
+                        <input type="checkbox" id="dryer" name="amenities[]" value="dryer">
                         <label for="dryer" title="Сушилня">
                             <img src="img/dryer.png" alt="Сушилня">
                         </label>

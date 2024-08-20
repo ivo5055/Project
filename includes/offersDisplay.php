@@ -46,7 +46,7 @@ echo '</button>';
 
 // Admin options
 if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
-    echo '<form method="post" action="">';
+    echo '<form method="post" action="" onsubmit="return confirmDeletion()">';
     echo '<input type="hidden" name="Id" value="' . htmlspecialchars($row['Id']) . '">'; // Hidden input to send room ID
     
     // Edit button
@@ -59,3 +59,9 @@ if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
 echo '</div>';
 echo '</div>';
 ?>
+
+<script>
+function confirmDeletion() {
+    return confirm('Are you sure you want to delete this room?');
+}
+</script>

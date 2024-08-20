@@ -5,7 +5,6 @@
     box-sizing: border-box;
 }
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
     color: #333;
     background-color: #f4f4f4;
     line-height: 1.6;
@@ -100,7 +99,6 @@ body {
 }
 
 .payment-info h2 {
-    font-size: 2.2em;
     color: #007BFF;
     margin-bottom: 20px;
     border-bottom: 3px solid #007BFF;
