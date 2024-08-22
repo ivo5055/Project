@@ -1463,6 +1463,9 @@ form {
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .booking-form h1 {
@@ -1488,9 +1491,9 @@ form {
     padding: 10px 12px;
     border: 1px solid #ddd;
     border-radius: 8px;
-    margin-bottom: 20px;
     font-size: 16px;
     background-color: #f9f9f9;
+    box-sizing: border-box; /* Ensure padding and border are included in the width */
 }
 
 .booking-form input[type="text"]:read-only {
@@ -1516,6 +1519,7 @@ form {
     font-size: 16px;
     transition: background-color 0.3s ease;
     width: 100%;
+    margin-top: 20px; /* Add some space above the button */
 }
 
 .booking-form button:hover {
@@ -1538,16 +1542,21 @@ form {
 }
 
 .booking-form #participants_container {
-    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .booking-form #participants_container div {
-    margin-bottom: 20px;
+    flex: 1 1 calc(50% - 20px); /* Adjust to fit 2 items per row */
     padding: 15px;
     background-color: #ffffff;
     border: 1px solid #ddd;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
 }
 
 .booking-form #participants_container h3 {
@@ -1558,16 +1567,13 @@ form {
 
 .booking-form #participants_container input[type="text"],
 .booking-form #participants_container input[type="file"] {
-    width: calc(100% - 24px); /* Adjusted for padding and border */
+    width: 100%;
     margin: 5px 0;
+    box-sizing: border-box;
 }
 
 .booking-form #participants_container input[type="text"]:read-only {
     background-color: #e9ecef;
-}
-
-.booking-form #participants_container input[type="file"] {
-    padding: 0;
 }
 
 .booking-form #participants_container label {
@@ -1575,23 +1581,3 @@ form {
     margin-bottom: 5px;
     display: block;
 }
-
-.booking-form .dropdown {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-    color: #333;
-    font-size: 16px;
-}
-
-.booking-form .dropdown option {
-    padding: 10px;
-    background-color: #ffffff;
-}
-
-.booking-form .dropdown option:hover {
-    background-color: #f0f0f0;
-}
-

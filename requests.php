@@ -24,17 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmtUser->execute(['fn' => $fn]);
         $correctUsername = $stmtUser->fetchColumn();
 
-        // Update userN in bookings if username does not match
-        if ($username != $correctUsername) {
-            $bookingUpdateQuery = "UPDATE bookings SET userN = :correctUsername WHERE building = :building AND room_number = :room_number";
-            $bookingUpdateStmt = $pdo->prepare($bookingUpdateQuery);
-            $bookingUpdateStmt->execute([
-                'correctUsername' => $correctUsername,
-                'building' => $building,
-                'room_number' => $room_number
-            ]);
-        }
-
         // Check room availability
         $checkRoomBookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number AND building = :building";
         $checkRoomBookingStmt = $pdo->prepare($checkRoomBookingQuery);
@@ -58,8 +47,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $updateRequestStmt->execute(['request_id' => $requestId]);
 
             // Add notification for the user
-            $notificationMessage = "Вашето искане за стая е одобрено"; // for room $room_number building $building
-            $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one day
+            $notificationMessage = "Вашето искане за стая е одобрено";
+            $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day'));
             $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
             $notificationStmt = $pdo->prepare($notificationQuery);
             $notificationStmt->execute([
@@ -77,8 +66,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $updateRequestStmt->execute(['request_id' => $requestId]);
 
         // Add notification for the user
-        $notificationMessage = "Вашето искане за стая е отхвърлено"; // for room $room_number building $building
-        $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day')); // Notification lasts for one day
+        $notificationMessage = "Вашето искане за стая е отхвърлено";
+        $notificationDuration = date('Y-m-d H:i:s', strtotime('+1 day'));
         $notificationQuery = "INSERT INTO notification (message, duration, userN) VALUES (:message, :duration, :userN)";
         $notificationStmt = $pdo->prepare($notificationQuery);
         $notificationStmt->execute([
@@ -105,30 +94,30 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="true">Управление на заявките за резервация</title>
+    <title>Управление на заявките за резервация</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
 
 <div class="requests-container">
-    <h1 data-translate="true">Управление на заявките за резервация</h1>
+    <h1>Управление на заявките за резервация</h1>
     <?php
     if (isset($error)) {
-        echo '<p class="error" data-translate="true">' . htmlspecialchars($error) . '</p>';
+        echo '<p class="error">' . htmlspecialchars($error) . '</p>';
     }
     ?>
     <table>
         <thead>
             <tr>
-                <th data-translate="true">Потребител</th>
-                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Сграда</a></th>
-                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Номер на стаята</a></th>
-                <th data-translate="true">Пълно име</th>
-                <th data-translate="true">ФН</th>
-                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Оценка</a></th>
-                <th data-translate="true">Документи</th>
-                <th data-translate="true">Действие</th>
+                <th>Потребител</th>
+                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>">Блок</a></th>
+                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>">Номер на стаята</a></th>
+                <th>Пълно име</th>
+                <th>ФН</th>
+                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>">Оценка</a></th>
+                <th>Документи</th>
+                <th>Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -155,8 +144,8 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="hidden" name="room_number" value="<?php echo $request['room_number']; ?>">
                             <input type="hidden" name="building" value="<?php echo $request['building']; ?>">
                             <input type="hidden" name="fn" value="<?php echo $request['fn']; ?>"> <!-- Hidden FN field -->
-                            <button type="submit" name="action" value="approve" data-translate="true">Одобри</button>
-                            <button type="submit" name="action" value="reject" data-translate="true">Отхвърли</button>
+                            <button type="submit" name="action" value="approve">Одобри</button>
+                            <button type="submit" name="action" value="reject">Отхвърли</button>
                         </form>
                     </td>
                 </tr>

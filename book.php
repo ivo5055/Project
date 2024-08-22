@@ -40,6 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $uniqueCheckFn = [];
     $uniqueCheckEgn = [];
 
+    $bookingRequests = []; // To store booking requests before inserting them into the database
+
     for ($i = 0; $i < $numParticipants; $i++) {
         $fullname = $fullnames[$i];
         $fn = $fns[$i];
@@ -81,21 +83,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             continue;
         }
 
-        // Insert booking request for the participant
-        $bookingRequestQuery = "INSERT INTO booking_requests (userN, building, room_number, fullname, fn, document_path, status) 
-                                VALUES (:userN, :building, :room_number, :fullname, :fn, :document_path, 'pending')";
-        $bookingRequestStmt = $pdo->prepare($bookingRequestQuery);
-        $bookingRequestStmt->execute([
+        // Collect booking requests if there are no errors
+        $bookingRequests[] = [
             'userN' => $username,
             'building' => $building,
             'room_number' => $room_number,
             'fullname' => $fullname,
             'fn' => $fn,
             'document_path' => $uploadFilePath
-        ]);
+        ];
     }
 
+    // Only insert into the database if there are no errors
     if (empty($errors)) {
+        foreach ($bookingRequests as $request) {
+            $bookingRequestQuery = "INSERT INTO booking_requests (userN, building, room_number, fullname, fn, document_path, status) 
+                                    VALUES (:userN, :building, :room_number, :fullname, :fn, :document_path, 'pending')";
+            $bookingRequestStmt = $pdo->prepare($bookingRequestQuery);
+            $bookingRequestStmt->execute($request);
+        }
+
         $success = "Заявката за резервация беше изпратена успешно!";
         header("Location: offers.php");
         exit();
@@ -175,3 +182,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </body>
 </html>
+                
