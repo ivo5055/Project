@@ -4,7 +4,7 @@ include 'dbh.inc.php'; // Include your database connection file
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
 
-    // Automatically cancel expired bookings
+    // Automatically cancel expired bookings 1Month and 2Weeks advance AKA if date is - 15.03 would be expired at 1.02
     $currentDateTime = new DateTime();
     $expirationDateTime = (clone $currentDateTime)->sub(new DateInterval('P1M'))->sub(new DateInterval('P2W'));
     
@@ -117,7 +117,7 @@ if (isset($_SESSION['username'])) {
             if(isset($_POST['rate_room']) && !isset($_POST['rating'])) {
                 echo '<p style="color: red;">' . 'Please select a rating' . '</p>';
             }
-            echo '<button type="submit" name="rate_room" class="button">Изпратете оценка</button>';
+            echo '<button type="submit" name="rate_room" class="button">Изпратете оценка</button><br><br>';
             echo '</form>';
         } else {
             $userRating = $_SESSION['user_rating'];
@@ -134,13 +134,15 @@ if (isset($_SESSION['username'])) {
             echo '</div>';
         }
 
-        echo '<form method="post" action="">';
-        echo '<p></p><button type="submit" name="cancel_booking" class="button">Прекрати престой</button>';
+        echo '<div class="button-container">';
+        echo '<form method="post" action="" style="flex: 1; margin-right: 10px;">';
+        echo '<button type="submit" name="pay_next_month" class="button">Плати за следващия месец</button>';
         echo '</form>';
-
-        echo '<form method="post" action="">';
-        echo '<p></p><button type="submit" name="pay_next_month" class="button">Плати за следващия месец</button>';
+        
+        echo '<form method="post" action="" style="flex: 1;">';
+        echo '<button type="submit" name="cancel_booking" class="button button-red">Прекрати престой</button>';
         echo '</form>';
+        echo '</div>';
 
         echo '</div>';
         echo '</div>';
