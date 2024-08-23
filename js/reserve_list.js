@@ -53,3 +53,4 @@ function confirmBasket() {
 
     xhr.send("confirm_reserve=true&selected_items=" + JSON.stringify(basket));
 }
+

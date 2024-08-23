@@ -85,16 +85,6 @@
             if (isset($_SESSION['username'])) {
                 $username = $_SESSION['username'];
 
-                // Check if user already booked a room
-                $checkBookingQuery = "SELECT COUNT(*) FROM bookings WHERE userN = :username";
-                $checkBookingStmt = $pdo->prepare($checkBookingQuery);
-                $checkBookingStmt->execute(['username' => $username]);
-                $userBookingCount = $checkBookingStmt->fetchColumn();
-
-                if ($userBookingCount > 0) {
-                    echo '<p data-translate="true">Вие вече сте резервирали стая. Можете да резервирате само една стая наведнъж.</p>';
-                } else {
-                    
                     // Check current bookings for this room
                     $checkRoomBookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number AND building = :building";
                     $checkRoomBookingStmt = $pdo->prepare($checkRoomBookingQuery);
@@ -107,10 +97,7 @@
                         echo '<input type="hidden" name="building" value="' . htmlspecialchars($building) . '">';
                         echo '<button type="submit" class="button" data-translate="true">Резервирай сега</button>';
                         echo '</form>';
-                    } else {
-                        echo '<p data-translate="true">Тази стая е напълно резервирана. Моля, изберете друга стая.</p>';
                     }
-                }
             } else {
                 echo '<p data-translate="true">Моля, <a href="login.php" data-translate="true">влезте</a>, за да резервирате тази стая.</p>';
             }

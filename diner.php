@@ -111,7 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['reserve']) && !isset(
     $itemName = $_POST['name'] ?? '';
     $itemPrice = $_POST['price'] ?? '';
 
-    // Sanitize inputs
     $dayOfWeek = htmlspecialchars($dayOfWeek);
     $itemName = htmlspecialchars($itemName);
     $itemPrice = htmlspecialchars($itemPrice);
@@ -171,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
 <div class="reserved-items-container">
     <h2 data-translate="true">Твоята Кошница</h2>
     <ul id="basket-items">
-        <!-- Dynamically filled with JavaScript -->
+        
     </ul>
     <button id="confirm-basket" class="reserve-button" onclick="confirmBasket()" data-translate="true">Потвърди</button>
     <button id="clear-basket" class="delete-button" onclick="clearBasket()" data-translate="true">Изчисти</button>
@@ -199,23 +198,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
             try {
                 $searchUser = isset($_GET['search_user']) ? trim($_GET['search_user']) : '';
 
-                // Define column names for names and prices
                 $nameColumns = ['nameM', 'nameTu', 'nameWe', 'nameTh', 'nameFr', 'nameSa', 'nameSu'];
                 $priceColumns = ['priceM', 'priceTu', 'priceWe', 'priceTh', 'priceFr', 'priceSa', 'priceSu'];
 
-                // Start building the SQL query
                 $sql = "SELECT reserved_items.id, reserved_items.user_name, " . 
                     implode(', ', array_map(fn($col) => "menu_items.$col", $nameColumns)) . ", " . 
                     implode(', ', array_map(fn($col) => "menu_items.$col", $priceColumns)) . "
                     FROM reserved_items
                     JOIN menu_items ON reserved_items.item_id = menu_items.Id";
 
-                // Add WHERE clause for the search term if provided
                 if ($searchUser !== '') {
                     $sql .= " WHERE reserved_items.user_name LIKE :search_user";
                 }
 
-                // Add condition to exclude items with a price of 0
+                // Exclude items with a price of 0
                 $priceConditions = array_map(fn($col) => "$col > 0", $priceColumns);
                 if ($searchUser !== '') {
                     $sql .= " AND (" . implode(' OR ', $priceConditions) . ")";
@@ -223,10 +219,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
                     $sql .= " WHERE (" . implode(' OR ', $priceConditions) . ")";
                 }
 
-                // Prepare and execute the statement
                 $stmt = $pdo->prepare($sql);
 
-                // Bind search term if provided
                 if ($searchUser !== '') {
                     $stmt->bindValue(':search_user', "%$searchUser%", PDO::PARAM_STR);
                 }
@@ -234,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirm_reserve'])) {
                 $stmt->execute();
 
                 if ($stmt->rowCount() > 0) {
-                    $users = []; // Array to hold users and their items
+                    $users = [];
 
                     // Fetch data and group items by username
                     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
@@ -301,13 +295,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['finish'])) {
     $userName = $_POST['user_name'] ?? '';
 
     $userName = htmlspecialchars($userName);
+    
 
-    // Prepare and execute SQL query to delete all reserved items for the given user
     $sql = "DELETE FROM reserved_items WHERE user_name = :user_name";
     $stmt = $pdo->prepare($sql);
     $stmt->execute([':user_name' => $userName]);
+    
 
-    echo "<p data-translate='true'>Всички резервирани ястия за '$userName' бяха изтрити.</p>";
+
+    // Refresh the page
+    header("Location: " . $_SERVER['PHP_SELF']);
 }
 ?>
 

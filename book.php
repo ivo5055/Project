@@ -15,13 +15,14 @@ $username = $_SESSION['username'];
 
 // Retrieve user details from the database
 $userId = $_SESSION['Id'];
-$queryUserDetails = "SELECT full_name, fn, egn FROM users WHERE Id = ?";
+$queryUserDetails = "SELECT full_name, fn, egn, gender FROM users WHERE Id = ?";
 $stmtUserDetails = $pdo->prepare($queryUserDetails);
 $stmtUserDetails->execute([$userId]);
 $userDetails = $stmtUserDetails->fetch(PDO::FETCH_ASSOC);
 
 $fn = $userDetails['fn'];
 $editable = $fn == 0 ? '' : 'readonly';
+$userGender = $userDetails['gender']; // Retrieve the gender of the current user
 
 // Fetch room capacity
 $queryCapacity = "SELECT room_capacity FROM room WHERE room_number = :room_number AND building = :building";
@@ -29,18 +30,49 @@ $stmtCapacity = $pdo->prepare($queryCapacity);
 $stmtCapacity->execute(['room_number' => $room_number, 'building' => $building]);
 $roomCapacity = $stmtCapacity->fetchColumn();
 
+// Get the number of current bookings
+$bookingQuery = "SELECT COUNT(*) FROM bookings WHERE room_number = :room_number";
+$bookingStmt = $pdo->prepare($bookingQuery);
+$bookingStmt->execute(['room_number' => $room_number]);
+$currentBookings = $bookingStmt->fetchColumn();
+
+// Calculate available capacity
+$availableCapacity = $roomCapacity - $currentBookings;
+
+// Minimum grade requirement for each building
+$buildingGrades = [
+    '1' => 2,
+    '2' => 2,
+    '3' => 2,
+    '4' => 3.5,
+    '5' => 4,
+    '6' => 5
+];
+$minGradeRequired = $buildingGrades[$building] ?? 0;
+
+// Initialize variables for form values and error handling
+$fullnames = $_POST['fullname'] ?? [];
+$fns = $_POST['fn'] ?? [];
+$egns = $_POST['egn'] ?? [];
+$errors = [];
+$success = '';
+
+// Initialize the number of participants
+$numParticipants = isset($_POST['num_participants']) ? intval($_POST['num_participants']) : 0;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $numParticipants = intval($_POST['num_participants']);
-    $fullnames = $_POST['fullname'];
-    $fns = $_POST['fn'];
-    $egns = $_POST['egn'];
     $documents = $_FILES['document'];
 
-    $errors = [];
     $uniqueCheckFn = [];
     $uniqueCheckEgn = [];
-
     $bookingRequests = []; // To store booking requests before inserting them into the database
+
+    // Check if all participants have the same gender
+    $participantGender = null;
+    $allSameGender = true;
+
+    // Check if all participants meet the grade requirement
+    $gradeCheckPassed = true;
 
     for ($i = 0; $i < $numParticipants; $i++) {
         $fullname = $fullnames[$i];
@@ -51,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Check for unique FN and EGN
         if (in_array($fn, $uniqueCheckFn) || in_array($egn, $uniqueCheckEgn)) {
-            $errors[] = "Данните на участник " . ($i + 1) . " вече са въведени.";
+            $errors[] = "Данните на студент " . ($i + 1) . " вече са въведени.";
             continue;
         }
         $uniqueCheckFn[] = $fn;
@@ -60,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Validate file upload
         $allowedTypes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
         if (!in_array($documents['type'][$i], $allowedTypes)) {
-            $errors[] = "Невалиден формат на файл за участник " . ($i + 1) . ". Моля, качете PDF или DOC файл.";
+            $errors[] = "Невалиден формат на файл " . ($i + 1) . ". Моля, качете PDF или DOC файл.";
             continue;
         }
 
@@ -71,15 +103,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $isStudentValid = $verifyStmt->fetchColumn();
 
         if (!$isStudentValid) {
-            $errors[] = "Невалидни данни за участник " . ($i + 1) . ".";
+            $errors[] = "Невалидни данни за студент " . ($i + 1) . ".";
             continue;
+        }
+
+        // Retrieve grade of the participant
+        $queryParticipantGrade = "SELECT grade FROM students_db WHERE fn = :fn";
+        $stmtParticipantGrade = $pdo->prepare($queryParticipantGrade);
+        $stmtParticipantGrade->execute(['fn' => $fn]);
+        $participantGrade = $stmtParticipantGrade->fetchColumn();
+
+        // Check if the participant meets the minimum grade requirement
+        if ($participantGrade < $minGradeRequired) {
+            $errors[] = "Студент " . ($i + 1) . " не отговаря на изискванията за минимална оценка от " . $minGradeRequired . ".";
+            $gradeCheckPassed = false;
+            continue;
+        }
+
+        // Retrieve gender of the participant
+        $queryParticipantGender = "SELECT gender FROM users WHERE fn = :fn";
+        $stmtParticipantGender = $pdo->prepare($queryParticipantGender);
+        $stmtParticipantGender->execute(['fn' => $fn]);
+        $participantGender = $stmtParticipantGender->fetchColumn();
+
+        // Check if all participants have the same gender
+        if ($participantGender !== $userGender) {
+            $errors[] = "Студент " . ($i + 1) . " не съвпада с пола на текущия потребител.";
+            $allSameGender = false;
+            break; // Exit the loop if the genders do not match
         }
 
         // Save the uploaded file
         $uploadDir = 'docS/docU/';
         $uploadFilePath = $uploadDir . $documentName;
         if (!move_uploaded_file($documentTmp, $uploadFilePath)) {
-            $errors[] = "Възникна грешка при качването на файла за участник " . ($i + 1) . ".";
+            $errors[] = "Възникна грешка при качването на файла за студент " . ($i + 1) . ".";
             continue;
         }
 
@@ -94,8 +152,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         ];
     }
 
-    // Only insert into the database if there are no errors
-    if (empty($errors)) {
+    // Only insert into the database if there are no errors, all participants are of the same gender, and all meet the grade requirement
+    if (empty($errors) && $allSameGender && $gradeCheckPassed) {
         foreach ($bookingRequests as $request) {
             $bookingRequestQuery = "INSERT INTO booking_requests (userN, building, room_number, fullname, fn, document_path, status) 
                                     VALUES (:userN, :building, :room_number, :fullname, :fn, :document_path, 'pending')";
@@ -118,21 +176,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Резервиране на стая</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
+    
     <script>
         function updateParticipants() {
-            const numParticipants = parseInt(document.getElementById('num_participants').value);
+            const numParticipants = parseInt(document.getElementById('num_participants').value) || 0;
             const participantsContainer = document.getElementById('participants_container');
             participantsContainer.innerHTML = '';
 
             for (let i = 0; i < numParticipants; i++) {
                 const isFirstParticipant = i === 0;
-                const fullnameValue = isFirstParticipant ? "<?php echo htmlspecialchars($userDetails['full_name']); ?>" : '';
-                const fnValue = isFirstParticipant ? "<?php echo htmlspecialchars($userDetails['fn']); ?>" : '';
-                const egnValue = isFirstParticipant ? '' : ''; // EGN should be provided by the user, not pre-filled.
+                const fullnameValue = isFirstParticipant ? "<?php echo htmlspecialchars($userDetails['full_name']); ?>" : (document.getElementById(`fullname${i}`)?.value || '');
+                const fnValue = isFirstParticipant ? "<?php echo htmlspecialchars($userDetails['fn']); ?>" : (document.getElementById(`fn${i}`)?.value || '');
+                const egnValue = document.getElementById(`egn${i}`)?.value || '';
 
                 const participantDiv = document.createElement('div');
                 participantDiv.innerHTML = `
-                    <h3>Участник ${i + 1}</h3>
+                    <h3>Студент ${i + 1}</h3>
                     <label for="fullname${i}">Пълно име:</label>
                     <input type="text" id="fullname${i}" name="fullname[]" value="${fullnameValue}" ${isFirstParticipant ? 'readonly' : ''} required>
                     
@@ -148,32 +207,58 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 participantsContainer.appendChild(participantDiv);
             }
         }
+
+        window.onload = function() {
+            updateParticipants(); // Ensure the participants are correctly updated on page load
+        };
     </script>
 </head>
 <body>
 
 <div class="booking-form">
-    <h1>Въведете данните за участниците</h1>
+    <h1>Въведете данните за студентите</h1>
     <?php
     if (!empty($errors)) {
         foreach ($errors as $error) {
             echo '<p class="error">' . htmlspecialchars($error) . '</p>';
         }
     }
-    if (isset($success)) {
+    if ($success) {
         echo '<p class="success">' . htmlspecialchars($success) . '</p>';
     }
     ?>
     <form method="post" action="" enctype="multipart/form-data">
-        <label for="num_participants">Брой участници:</label>
+        <label for="num_participants">Брой студенти:</label>
         <select id="num_participants" name="num_participants" onchange="updateParticipants()" required>
-            <option value="0" selected>0</option> <!-- Default selection is 0 -->
-            <?php for ($i = 1; $i <= $roomCapacity; $i++): ?>
-                <option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+            <option value="1" <?php echo $numParticipants == 1 ? 'selected' : ''; ?>>1</option>
+            <?php for ($i = 2; $i <= $availableCapacity; $i++): ?>
+                <option value="<?php echo $i; ?>" <?php echo $numParticipants == $i ? 'selected' : ''; ?>><?php echo $i; ?></option>
             <?php endfor; ?>
         </select>
-
+        <br><br>
         <div id="participants_container">
+            <?php
+            // Re-populate the participants form fields if there were validation errors
+            for ($i = 0; $i < count($fullnames); $i++):
+                $fullnameValue = htmlspecialchars($fullnames[$i]);
+                $fnValue = htmlspecialchars($fns[$i]);
+                $egnValue = htmlspecialchars($egns[$i]);
+            ?>
+                <div>
+                    <h3>Студент <?php echo ($i + 1); ?></h3>
+                    <label for="fullname<?php echo $i; ?>">Пълно име:</label>
+                    <input type="text" id="fullname<?php echo $i; ?>" name="fullname[]" value="<?php echo $fullnameValue; ?>" required>
+                    
+                    <label for="fn<?php echo $i; ?>">Факултетен номер (FN):</label>
+                    <input type="text" id="fn<?php echo $i; ?>" name="fn[]" value="<?php echo $fnValue; ?>" required>
+                    
+                    <label for="egn<?php echo $i; ?>">ЕГН:</label>
+                    <input type="text" id="egn<?php echo $i; ?>" name="egn[]" value="<?php echo $egnValue; ?>" required>
+
+                    <label for="document<?php echo $i; ?>">Качване на документ:</label>
+                    <input type="file" id="document<?php echo $i; ?>" name="document[]" accept=".pdf,.doc,.docx">
+                </div>
+            <?php endfor; ?>
         </div>
         
         <button type="submit">Изпрати заявка за резервация</button>
@@ -182,4 +267,3 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 </body>
 </html>
-                

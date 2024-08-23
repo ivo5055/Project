@@ -36,6 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $roomCapacity = $roomStmt->fetchColumn();
 
         if ($currentRoomBookings < $roomCapacity) {
+            // Check if there's already any booking for the same user (regardless of room)
+            $checkExistingBookingQuery = "SELECT Id FROM bookings WHERE userN = :userN";
+            $checkExistingBookingStmt = $pdo->prepare($checkExistingBookingQuery);
+            $checkExistingBookingStmt->execute(['userN' => $correctUsername]);
+            $existingBookings = $checkExistingBookingStmt->fetchAll(PDO::FETCH_COLUMN);
+
+            if ($existingBookings) {
+                // Delete old bookings for the user
+                $deleteBookingsQuery = "DELETE FROM bookings WHERE Id IN (" . implode(',', array_fill(0, count($existingBookings), '?')) . ")";
+                $deleteBookingsStmt = $pdo->prepare($deleteBookingsQuery);
+                $deleteBookingsStmt->execute($existingBookings);
+            }
+
             // Book the room
             $bookingQuery = "INSERT INTO bookings (userN, building, room_number) VALUES (:userN, :building, :room_number)";
             $bookingStmt = $pdo->prepare($bookingQuery);
