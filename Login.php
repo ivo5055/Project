@@ -26,7 +26,6 @@
             <input type="checkbox" id="remember" name="remember">
             <label for="remember" data-translate="true">Запомни ме</label><br><br>
 
-            <a href="forgot_username.php" data-translate="true">Забравено потребителско име</a><br>
             <a href="forgot_password.php" data-translate="true">Забравена парола</a><br>
             <a href="Register.php" action="register.php" data-translate="true">Регистрация</a><br><br>
             <button type="submit" data-translate="true">Вход</button>

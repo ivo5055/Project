@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $usernameOrEmail = trim($_POST["username"]);
     $pwd = $_POST["pwd"];
@@ -7,13 +9,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try {
         include "dbh.inc.php";
         
-        $query = "SELECT * FROM users WHERE (email = ? OR user = ?)";
+        $query = "SELECT * FROM users WHERE email = ? OR user = ?";
         $stmt = $pdo->prepare($query);
-        $stmt->execute([$usernameOrEmail, $usernameOrEmail]); 
+        $stmt->execute([$usernameOrEmail, $usernameOrEmail]);
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($user && password_verify($pwd, $user['password'])) {
-            session_start();
             $_SESSION["email"] = $user["email"];
             $_SESSION["username"] = $user["user"];
             $_SESSION["gender"] = $user["gender"];
