@@ -53,7 +53,7 @@ if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
     echo '<a href="editOffer.php?room_number=' . htmlspecialchars($row['room_number']) . '&building=' . htmlspecialchars($row['building']) . ' " class="button" data-translate="true">Редактирай</a> <a> </a>';
      
     // Delete button
-    echo '<button type="submit" name="delete_room" class="button" data-translate="true">Изтрий</button>'; // Delete button
+    echo '<button type="submit" name="delete_room" class="button button-red" data-translate="true">Изтрий</button>'; // Delete button
     echo '</form>';
 }
 echo '</div>';

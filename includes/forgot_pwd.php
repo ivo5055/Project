@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $message .= "<p>Кликнете върху следния линк, за да възстановите вашата парола:</p>";
             $message .= "<p><a href=\"" . $resetLink . "\">" . $resetLink . "</a></p>";
             $message .= "</body></html>";
-            $headers = "From: your-email@example.com\r\n";
+            $headers = "From: dorm@uni-ruse.bg\r\n";
             $headers .= "Reply-To: your-email@example.com\r\n";
             $headers .= "Content-Type: text/html; charset=UTF-8\r\n"; // Поддръжка на HTML формат
 
