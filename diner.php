@@ -12,6 +12,43 @@
 <?php 
 session_start();
 include 'elements/header.php'; 
+
+if (isset($pdo)) {
+    // Reset hidden items
+    $sql = "UPDATE menu_items SET hidden_until = NULL WHERE hidden_until < NOW()";
+    $pdo->query($sql);
+
+    // Handle hide/show request
+    if (isset($_GET['toggle_item'])) {
+        $itemId = intval($_GET['toggle_item']);
+        $endOfDay = date('Y-m-d 23:59:59');
+
+        // Check if the item is currently hidden
+        $sql = "SELECT hidden_until FROM menu_items WHERE Id = :item_id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([':item_id' => $itemId]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result['hidden_until'] === NULL) {
+            // Hide the item until the end of the current day
+            $sql = "UPDATE menu_items SET hidden_until = :hidden_until WHERE Id = :item_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([
+                ':hidden_until' => $endOfDay,
+                ':item_id' => $itemId
+            ]);
+        } else {
+            // Show the item by resetting hidden_until
+            $sql = "UPDATE menu_items SET hidden_until = NULL WHERE Id = :item_id";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([':item_id' => $itemId]);
+        }
+
+        // Redirect to avoid re-triggering the action
+        header("Location: " . $_SERVER['PHP_SELF']);
+        exit();
+    }
+}
 ?>
 
 <div class="diner-container">
@@ -59,7 +96,13 @@ include 'elements/header.php';
                     $nameField = $dayMapping[$dayOfWeek]['name'];
                     $priceField = $dayMapping[$dayOfWeek]['price'];
 
-                    $sql = "SELECT Id, $nameField, $priceField FROM menu_items";
+                    // Adjust the query to exclude hidden items for non-C users
+                    if (isset($_SESSION['account']) && $_SESSION['account'] == 'C') {
+                        $sql = "SELECT Id, $nameField, $priceField, hidden_until FROM menu_items";
+                    } else {
+                        $sql = "SELECT Id, $nameField, $priceField FROM menu_items WHERE (hidden_until IS NULL OR hidden_until < NOW())";
+                    }
+                    
                     $stmt = $pdo->query($sql);
 
                     if ($stmt->rowCount() > 0) {
@@ -82,9 +125,12 @@ include 'elements/header.php';
                                     echo "</form>";
                                 }
 
-                                // Delete button only available for account type 'C'
+                                // Hide/Show button for account type 'C'
                                 if (isset($_SESSION['account']) && $_SESSION['account'] == 'C') {
                                     echo "<a href='includes/delete_item.php?Id=$itemId' class='delete-button' onclick=\"return confirm('Сигурен ли си, че искаш да изтриеш този елемент?');\" data-translate='true'>Изтрий</a>";
+
+                                    $buttonText = ($row['hidden_until'] === NULL) ? 'Скрий' : 'Покажи';
+                                    echo "<a href='?toggle_item=$itemId' class='hide-button' onclick=\"return confirm('Сигурен ли си, че искаш да {$buttonText} този елемент?');\" data-translate='true'>$buttonText</a>";
                                 }
 
                                 echo "</li>";

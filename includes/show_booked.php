@@ -95,14 +95,14 @@ if (isset($_SESSION['username'])) {
 
     // Show star rating form if the user has not rated the room
     if (!isset($_SESSION['has_rated']) || $_SESSION['has_rated'] != $bookedRoom['room_number']) {
-        echo '<form method="post" action="" style="display: flex; align-items: center; margin-bottom: 20px;">';
-        echo '<div class="rating" style="display: flex; align-items: center; margin-right: 10px;">';
+        echo '<form method="post" action="">';
+        echo '<div class="rating">';
         for ($i = 5; $i >= 1; $i--) {
             echo '<input type="radio" id="star' . $i . '" name="rating" value="' . $i . '">';
             echo '<label for="star' . $i . '">☆</label>';
         }
         echo '</div>';
-        echo '<button type="submit" name="rate_room" class="button">Изпрати</button>';
+        echo '<button type="submit" name="rate_room" class="button">Изпрати Рейтинг</button> ';
         if (isset($_POST['rate_room']) && !isset($_POST['rating'])) {
             echo '<p style="color: red;">' . 'Please select a rating' . '</p>';
         }
@@ -123,7 +123,7 @@ if (isset($_SESSION['username'])) {
     }
 
     echo '<form method="post" action="" style="flex: 1;">';
-    echo '<button type="submit" name="cancel_booking" class="button button-red">Прекрати престой</button> <br><br>';
+    echo '<button type="submit" name="cancel_booking" class="button button-red">Прекрати Престой</button> <br><br>';
     
     echo '<div class="button-container">';
     echo '<div id="paypal-button-container" style="flex: 1; margin-right: 10px;"></div>';

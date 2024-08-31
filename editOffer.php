@@ -15,13 +15,13 @@
 <div class="edit-room-offer">
     <h1 data-translate="true">Редактиране на оферта за стая</h1>
     <?php
-    if (isset($_GET['room_number'])) {
-        $room_number = $_GET['room_number'];
+    if (isset($_GET['id'])) {
+        $id = $_GET['id'];
 
         // Fetch room details from the database
-        $query = "SELECT * FROM room WHERE room_number = :room_number";
+        $query = "SELECT * FROM room WHERE Id = :id";
         $stmt = $pdo->prepare($query);
-        $stmt->execute(['room_number' => $room_number]);
+        $stmt->execute(['id' => $id]);
         $room = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($room) {
@@ -53,7 +53,7 @@
 
                             if (in_array($img_ex_lc, $allowed_exs)) {
                                 $new_img_name = uniqid("IMG-", true) . '.' . $img_ex_lc;
-                                $img_upload_path = '../img/' . $new_img_name;
+                                $img_upload_path = 'img/' . $new_img_name;
                                 move_uploaded_file($tmp_name, $img_upload_path);
                             } else {
                                 $em = "Не можете да качвате файлове от този тип";
@@ -66,7 +66,7 @@
                 }
 
                 // Update room details in the database
-                $updateQuery = "UPDATE room SET building = :building, room_number = :new_room_number, room_capacity = :room_capacity, description = :description, price = :price, image_url = :image_url, gender_R = :gender_R, amenities = :amenities WHERE room_number = :room_number";
+                $updateQuery = "UPDATE room SET building = :building, room_number = :new_room_number, room_capacity = :room_capacity, description = :description, price = :price, image_url = :image_url, gender_R = :gender_R, amenities = :amenities WHERE Id = :id";
                 $updateStmt = $pdo->prepare($updateQuery);
                 $updateStmt->execute([
                     'building' => $building,
@@ -77,7 +77,7 @@
                     'image_url' => $new_img_name,
                     'gender_R' => $gender_R,
                     'amenities' => $amenities,
-                    'room_number' => $room_number
+                    'id' => $id
                 ]);
 
                 echo '<p data-translate="true" style="color: red;">Детайлите на стаята бяха актуализирани успешно!</p>';
@@ -89,7 +89,7 @@
 
                 <div class="form-grid">
                     <div class="form-grid-item">
-                        <label for="building" data-translate="true">Номер на сградата:</label>
+                        <label for="building" data-translate="true">Блок:</label>
                         <select name="building" id="building" required>
                             <?php
                             // Populate building numbers

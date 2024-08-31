@@ -50,8 +50,8 @@ if (isset($_SESSION['account']) && $_SESSION['account'] == 'A') {
     echo '<input type="hidden" name="Id" value="' . htmlspecialchars($row['Id']) . '">'; // Hidden input to send room ID
     
     // Edit button
-    echo '<a href="editOffer.php?room_number=' . htmlspecialchars($row['room_number']) . '&building=' . htmlspecialchars($row['building']) . ' " class="button" data-translate="true">Редактирай</a> <a> </a>';
-     
+    echo '<a href="editOffer.php?id=' . htmlspecialchars($row['Id']) . '" class="button" data-translate="true">Редактирай</a> <a> </a>';
+
     // Delete button
     echo '<button type="submit" name="delete_room" class="button button-red" data-translate="true">Изтрий</button>'; // Delete button
     echo '</form>';

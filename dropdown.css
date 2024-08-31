@@ -1,95 +1,87 @@
-/* Dropdown menu container */
 .dropdown {
     position: relative;
     display: inline-block;
 }
 
-/* Dropdown content styling */
 .dropdown-content {
     display: none;
     position: absolute;
-    background-color: #ffffff; /* Clean white background */
-    min-width: 200px; /* Adequate width for visibility */
-    z-index: 2; /* Ensure dropdown is above other elements */
-    left: 50%; /* Center alignment */
-    border-radius: 8px; /* Smooth rounded corners */
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15); /* Softer shadow for depth */
-    transform: translateX(-50%); /* Center alignment adjustment */
-    overflow: hidden; /* Prevent content from overflowing rounded corners */
-    padding: 10px 0; /* Padding inside the dropdown */
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Consistent font */
-    font-size: 14px; /* Consistent font size */
+    background-color: #ffffff;
+    min-width: 200px;
+    z-index: 2;
+    left: 50%;
+    border-radius: 8px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    transform: translateX(-50%);
+    overflow: hidden;
+    padding: 10px 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
 }
 
-/* Style for dropdown links */
 .dropdown-content p,
 .dropdown-content a {
-    color: #333; /* Darker text for readability */
+    color: #333;
     text-decoration: none;
-    display: block; /* Ensure each item starts on a new line */
-    padding: 12px 20px; /* Adequate padding for better touch targets */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
-    font-size: 14px; /* Slightly smaller font size */
-    font-weight: 500; /* Medium font weight for a modern look */
+    display: block;
+    padding: 12px 20px;
+    transition: background-color 0.3s ease;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 4px;
 }
 
-/* Style for the dropdown button */
 .dropbtn {
     margin-left: 20px;
-    background-color: black; /* Modern blue background */
-    color: #fff; /* White text for contrast */
-    padding: 12px 20px; /* Balanced padding */
+    background-color: black;
+    color: #fff;
+    padding: 12px 20px;
     font-size: 16px;
     border: none;
-    border-radius: 4px; /* Slight rounding for a modern look */
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    transition: background-color 0.3s ease;
 }
 
-/* Additional styling for alternative button */
 .dropbtnN {
-    color: #007BFF; /* Blue text color for link-style button */
+    color: #007BFF;
     padding: 12px;
     font-size: 16px;
     border: none;
-    background: none; /* Transparent background */
+    background: none;
     cursor: pointer;
 }
 
 .dropbtn img,
 .dropbtnN img {
-    width: 30px; /* Adjusted size */
-    height: 30px; /* Adjusted size */
+    width: 30px;
+    height: 30px;
     cursor: pointer;
 }
 
-/* Hover effects */
+.dropdown-content p:hover,
 .dropdown-content a:hover {
-    background-color: #f0f0f0; /* Subtle hover effect */
+    background-color: #f0f0f0;
 }
 
 .dropbtn:hover,
 .dropbtn:focus {
-    background-color: #303030; /* Darker blue on hover */
+    background-color: #303030;
 }
 
-/* Remove gaps */
 .dropbtn,
 .dropdown-content a {
     margin: 0;
 }
 
-/* Filter form container */
 .filter-form-container {
     display: none;
 }
 
-/* Show filter form when active */
 .filter-form-container.show {
     display: block;
 }
 
-/* Additional form styling */
 .filter-form-container form div {
     margin-bottom: 10px;
 }

@@ -9,8 +9,9 @@
 }
 
 .message-container {
+    background-color: white;
     width: 100%;
-    max-height: 75vh; /* Adjust as needed, 80vh occupies 80% of the viewport height */
+    max-height: 75vh; /* Adjust as needed */
     overflow-y: auto;
     margin-bottom: 20px;
     padding: 10px;
@@ -21,21 +22,89 @@
 
 .message {
     margin-bottom: 20px;
+    position: relative; /* Keep this for positioning timestamp and delete button */
+    padding-right: 50px; /* Space for delete button */
+    display: flex;
+    flex-direction: column;
 }
+
+.my-message {
+    align-items: flex-end; /* Align user's messages to the right */
+}
+
+.other-message {
+    align-items: flex-start; /* Align others' messages to the left */
+}
+
 .message p {
+    background-color: rgb(77, 77, 77);
+    color: white;
     display: inline-block;
     padding: 10px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 35px;
     margin: 0;
-    word-break: break-all; /* Break words at any character */
+    word-break: break-word;
+    overflow-wrap: break-word;
+    box-sizing: border-box;
 }
 
+/* Apply max-width only to messages from other users */
+.other-message p {
+    max-width: calc(50% - 20px); /* Adjust max-width considering padding */
+}
 
+.my-message p {
+    max-width: auto; /* or set to a specific value if needed */
+    background-color: #007bff; /* Optionally, use a different color for user's messages */
+    color: white;
+    max-width:500px
+}
 
 .message strong {
     display: block;
     margin-bottom: 5px;
+}
+
+.my-message strong {
+    display: none; /* Hide the name for user's messages */
+}
+
+/* Timestamp styling */
+.message .timestamp {
+    display: none; /* Hide timestamp by default */
+    font-size: 0.8em;
+    color: #888;
+    position: absolute;
+    bottom: -20px; /* Adjust as needed */
+}
+
+/* Show timestamp on hover */
+.message:hover .timestamp {
+    display: block;
+}
+
+/* Position the timestamp to the right for user messages */
+.my-message .timestamp {
+    right: 30px; /* Align timestamp to the right */
+}
+
+/* Position the timestamp to the left for other messages */
+.other-message .timestamp {
+    left: 0; /* Align timestamp to the left */
+}
+
+
+.message .delete-button-chat {
+    background-color: white;
+    display: none; /* Hide delete button by default */
+    color: red;
+    border: none;
+    cursor: pointer;
+}
+
+.message:hover .delete-button-chat {
+    display: inline-block; /* Show delete button on hover */
 }
 
 .bottom-form {
