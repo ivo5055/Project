@@ -9,7 +9,13 @@
 </head>
 <body>
     
-    <?php include 'elements/header.php'; ?>
+    <?php include 'elements/header.php'; 
+    
+    if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+        header("Location: MainPage.php");
+        exit();
+    }
+    ?>
 
     <div class="add-offer-container">
         <h1 data-translate="true">Добавяне на оферта</h1>

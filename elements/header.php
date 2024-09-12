@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
 
         <?php 
         if (isset($_SESSION['account']) && $_SESSION['account'] == 'A'): ?>
-        <a href="addNotification.php" data-translate="true">Уведоми</a>
+        <a href="addNotification.php" data-translate="true">Известия</a>
         <a href="addOffer.php" data-translate="true">Добавяне на оферти</a>
         <a href="manage_offers.php" data-translate="true">Управление на оферти</a>
         <a href="requests.php" data-translate="true">Заявки</a>
@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
         <?php endif; ?>
     </nav>
     <div class="search-box">
-        <input type="text" placeholder="Search..." data-translate="true">
+        
         <select class="language-select" id="language-select">
             <option value="bg">Български</option>
             <option value="en">English</option>
@@ -113,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
             echo '<div class="dropdown-content" id="userDropdown">';
             echo '<a href="profile.php" data-translate="true">Профил</a>';
             if (isset($_SESSION['account']) && $_SESSION['account'] == 'A'):
-            echo '<a href="approve.php" data-translate="true">Потвърждаване на администратори</a>';
+            echo '<a href="approve.php" data-translate="true">Одобряване</a>';
             endif;
             echo '<a href="bookmarkedRooms.php" data-translate="true">Отметки</a>';
             echo '<a href="includes/logout.php" data-translate="true">Изход</a>';

@@ -2,7 +2,10 @@
 session_start();
 include 'includes/dbh.inc.php';
 include 'elements/header.php';
-
+if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+    header("Location: MainPage.php");
+    exit();
+}
 // Handle booking deletion
 if (isset($_POST['delete_room'])) {
     $bookingId = $_POST['Id'];

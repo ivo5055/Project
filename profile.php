@@ -1,7 +1,10 @@
 <?php
 session_start();
 include "includes/dbh.inc.php";
-
+if (!isset($_SESSION['account'])) {
+    header("Location: MainPage.php");
+    exit();
+}
 // Define variables for error messages
 $emailError = $usernameError = $passwordError = "";
 

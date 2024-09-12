@@ -10,7 +10,11 @@
 <body>
 <?php include 'elements/header.php'; ?>
 
-<?php include "includes/dbh.inc.php"; ?>
+<?php include "includes/dbh.inc.php";
+if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+    header("Location: MainPage.php");
+    exit();
+}?>
 
 <div class="edit-room-offer">
     <h1 data-translate="true">Редактиране на оферта за стая</h1>

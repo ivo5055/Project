@@ -4,13 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <?php include "elements/header.php"; ?>
-    <title data-translate="true">Добавяне на уведомление</title>
+    <title data-translate="true">Добавяне на известие</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body class="add-notification-page">
-    <h2 data-translate="true">Добавяне на уведомление</h2>
+    <h2 data-translate="true">Добавяне на известие</h2>
     <?php
+
+    if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+        header("Location: MainPage.php");
+        exit();
+    }
     // Check if form is submitted
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add') {
         // Validate and sanitize input
@@ -61,7 +66,7 @@
     ?>
 
     <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-        <label for="notification_message" data-translate="true">Съобщение за уведомление:</label><br>
+        <label for="notification_message" data-translate="true">Съобщение:</label><br>
         <textarea id="notification_message" name="notification_message" rows="4" cols="50" required></textarea><br>
         
         <div class="form-group">
@@ -80,7 +85,7 @@
             </div>
             <div class="form-group-item">
                 <div class="form-label-container">
-                    <label for="notification_duration" data-translate="true">Продължителност на уведомлението:</label>
+                    <label for="notification_duration" data-translate="true">Продължителност на известието:</label>
                 </div>
                 <input type="datetime-local" id="notification_duration" name="notification_duration" required>
             </div>
@@ -91,7 +96,7 @@
     </form>
     
     <br>
-    <h2 data-translate="true">Уведомления</h2>
+    <h2 data-translate="true">Известия</h2>
     <div class="notification-container">
         <?php if ($notifications): ?>
             <?php foreach ($notifications as $notification): ?>
@@ -107,7 +112,7 @@
                 </div>
             <?php endforeach; ?>
         <?php else: ?>
-            <p data-translate="true">Няма налични уведомления.</p>
+            <p data-translate="true">Няма налични Известия.</p>
         <?php endif; ?>
     </div>
 </body>

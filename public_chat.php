@@ -3,6 +3,11 @@
 include_once 'includes/dbh.inc.php';
 include "elements/header.php";
 
+if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'U') {
+    header("Location: login.php");
+    exit();
+}
+
 // Check if form is submitted
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
     // Sanitize user input

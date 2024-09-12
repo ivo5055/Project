@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-translate="true">За нас - Оферти</title>
+    <title data-translate="true">За нас</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
     <link rel="stylesheet" href="about.css">
@@ -35,17 +35,14 @@
                     <h3 data-translate="true">Снимка</h3>
                     <p data-translate="true">Изисква се 1 снимка.</p>
                 </article>
-                <article class="doc-item">
-                    <h3 data-translate="true">Лична карта</h3>
-                    <p data-translate="true">Изисква се представяне на лична карта и копие.</p>
-                </article>
+
                 <article class="doc-item">
                     <h3 data-translate="true">Документ за записване</h3>
                     <p data-translate="true">Сертификат за летния семестър на учебната 2023-2024 година (закупен от университетската книжарница в 3 копия и заверен от факултетния офис).</p>
                 </article>
                 <article class="doc-item">
                     <h3 data-translate="true">Плащане</h3>
-                    <p data-translate="true">Такса за подаване на документи в размер на 9.33 лв. Плащайте в университетската каса в ЦЕНТРАЛНАТА СГРАДА, 1 етаж, стая 244 или чрез банков превод.</p>
+                    <p data-translate="true">Такса за подаване на документи в размер на 9.33 лв. Плащайте в университетската каса в ЦЕНТРАЛНАТА СГРАДА, 1 етаж, стая 244 или чрез банков превод през платформата.</p>
                 </article>
             </div>
         </section>

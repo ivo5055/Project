@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Забравена парола</title>
+    <title data-translate="true">Забравена парола</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
@@ -12,7 +12,7 @@
 <?php include 'elements/header.php'; ?>
 
 <div class="forgot-password-container">
-    <h1>Забравена парола</h1>
+    <h1 data-translate="true">Забравена парола</h1>
 
     <?php if (isset($_GET['success']) && !empty($_GET['success'])): ?>
         <div class="messageF success">
@@ -27,9 +27,9 @@
     <?php endif; ?>
 
     <form action="includes/forgot_pwd.php" method="post">
-        <label for="email">Моля, въведете вашия имейл адрес:</label>
+        <label for="email" data-translate="true">Моля, въведете вашия имейл адрес:</label>
         <input type="email" id="email" name="email" required>
-        <button type="submit">Изпрати линк за възстановяване</button>
+        <button type="submit" data-translate="true">Изпрати линк за възстановяване</button>
     </form>
 </div>
 

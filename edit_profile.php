@@ -2,6 +2,10 @@
 session_start();
 include "includes/dbh.inc.php";
 
+if (!isset($_SESSION['account'])) {
+    header("Location: MainPage.php");
+    exit();
+}
 // Define variables for error messages
 $emailError = $usernameError = $passwordError = $fnError = $egnError = "";
 
@@ -154,7 +158,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div>
             <label for="egn" class="edit-profile-label" data-translate="true">ЕГН:</label>
             <input type="text" name="egn" class="edit-profile-input" placeholder="ЕГН" value="<?php echo htmlspecialchars($userDetails['egn']); ?>">
-            <?php if (!empty($egnError)) echo "<p class='edit-profile-error'>$egnError</p>"; ?>
+            <?php if (!empty($egnError)) echo "<p class='edit-profile-error'><br>$egnError</p>"; ?>
         </div>
         <?php endif; ?>
         

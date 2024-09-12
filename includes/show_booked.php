@@ -1,5 +1,5 @@
 <?php
-include 'dbh.inc.php'; // Include your database connection file
+include 'dbh.inc.php';
 
 if (isset($_SESSION['username'])) {
     $username = $_SESSION['username'];
@@ -54,7 +54,6 @@ if (isset($_SESSION['username'])) {
     echo '<h1>Текуща стая - Бл.' . htmlspecialchars($bookedRoom['building']) . '</h1>';
     echo '<div class="room-detail">';
     
-    // Display booking date at the top right
     echo '<div class="expiration-date">Срокът изтича на: ' . htmlspecialchars($bookedRoom['booking_date']) . '</div>';
     
     echo '<p>Номер на стая: ' . htmlspecialchars($bookedRoom['room_number']) . '</p>';
@@ -84,15 +83,12 @@ if (isset($_SESSION['username'])) {
         $updateRoomStmt = $pdo->prepare($updateRoomQuery);
         $updateRoomStmt->execute(['rating' => $rating, 'room_number' => $room_number, 'building' => $building]);
 
-        // Set session variable to indicate rating is done
         $_SESSION['has_rated'] = $room_number;
         $_SESSION['user_rating'] = $rating;
 
-        // Redirect to the same page to avoid form resubmission
         header('Location: ' . $_SERVER['PHP_SELF']);
         exit;
     }
-
     // Show star rating form if the user has not rated the room
     if (!isset($_SESSION['has_rated']) || $_SESSION['has_rated'] != $bookedRoom['room_number']) {
         echo '<form method="post" action="">';

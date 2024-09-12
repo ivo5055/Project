@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 
-    <?php include 'elements/header.php';?>
+    <?php include 'elements/header.php';
+    if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+        header("Location: MainPage.php");
+        exit();
+    }?>
+    
 </head>
 <body>
 

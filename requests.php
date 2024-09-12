@@ -3,6 +3,11 @@ session_start();
 include 'includes/dbh.inc.php';
 include 'elements/header.php';
 
+if (!isset($_SESSION['account']) || $_SESSION['account'] !== 'A') {
+    header("Location: login.php");
+    exit();
+}
+
 // Sorting logic
 $sortColumn = isset($_GET['sort_column']) ? $_GET['sort_column'] : 'building';
 $sortOrder = isset($_GET['sort_order']) ? $_GET['sort_order'] : 'asc';
@@ -107,30 +112,30 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Управление на заявките за резервация</title>
+    <title data-translate="true">Управление на заявките за резервация</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
 </head>
 <body>
 
 <div class="requests-container">
-    <h1>Управление на заявките за резервация</h1>
+    <h1 data-translate="true">Управление на заявките за резервация</h1>
     <?php
     if (isset($error)) {
-        echo '<p class="error">' . htmlspecialchars($error) . '</p>';
+        echo '<p class="error" data-translate="true">' . htmlspecialchars($error) . '</p>';
     }
     ?>
     <table>
         <thead>
             <tr>
-                <th>Потребител</th>
-                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>">Блок</a></th>
-                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>">Номер на стаята</a></th>
-                <th>Пълно име</th>
-                <th>ФН</th>
-                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>">Оценка</a></th>
-                <th>Документи</th>
-                <th>Действие</th>
+                <th data-translate="true">Потребител</th>
+                <th><a href="?sort_column=building&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Блок</a></th>
+                <th><a href="?sort_column=room_number&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Номер на стаята</a></th>
+                <th data-translate="true">Пълно име</th>
+                <th data-translate="true">ФН</th>
+                <th><a href="?sort_column=grade&sort_order=<?php echo $newSortOrder; ?>" data-translate="true">Оценка</a></th>
+                <th data-translate="true">Документи</th>
+                <th data-translate="true">Действие</th>
             </tr>
         </thead>
         <tbody>
@@ -147,7 +152,7 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         $documents = explode(',', $request['document_path']);
                         foreach ($documents as $document): 
                         ?>
-                            <a href="/Project/<?php echo htmlspecialchars($document); ?>" download>Изтегли</a><br>
+                            <a href="/Project/<?php echo htmlspecialchars($document); ?>" download data-translate="true">Изтегли</a><br>
                         <?php endforeach; ?>
                     </td>
                     <td>
@@ -156,9 +161,9 @@ $requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <input type="hidden" name="username" value="<?php echo $request['userN']; ?>">
                             <input type="hidden" name="room_number" value="<?php echo $request['room_number']; ?>">
                             <input type="hidden" name="building" value="<?php echo $request['building']; ?>">
-                            <input type="hidden" name="fn" value="<?php echo $request['fn']; ?>"> <!-- Hidden FN field -->
-                            <button type="submit" name="action" value="approve">Одобри</button>
-                            <button type="submit" name="action" value="reject">Отхвърли</button>
+                            <input type="hidden" name="fn" value="<?php echo $request['fn']; ?>">
+                            <button type="submit" name="action" value="approve" data-translate="true">Одобри</button>
+                            <button type="submit" name="action" value="reject" data-translate="true">Отхвърли</button>
                         </form>
                     </td>
                 </tr>

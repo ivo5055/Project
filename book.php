@@ -3,7 +3,6 @@ session_start();
 include 'includes/dbh.inc.php';
 include 'elements/header.php';
 
-// Check if user is logged in
 if (!isset($_SESSION['username'])) {
     header("Location: login.php");
     exit();
@@ -173,7 +172,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Резервиране на стая</title>
+    <title data-translate="true">Резервиране на стая</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="dropdown.css">
     
@@ -191,17 +190,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 const participantDiv = document.createElement('div');
                 participantDiv.innerHTML = `
-                    <h3>Студент ${i + 1}</h3>
-                    <label for="fullname${i}">Пълно име:</label>
+                    <h3 data-translate="true">Студент ${i + 1}</h3>
+                    <label for="fullname${i}" data-translate="true">Пълно име:</label>
                     <input type="text" id="fullname${i}" name="fullname[]" value="${fullnameValue}" ${isFirstParticipant ? 'readonly' : ''} required>
                     
-                    <label for="fn${i}">Факултетен номер (FN):</label>
+                    <label for="fn${i}" data-translate="true">Факултетен номер (FN):</label>
                     <input type="text" id="fn${i}" name="fn[]" value="${fnValue}" ${isFirstParticipant ? 'readonly' : ''} required>
                     
-                    <label for="egn${i}">ЕГН:</label>
+                    <label for="egn${i}" data-translate="true">ЕГН:</label>
                     <input type="text" id="egn${i}" name="egn[]" value="${egnValue}" required>
 
-                    <label for="document${i}">Качване на документ:</label>
+                    <label for="document${i}" data-translate="true">Качване на документ:</label>
                     <input type="file" id="document${i}" name="document[]" accept=".pdf,.doc,.docx" required>
                 `;
                 participantsContainer.appendChild(participantDiv);
@@ -215,20 +214,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
 
-<div class="booking-form">
-    <h1>Въведете данните за студентите</h1>
+<div class="booking-form" data-translate="true">
+    <h1 data-translate="true">Въведете данните за студентите</h1>
     <?php
     if (!empty($errors)) {
         foreach ($errors as $error) {
-            echo '<p class="error">' . htmlspecialchars($error) . '</p>';
+            echo '<p class="error" data-translate="true">' . htmlspecialchars($error) . '</p>';
         }
     }
     if ($success) {
-        echo '<p class="success">' . htmlspecialchars($success) . '</p>';
+        echo '<p class="success" data-translate="true">' . htmlspecialchars($success) . '</p>';
     }
     ?>
     <form method="post" action="" enctype="multipart/form-data">
-        <label for="num_participants">Брой студенти:</label>
+        <label for="num_participants" data-translate="true">Брой студенти:</label>
         <select id="num_participants" name="num_participants" onchange="updateParticipants()" required>
             <option value="1" <?php echo $numParticipants == 1 ? 'selected' : ''; ?>>1</option>
             <?php for ($i = 2; $i <= $availableCapacity; $i++): ?>
@@ -245,23 +244,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $egnValue = htmlspecialchars($egns[$i]);
             ?>
                 <div>
-                    <h3>Студент <?php echo ($i + 1); ?></h3>
-                    <label for="fullname<?php echo $i; ?>">Пълно име:</label>
+                    <h3 data-translate="true">Студент <?php echo ($i + 1); ?></h3>
+                    <label for="fullname<?php echo $i; ?>" data-translate="true">Пълно име:</label>
                     <input type="text" id="fullname<?php echo $i; ?>" name="fullname[]" value="<?php echo $fullnameValue; ?>" required>
                     
-                    <label for="fn<?php echo $i; ?>">Факултетен номер (FN):</label>
+                    <label for="fn<?php echo $i; ?>" data-translate="true">Факултетен номер (FN):</label>
                     <input type="text" id="fn<?php echo $i; ?>" name="fn[]" value="<?php echo $fnValue; ?>" required>
                     
-                    <label for="egn<?php echo $i; ?>">ЕГН:</label>
+                    <label for="egn<?php echo $i; ?>" data-translate="true">ЕГН:</label>
                     <input type="text" id="egn<?php echo $i; ?>" name="egn[]" value="<?php echo $egnValue; ?>" required>
 
-                    <label for="document<?php echo $i; ?>">Качване на документ:</label>
+                    <label for="document<?php echo $i; ?>" data-translate="true">Качване на документ:</label>
                     <input type="file" id="document<?php echo $i; ?>" name="document[]" accept=".pdf,.doc,.docx">
                 </div>
             <?php endfor; ?>
         </div>
         
-        <button type="submit">Изпрати заявка за резервация</button>
+        <button type="submit" data-translate="true">Изпрати заявка за резервация</button>
     </form>
 </div>
 
